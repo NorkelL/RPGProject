@@ -1,0 +1,38 @@
+# ── Java build artifacts ──────────────────────────────────────────────────────
+*.class
+out/
+bin/
+
+# ── IntelliJ IDEA ─────────────────────────────────────────────────────────────
+# Ignore most of .idea/ (workspace state, local paths, caches)
+# but keep the run configuration so the whole team gets it.
+.idea/*
+!.idea/runConfigurations/
+*.iml
+*.iws
+*.ipr
+
+# ── BlueJ ─────────────────────────────────────────────────────────────────────
+*.ctxt
+bluej.pkg
+
+# ── Greenfoot ─────────────────────────────────────────────────────────────────
+# project.greenfoot → COMMIT IT (defines the scenario / World class).
+# If Greenfoot rewrites it on every open and causes constant diffs, discuss
+# as a team whether to ignore it and document the world class in the README.
+
+# ── OS junk ───────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── Editor backup / temp files ────────────────────────────────────────────────
+*~
+*.swp
+*.swo
+*.orig

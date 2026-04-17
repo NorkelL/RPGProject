@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Game" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="greenfoot.export.GreenfootScenarioApplication" />
+    <!--
+      VM options example (adjust if needed):
+        -Xmx512m
+    -->
+    <option name="VM_PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <!--
+      MODULE_NAME must match the IntelliJ module name.
+      IntelliJ sets this to the project folder name by default: "RPGProject".
+      If your module is named differently, update this value.
+    -->
+    <module name="RPGProject" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
