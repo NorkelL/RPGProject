@@ -87,9 +87,3 @@ RPGProject/
 └── project.greenfoot           ← Greenfoot-Szenario-Datei (committed)
 ```
 
----
-
-## Rollen & Zuständigkeiten
-
----
-
