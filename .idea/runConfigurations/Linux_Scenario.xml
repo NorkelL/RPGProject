@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Linux_Scenario" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="11 (2)" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="GDK_BACKEND" value="x11" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="greenfoot.export.GreenfootScenarioApplication" />
+    <module name="RPGProject" />
+    <option name="VM_PARAMETERS" value="--module-path=&quot;/opt/javafx-11/lib&quot; --add-modules=javafx.controls,javafx.fxml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

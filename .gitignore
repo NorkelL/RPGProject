@@ -9,6 +9,7 @@ bin/
 .idea/*
 !.idea/runConfigurations/
 *.iml
+!RPGProject.iml
 *.iws
 *.ipr
 

@@ -1,0 +1,33 @@
+package world;
+
+import entities.ImprovedActor;
+
+public class Rock extends ImprovedActor {
+    private int life;
+
+    public Rock() {
+        setLife(25);
+    }
+
+    public Rock(int life) {
+        setLife(life);
+    }
+
+    public void hit(int damage) {
+        getWorld().addObject(new Star(), getX(), getY());
+        if (life < damage) {
+            getWorld().removeObject(this);
+        } else {
+            setLife(life - damage);
+        }
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+        draw(this.life);
+    }
+}
