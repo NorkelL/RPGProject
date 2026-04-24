@@ -14,7 +14,6 @@ public class Rock extends ImprovedActor {
     }
 
     public void hit(int damage) {
-        getWorld().addObject(new Star(), getX(), getY());
         if (life < damage) {
             getWorld().removeObject(this);
         } else {
