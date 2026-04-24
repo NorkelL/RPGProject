@@ -1,25 +1,5 @@
 # [Projektname – TBD] · Top-Down Dungeon Roguelike
 
-> Schulprojekt · Fach Informatik · 5 Wochen
-
----
-
-## Teammitglieder
-
-| # | Name | Rolle |
-|---|------|-------|
-| 1 | [Name 1 TBD] | Architektur & Integration · Item-System |
-| 2 | [Name 2 TBD] | Map-Generierung · Level-Editor (Swing/JavaFX) |
-| 3 | [Name 3 TBD] | Rendering · Kamera · Animationen |
-| 4 | [Name 4 TBD] | Gegner-KI (A\*) · Kampfsystem |
-| 5 | [Name 5 TBD] | UI · Menüs · Speichern/Laden · Sound |
-
----
-
-## Projektbeschreibung
-
-[Kurze Beschreibung hier einfügen – 3–5 Sätze nach dem ersten Meeting.]
-
 Ein top-down Roguelike-RPG mit prozedural generierten Dungeons, entwickelt mit der
 Greenfoot-Bibliothek (Java) als Schulprojekt.
 
@@ -27,7 +7,7 @@ Greenfoot-Bibliothek (Java) als Schulprojekt.
 
 ## Voraussetzungen
 
-- [Greenfoot 3.x](https://www.greenfoot.org/download) – wird als Bibliothek eingebunden
+- [Greenfoot 3.7.1](https://www.greenfoot.org/download) – wird als Bibliothek eingebunden
 - Java 17 oder höher (JDK, nicht nur JRE)
 - IntelliJ IDEA (Community oder Ultimate)
 
@@ -79,13 +59,7 @@ Working Directory.
 1. Rechts oben in IntelliJ **"Run Game"** aus dem Dropdown auswählen.
 2. **Run** (▶) drücken.
 
-> **Erste Anpassung nötig:** Sobald die World-Klasse des Spiels erstellt ist, muss
-> der Klassenname ggf. als Argument der Run-Konfiguration angegeben werden.
-> Wer das zuerst einrichtet, aktualisiert die `Run_Game.xml` und committed sie.
-
 ### Level-Editor starten
-
-[Nach Woche 1 ausfüllen – Rolle 2 legt die Struktur fest.]
 
 ---
 
@@ -116,14 +90,6 @@ RPGProject/
 ---
 
 ## Rollen & Zuständigkeiten
-
-| Rolle | Zuständigkeit | Verantwortliche/r |
-|-------|--------------|-------------------|
-| Architektur & Integration · Items | Paketstruktur, Schnittstellen, Item-Logik | [Name 1] |
-| Map-Generierung · Level-Editor | Prozeduraler Dungeon-Generator, Editor-Tool | [Name 2] |
-| Rendering · Kamera · Animationen | Greenfoot-Render-Schicht, Sprite-Management | [Name 3] |
-| Gegner-KI · Kampfsystem | A\*-Pathfinding, Kampf-Mechaniken | [Name 4] |
-| UI · Menüs · Speichern/Laden · Sound | HUD, Hauptmenü, Serialisierung, Audio | [Name 5] |
 
 ---
 
