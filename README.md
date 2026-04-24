@@ -127,29 +127,3 @@ RPGProject/
 
 ---
 
-## 5-Wochen-Zeitplan
-
-### Woche 1 – Konzept & Architektur-Entscheidungen
-- Kick-off-Meeting: alle offenen Fragen aus `ARCHITECTURE.md` gemeinsam entscheiden
-- Interfaces und Klassen-Skelette **gemeinsam** definieren und aufteilen
-- Repository-Workflow (`CONTRIBUTING.md`) erklären, alle richten Git und IntelliJ ein
-- Greenfoot-JAR-Strategie klären (lokal vs. `lib/`-Ordner)
-- Projektname festlegen und README aktualisieren
-
-### Wochen 2–3 – Parallele Modulentwicklung
-- Alle 5 Module werden parallel entwickelt
-- Wöchentliches Sync-Meeting (ca. 30 min) zum Abgleich von Schnittstellen
-- Frühzeitige Integration beginnen – keine „Big-Bang"-Integration in Woche 4
-- Level-Editor (Rolle 2) produziert erste spielbare Testkarten
-
-### Woche 4 – Feature-Freeze & Polishing
-- **Feature-Freeze ab Wochenbeginn** – keine neuen Features
-- Bugfixes, Balance-Anpassungen, Sound-Integration
-- Vollständige Integration aller Module
-- Erstes durchgehend spielbares Build erstellen und testen
-
-### Woche 5 – Dokumentation & Präsentation
-- JavaDoc für öffentliche Klassen und Methoden vervollständigen
-- README und Setup-Anleitung finalisieren
-- Präsentation vorbereiten (Spielvorführung + kurze Architektur-Erklärung)
-- Abgabe
