@@ -4,6 +4,9 @@ Ein top-down Roguelike-RPG mit prozedural generierten Dungeons, entwickelt mit d
 Greenfoot-Bibliothek (Java) als Schulprojekt.
 
 ---
+## ❓ Git/GitHub Hilfe
+→ [Hier klicken für den KI-Tutor-Prompt](GITHUB-HELP.md)
+---
 
 ## Voraussetzungen
 
