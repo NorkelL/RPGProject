@@ -8,6 +8,8 @@ bin/
 # but keep the run configuration so the whole team gets it.
 .idea/*
 !.idea/runConfigurations/
+!.idea/libraries/
+!.idea/modules.xml
 *.iml
 !RPGProject.iml
 *.iws
