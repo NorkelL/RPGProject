@@ -27,8 +27,11 @@ public class GameStarter extends World {
         Greenfoot.setWorld(currentLevel);
     }
 
-    public void setSeed(int savedseed){
+    public void setSeed(long savedseed,int currentLevel){
         seed = new Random(savedseed);
+        for(int i = 1;i<currentLevel;i++){
+            seed.nextLong();
+        }
         start();
     }
 
