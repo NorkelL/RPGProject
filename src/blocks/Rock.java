@@ -1,4 +1,4 @@
-package world;
+package blocks;
 
 import entities.ImprovedActor;
 
