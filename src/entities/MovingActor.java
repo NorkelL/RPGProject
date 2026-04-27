@@ -4,7 +4,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import ui.InventorySlot;
-import world.Rock;
+import blocks.Rock;
 
 import java.io.File;
 import java.io.IOException;
