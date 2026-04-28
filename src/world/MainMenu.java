@@ -1,8 +1,6 @@
 package world;
 
-import blocks.Rock;
 import core.GameStarter;
-import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 
@@ -14,7 +12,7 @@ public class MainMenu extends World {
 
     public MainMenu(GameStarter gameStarter) {
         super(16, 9, 60);
-        GreenfootImage bg = new GreenfootImage("MainMenu.png");
+        GreenfootImage bg = new GreenfootImage("Map/MainMenu.png");
         bg.scale(960, 540);
         setBackground(bg);
         this.gameStarter = gameStarter;

@@ -5,19 +5,39 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.World;
 
+import java.util.Random;
+
 public class DungeonLevel extends World {
+
+    private Random rng;
+    public int centerExit;
+    private int centerEntrance;
+
     public DungeonLevel(long seed,GameStarter gameStarter) {
-        super(9, 9, 60);
+        super(12,calcHight(seed), 60);
+        rng = new Random(seed);
         setBackground("cell.jpg");
         setPaintOrder(Player.class, Rock.class);
-        addObject(new Player(), 4, 4);
 
-        addObject(new Rock(), 3, 3);
-        addObject(new Rock(), 5, 5);
-        addObject(new Rock(), 2, 6);
+        centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
+        for (int i = centerEntrance - 1; i <= centerEntrance + 1; i++) {
+            addObject(new Entrance(gameStarter),i-1,this.getHeight()-1);
+        }
+
+        centerExit = rng.nextInt(this.getWidth() - 6)+3;
+        for (int i = centerExit - 1; i <= centerExit + 1; i++) {
+            addObject(new Exit(gameStarter),i-1,0);
+        }
+
+
+
     }
 
     public DungeonLevel() {
         this(System.currentTimeMillis(), new GameStarter());
+    }
+
+    private static int calcHight(long rn){
+        return new Random(rn).nextInt(10)+5;
     }
 }

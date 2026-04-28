@@ -2,5 +2,6 @@
 #Generated placeholder – Greenfoot will overwrite this when the project is first opened.
 #Commit this file; it tells Greenfoot which class is the starting World.
 version=3.7.1
-world.lastInstantiated=world.DungeonLevel
+world.lastInstantiated=core.GameStarter
+main.class=core.GameStarter
 simulation.speed=30
