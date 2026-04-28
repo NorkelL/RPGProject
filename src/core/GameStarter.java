@@ -3,7 +3,7 @@ package core;
 import greenfoot.*;
 import world.*;
 import java.util.*;
-
+import world.DungeonLevel;
 public class GameStarter extends World {
 
     private Random seed;
@@ -18,10 +18,11 @@ public class GameStarter extends World {
     }
 
     public void mainMenu(){
+
         Greenfoot.setWorld(new MainMenu(this));
     }
 
-    private void start() {
+    public void start() {
         currentLevel = new DungeonLevel(seed.nextLong(),this);
         Greenfoot.setWorld(currentLevel);
     }
@@ -35,5 +36,6 @@ public class GameStarter extends World {
         pastLevel.add(currentLevel);
         currentLevel = new DungeonLevel(seed.nextLong(),this);
         Greenfoot.setWorld(currentLevel);
+
     }
 }

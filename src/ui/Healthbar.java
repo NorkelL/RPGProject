@@ -1,4 +1,4 @@
 package ui;
 
-public class Healthbar {
+public class Healthbar extends UI{
 }
