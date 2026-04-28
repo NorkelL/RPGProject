@@ -2,7 +2,6 @@ package core;
 
 import greenfoot.*;
 import world.*;
-
 import java.util.*;
 
 public class GameStarter extends World {
@@ -18,8 +17,8 @@ public class GameStarter extends World {
         mainMenu();
     }
 
-    private void mainMenu(){
-        Greenfoot.setWorld(new MainMenu());
+    public void mainMenu(){
+        Greenfoot.setWorld(new MainMenu(this));
     }
 
     private void start() {

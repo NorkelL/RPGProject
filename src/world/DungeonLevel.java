@@ -16,4 +16,8 @@ public class DungeonLevel extends World {
         addObject(new Rock(), 5, 5);
         addObject(new Rock(), 2, 6);
     }
+
+    public DungeonLevel() {
+        this(System.currentTimeMillis(), new GameStarter());
+    }
 }
