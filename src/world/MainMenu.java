@@ -13,8 +13,10 @@ public class MainMenu extends World {
 
 
     public MainMenu(GameStarter gameStarter) {
-        super(9, 9, 60);
-        setBackground("cell.jpg");
+        super(16, 9, 60);
+        GreenfootImage bg = new GreenfootImage("MainMenu.png");
+        bg.scale(960, 540);
+        setBackground(bg);
         this.gameStarter = gameStarter;
         addObject(new StartButton(gameStarter), 4, 5);
 
@@ -22,5 +24,8 @@ public class MainMenu extends World {
 
 
 
+    }
+    public MainMenu() {
+        this(new GameStarter());
     }
 }
