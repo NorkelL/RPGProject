@@ -68,7 +68,9 @@ public class Player extends DamageableActor {
     }
 
     @Override
-    protected void onDeath() {
+    protected void onDeath()
+    {
+        getWorld().removeObject(this);
         Greenfoot.stop();
     }
 
