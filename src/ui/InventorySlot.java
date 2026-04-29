@@ -6,7 +6,7 @@ import greenfoot.GreenfootImage;
 public class InventorySlot extends Actor {
     private Actor item;
 
-    private static final GreenfootImage EMPTY_SLOT_IMG = new GreenfootImage("./images/EmptySlot.png");
+    private static final GreenfootImage EMPTY_SLOT_IMG = new GreenfootImage("EmptySlot.png");
 
     public InventorySlot() {
         setImage(new GreenfootImage(EMPTY_SLOT_IMG));

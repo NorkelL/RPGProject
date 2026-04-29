@@ -4,7 +4,6 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
-import world.Rock;
 
 import java.util.List;
 
