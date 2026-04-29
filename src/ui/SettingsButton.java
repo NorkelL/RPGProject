@@ -1,11 +1,16 @@
 package ui;
 
+import core.GameStarter;
 import greenfoot.GreenfootImage;
 
 public class SettingsButton extends UI {
-    public SettingsButton(){
+
+    private GameStarter gameStarter;
+
+    public SettingsButton(GameStarter gameStarter){
         super();
-        GreenfootImage SettingsButton = new GreenfootImage("Settings.png");
+        this.gameStarter = gameStarter;
+        GreenfootImage SettingsButton = new GreenfootImage("Map/Settings.png");
         SettingsButton.scale(310,240);
         setImage(SettingsButton);
 

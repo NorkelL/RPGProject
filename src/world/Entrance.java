@@ -12,10 +12,4 @@ public class Entrance extends Block {
         this.gameStarter = gameStarter;
         //setImage("Blocks/Entrance.png");
     }
-
-    public void act(){
-        if(isTouching(Player.class)){
-            gameStarter.RenderNextWorld();
-        }
-    }
 }

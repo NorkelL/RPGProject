@@ -1,28 +1,39 @@
 package ui;
 
 import core.GameStarter;
-import entities.Player;
-import greenfoot.GreenfootImage;
-
-import java.util.List;
+import greenfoot.*;
 
 public class StartButton extends UI implements Clickable{
 
-    public StartButton(){
+    private GameStarter gameStarter;
+
+    public StartButton(GameStarter gameStarter){
         super();
-        GreenfootImage StartButton = new GreenfootImage("StartGame.png");
+        this.gameStarter = gameStarter;
+        GreenfootImage StartButton = new GreenfootImage("Map/StartGame.png");
         StartButton.scale(310,240);
         setImage(StartButton);
+    }
 
+    @Override
+    public void act() {
+        if (Greenfoot.mouseClicked(null)) {
+            MouseInfo mouse = Greenfoot.getMouseInfo();
+            if (mouse != null) {
+                int dx = Math.abs(mouse.getX() - getX());
+                int dy = Math.abs(mouse.getY() - getY());
+                if (dx <= 2 && dy <= 2) {
+                    onClick();
+                }
+            }
+        }
     }
 
 
 
-
     @Override
-    public UI onClick(Player player) {
-        List<GameStarter> gameStarters= getWorld().getObjects(GameStarter.class);
-        gameStarters.get(0).start();
+    public UI onClick(){
+        gameStarter.start();
         return null;
     }
 }

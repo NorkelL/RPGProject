@@ -25,16 +25,14 @@ public class DungeonLevel extends World {
             centerEntrance = 6;
         }
         for (int i = centerEntrance - 1; i <= centerEntrance + 1; i++) {
-            addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 1);
+            addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 2);
         }
 
         centerExit = rng.nextInt(this.getWidth() - 6)+3;
         for (int i = centerExit - 1; i <= centerExit + 1; i++) {
             addObject(new Exit(gameStarter),i-1,0);
         }
-
-
-
+        addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
     }
 
     public DungeonLevel() {

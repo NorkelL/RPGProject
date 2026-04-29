@@ -8,9 +8,8 @@ import ui.SettingsButton;
 import ui.StartButton;
 
 public class MainMenu extends World {
-   private GameStarter gameStarter;
 
-
+    private GameStarter gameStarter;
 
 
     public MainMenu(GameStarter gameStarter) {
@@ -22,17 +21,8 @@ public class MainMenu extends World {
         int cx = getWidth()/2;
         int cy = getHeight()/2;
 
-        addObject(new StartButton(), cx, cy-1);
-        addObject(new LoadGameButton(), cx, cy+1);
-        addObject(new SettingsButton(), cx, cy+3);
-
-
-
-
-
-
-    }
-    public MainMenu() {
-        this(new GameStarter());
+        addObject(new StartButton(gameStarter), cx, cy-1);
+        addObject(new LoadGameButton(gameStarter), cx, cy+1);
+        addObject(new SettingsButton(gameStarter), cx, cy+3);
     }
 }

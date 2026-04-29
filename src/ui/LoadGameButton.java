@@ -8,9 +8,12 @@ import java.util.List;
 
 public class LoadGameButton extends UI {
 
-    public LoadGameButton(){
+    private GameStarter gameStarter;
+
+    public LoadGameButton(GameStarter gameStarter){
         super();
-        GreenfootImage LoadGameButton = new GreenfootImage("LoadGame.png");
+        this.gameStarter = gameStarter;
+        GreenfootImage LoadGameButton = new GreenfootImage("Map/LoadGame.png");
         LoadGameButton.scale(310,240);
         setImage(LoadGameButton);
 
