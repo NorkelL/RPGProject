@@ -14,14 +14,18 @@ public class DungeonLevel extends World {
     private int centerEntrance;
 
     public DungeonLevel(long seed,GameStarter gameStarter) {
-        super(12,calcHight(seed), 60);
+        super(12, calcHight(seed), 60);
         rng = new Random(seed);
         setBackground("cell.jpg");
         setPaintOrder(Player.class, Rock.class);
 
-        centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
+        if(!gameStarter.pastLevel.isEmpty()){
+            centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
+        }else{
+            centerEntrance = 6;
+        }
         for (int i = centerEntrance - 1; i <= centerEntrance + 1; i++) {
-            addObject(new Entrance(gameStarter),i-1,this.getHeight()-1);
+            addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 1);
         }
 
         centerExit = rng.nextInt(this.getWidth() - 6)+3;
