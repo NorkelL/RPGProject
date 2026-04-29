@@ -3,6 +3,9 @@ package world;
 import core.GameStarter;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import ui.LoadGameButton;
+import ui.SettingsButton;
+import ui.StartButton;
 
 public class MainMenu extends World {
    private GameStarter gameStarter;
@@ -16,7 +19,13 @@ public class MainMenu extends World {
         bg.scale(960, 540);
         setBackground(bg);
         this.gameStarter = gameStarter;
-        addObject(new StartButton(gameStarter), 4, 5);
+        int cx = getWidth()/2;
+        int cy = getHeight()/2;
+
+        addObject(new StartButton(), cx, cy-1);
+        addObject(new LoadGameButton(), cx, cy+1);
+        addObject(new SettingsButton(), cx, cy+3);
+
 
 
 
