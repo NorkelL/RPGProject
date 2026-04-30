@@ -33,13 +33,62 @@ public class DungeonLevel extends World {
             addObject(new Exit(gameStarter),i-1,0);
         }
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
-    }
 
-    public DungeonLevel() {
-        this(System.currentTimeMillis(), new GameStarter());
+        spawnCorridor();
     }
 
     private static int calcHight(long rn){
         return new Random(rn).nextInt(10)+5;
+    }
+
+    private void spawnCorridor(){
+        int[] centerCorridor = calcCorridor();
+        while (centerCorridor[centerCorridor.length-1] != centerExit && centerCorridor[centerCorridor.length-1] != centerExit-1 && centerCorridor[centerCorridor.length-1] != centerExit+1){
+            centerCorridor = calcCorridor();
+        }
+        for (int i = 0; i < getHeight()-3; i++) {
+            int y = getHeight()-3 - i;
+            int cx = centerCorridor[i];
+            if(cx-2>=0) {
+                addObject(new Rock(), centerCorridor[i] - 2, y);
+            } else if (cx-1>=0) {
+                addObject(new Rock(), centerCorridor[i] - 1, y);
+            }
+            if(cx+2<getWidth()) {
+                addObject(new Rock(), centerCorridor[i] + 2, y);
+            } else if (cx+1<getWidth()) {
+                addObject(new Rock(), centerCorridor[i] + 1, y);
+            }
+        }
+    }
+
+
+
+    private int[] calcCorridor(){
+        int[] centerCorridor = new int[getHeight()-3];
+        int lastRow = centerEntrance;
+
+        for (int i = 0; i < getHeight()-3; i++) {
+            int rng = this.rng.nextInt(4);
+
+            if (rng == 0 || rng == 1) {
+                if (lastRow < centerExit) {
+                    lastRow++;
+                } else {
+                    lastRow--;
+                }
+                centerCorridor[i] = lastRow;
+            } else if (rng ==2) {
+                if (centerEntrance < centerExit) {
+                    lastRow--;
+                } else {
+                    lastRow++;
+                }
+                centerCorridor[i] = lastRow;
+            }else {
+                centerCorridor[i] = lastRow;
+            }
+        }
+        return centerCorridor;
     }
 }
