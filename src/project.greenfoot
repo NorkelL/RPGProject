@@ -4,4 +4,4 @@
 version=3.7.1
 world.lastInstantiated=core.GameStarter
 main.class=core.GameStarter
-simulation.speed=30
+simulation.speed=70

@@ -10,6 +10,7 @@ import java.util.List;
 public class Player extends DamageableActor {
     private final int maxItems;
     private final int maxLife;
+    private int moveCounter;
     private final Item[] items;
     private InventoryVisualizer inventory;
 
@@ -26,10 +27,14 @@ public class Player extends DamageableActor {
 
     @Override
     public void act() {
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); }
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); }
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); }
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); }
+        if(moveCounter>0){
+            moveCounter--;
+            return;
+        }
+        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=1000;}
+        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=1000;}
+        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=1000;}
+        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=1000;}
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         draw(getLife() + "/" + maxLife);
