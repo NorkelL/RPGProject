@@ -3,6 +3,7 @@ package world;
 import blocks.Rock;
 import core.GameStarter;
 import entities.Player;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 
 import java.util.Random;
@@ -14,9 +15,11 @@ public class DungeonLevel extends World {
     private int centerEntrance;
 
     public DungeonLevel(long seed,GameStarter gameStarter) {
-        super(12, calcHight(seed), 60);
+        super(calcWidth(seed), calcHeight(seed), 40);
         rng = new Random(seed);
-        setBackground("cell.jpg");
+        GreenfootImage tile = new GreenfootImage("cell.jpg");
+        tile.scale(40, 40);
+        setBackground(tile);
         setPaintOrder(Player.class, Rock.class);
 
         if(!gameStarter.pastLevel.isEmpty()){
@@ -37,8 +40,10 @@ public class DungeonLevel extends World {
         spawnCorridor();
     }
 
-    private static int calcHight(long rn){
-        return new Random(rn).nextInt(10)+5;
+    private static int calcHeight(long rn) {return calcWidth(rn)+3;}
+
+    private static int calcWidth(long rn){
+        return new Random(rn).nextInt(16)+15;
     }
 
     private void spawnCorridor(){

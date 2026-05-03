@@ -23,6 +23,7 @@ public class MovingActor extends ImprovedActor {
                     File img = new File(imgFolder, imgName);
                     if (img.exists()) {
                         movingActorImages[i][j] = new ImprovedGreenfootImage(img.getCanonicalPath());
+                        movingActorImages[i][j].scale(40, 40);
                         int rotationAmount = i % 2 == 1 ? -i : i;
                         movingActorImages[i][j].rotate(rotationAmount * 90);
                     } else {
