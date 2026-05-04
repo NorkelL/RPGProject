@@ -87,4 +87,12 @@ public class Player extends DamageableActor {
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
+
+    private void hit(Waffen dieseWaffe){
+        int damage = dieseWaffe.getDamage;
+        if(getCurrentItem instanceof Waffe){
+            getCurrentItem.hit
+        }
+
+    }
 }
