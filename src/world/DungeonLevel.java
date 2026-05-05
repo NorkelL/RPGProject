@@ -25,16 +25,21 @@ public class DungeonLevel extends World {
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
         }else{
-            centerEntrance = 6;
+            centerEntrance = this.getWidth()/2;
         }
-        for (int i = centerEntrance - 1; i <= centerEntrance + 1; i++) {
+        for (int i = centerEntrance - 1; i <= centerEntrance +1; i++) {
             addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 2);
         }
+        addObject(new Rock(), centerEntrance - 3, this.getHeight() - 2);
+        addObject(new Rock(), centerEntrance + 1, this.getHeight() - 2);
 
         centerExit = rng.nextInt(this.getWidth() - 6)+3;
         for (int i = centerExit - 1; i <= centerExit + 1; i++) {
             addObject(new Exit(gameStarter),i-1,0);
         }
+        addObject(new Rock(), centerExit - 3, 0);
+        addObject(new Rock(), centerExit + 1, 0);
+
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
 
         spawnCorridor();
@@ -67,32 +72,31 @@ public class DungeonLevel extends World {
         }
     }
 
-
-
     private int[] calcCorridor(){
         int[] centerCorridor = new int[getHeight()-3];
-        int lastRow = centerEntrance;
+        int pos = centerEntrance;
+        int delta = 0;
+        int runLeft = 0;
+        int length = getHeight() - 3;
 
-        for (int i = 0; i < getHeight()-3; i++) {
-            int rng = this.rng.nextInt(4);
+        for (int i = 0; i < length; i++) {
+            int stepsLeft = length - i;
+            int distToExit = Math.abs(centerExit - pos);
 
-            if (rng == 0 || rng == 1) {
-                if (lastRow < centerExit) {
-                    lastRow++;
-                } else {
-                    lastRow--;
-                }
-                centerCorridor[i] = lastRow;
-            } else if (rng ==2) {
-                if (centerEntrance < centerExit) {
-                    lastRow--;
-                } else {
-                    lastRow++;
-                }
-                centerCorridor[i] = lastRow;
-            }else {
-                centerCorridor[i] = lastRow;
+            if (distToExit >= stepsLeft) {
+                // must head toward exit or we won't make it
+                delta = Integer.compare(centerExit, pos);
+                runLeft = 1;
+            } else if (runLeft == 0) {
+                int toward = Integer.compare(centerExit, pos);
+                int r = rng.nextInt(10);
+                delta = (r < 4) ? toward : (r < 7) ? 0 : -toward; // 40% toward, 30% straight, 30% away
+                runLeft = rng.nextInt(3) + 3; // commit for 3-5 steps
             }
+
+            pos = Math.max(1, Math.min(getWidth() - 2, pos + delta));
+            centerCorridor[i] = pos;
+            runLeft--;
         }
         return centerCorridor;
     }
