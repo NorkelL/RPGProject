@@ -17,7 +17,7 @@ public class DungeonLevel extends World {
     public DungeonLevel(long seed,GameStarter gameStarter) {
         super(calcWidth(seed), calcHeight(seed), 40);
         rng = new Random(seed);
-        GreenfootImage tile = new GreenfootImage("cell.jpg");
+        GreenfootImage tile = new GreenfootImage("Map/FloorTile2.png");
         tile.scale(40, 40);
         setBackground(tile);
         setPaintOrder(Player.class, Rock.class);
