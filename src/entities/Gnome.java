@@ -22,8 +22,6 @@ public class Gnome extends BaseMonster implements Hitting{
             move(1);
         }
     }
-    public void reseiveHit(int damage){
-        life = life - damage;
-    }
+
 
 }

@@ -3,6 +3,7 @@ package entities;
 import greenfoot.Greenfoot;
 
 public class BaseMonster extends DamageableActor {
+    private int life;
     public void act(){
         moveRandom();
         onDeath();
@@ -20,5 +21,8 @@ public class BaseMonster extends DamageableActor {
             move(1);
         }
 
+    }
+    public void reseiveHit(int damage){
+        life = life - damage;
     }
 }
