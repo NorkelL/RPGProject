@@ -1,5 +1,6 @@
 package world;
 
+import blocks.Chest;
 import blocks.Rock;
 import core.GameStarter;
 import entities.Player;
@@ -38,6 +39,7 @@ public class DungeonLevel extends World {
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
 
         spawnCorridor();
+        addObject(new Chest(), getWidth() / 2, getHeight() / 2);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
