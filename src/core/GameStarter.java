@@ -4,6 +4,7 @@ import greenfoot.*;
 import world.*;
 import java.util.*;
 import world.DungeonLevel;
+
 public class GameStarter extends World {
 
     private Random seed;
