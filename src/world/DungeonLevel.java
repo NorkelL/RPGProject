@@ -6,13 +6,22 @@ import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DungeonLevel extends World {
 
-    private Random rng;
+    private final Random rng;
     public int centerExit;
     private int centerEntrance;
+    private int[] centerCorridor;
+    private List<Room> placedRooms = new ArrayList<>();
+
+    private static class Room {
+        int width, height, x, y;
+        Room(int width, int height, int x, int y) { this.width = width; this.height = height; this.x = x; this.y = y; }
+    }
 
     public DungeonLevel(long seed,GameStarter gameStarter) {
         super(calcWidth(seed), calcHeight(seed), 40);
@@ -43,6 +52,7 @@ public class DungeonLevel extends World {
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
 
         spawnCorridor();
+        spawnRooms();
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
@@ -52,10 +62,9 @@ public class DungeonLevel extends World {
     }
 
     private void spawnCorridor(){
-        int[] centerCorridor = calcCorridor();
-        while (centerCorridor[centerCorridor.length-1] != centerExit && centerCorridor[centerCorridor.length-1] != centerExit-1 && centerCorridor[centerCorridor.length-1] != centerExit+1){
+        do {
             centerCorridor = calcCorridor();
-        }
+        } while (centerCorridor[centerCorridor.length - 1] != centerExit && centerCorridor[centerCorridor.length - 1] != centerExit - 1 && centerCorridor[centerCorridor.length - 1] != centerExit + 1);
         for (int i = 0; i < getHeight()-3; i++) {
             int y = getHeight()-3 - i;
             int cx = centerCorridor[i];
@@ -84,14 +93,13 @@ public class DungeonLevel extends World {
             int distToExit = Math.abs(centerExit - pos);
 
             if (distToExit >= stepsLeft) {
-                // must head toward exit or we won't make it
                 delta = Integer.compare(centerExit, pos);
                 runLeft = 1;
             } else if (runLeft == 0) {
                 int toward = Integer.compare(centerExit, pos);
                 int r = rng.nextInt(10);
-                delta = (r < 4) ? toward : (r < 7) ? 0 : -toward; // 40% toward, 30% straight, 30% away
-                runLeft = rng.nextInt(3) + 3; // commit for 3-5 steps
+                delta = (r < 4) ? toward : (r < 7) ? 0 : -toward;
+                runLeft = rng.nextInt(3) + 3;
             }
 
             pos = Math.max(1, Math.min(getWidth() - 2, pos + delta));
@@ -99,5 +107,69 @@ public class DungeonLevel extends World {
             runLeft--;
         }
         return centerCorridor;
+    }
+
+    private void spawnRooms(){
+        int placedCount = 0;
+        int tries = 0;
+        while(placedCount < 3){
+            if(tryPlaceRoom(genRandomRoom())){
+                placedCount++;
+            }else{
+                tries++;
+                if(tries > 10) return;
+            }
+        }
+    }
+
+    private boolean tryPlaceRoom(Room room){
+        for (Room placed : placedRooms) {
+            if (room.x <= placed.x + placed.width && room.x + room.width >= placed.x &&
+                room.y <= placed.y + placed.height && room.y + room.height >= placed.y) {
+                return false;
+            }
+        }
+        boolean touchesCorridor = false;
+        for(int i = room.x; i < room.x + room.width; i++) {
+            for (int j = room.y; j < room.y+room.height; j++) {
+                if(!getObjectsAt(i,j, Rock.class).isEmpty()){
+                    removeRockAt(i,j);
+                    touchesCorridor = true;
+                }
+            }
+        }
+        if(touchesCorridor){
+            for (int i = room.x; i < room.x + room.width+1; i++) {
+                addObject(new Rock(), i, room.y);
+                addObject(new Rock(), i, room.y+room.height);
+            }
+            for (int i = room.y; i < room.y + room.height+1; i++) {
+                addObject(new Rock(), room.x, i);
+                addObject(new Rock(), room.x + room.width, i);
+            }
+        }
+        for (int i = 0; i < centerCorridor.length; i++) {
+            int worldY = getHeight()-3-i;
+            for (int j = centerCorridor[i]-1; j < centerCorridor[i]+2; j++) {
+                removeRockAt(j, worldY);
+            }
+        }
+        if (touchesCorridor) placedRooms.add(room);
+        return touchesCorridor;
+    }
+
+    private void removeRockAt(int x, int y) {
+        List<Rock> rocks = getObjectsAt(x,y, Rock.class);
+        for (Rock rock : rocks) {
+            removeObject(rock);
+        }
+    }
+
+    private Room genRandomRoom(){
+        int w = rng.nextInt(10)+4;
+        int h = rng.nextInt(10)+4;
+        int x = rng.nextInt(Math.max(1, getWidth()-w-2))+1;
+        int y = rng.nextInt(Math.max(1, getHeight()-h-4))+1;
+        return new Room(w, h, x, y);
     }
 }
