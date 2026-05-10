@@ -3,6 +3,7 @@ package blocks;
 import entities.Player;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import greenfoot.MouseInfo;
 import items.ItemTyp;
 
 public class Chest extends Block {
@@ -18,9 +19,16 @@ public class Chest extends Block {
     }
 
     public void act() {
-        if (isTouching(Player.class) && !isOpen && Greenfoot.isKeyDown("E")) {
+        if (isTouching(Player.class) && !isOpen && angeklickt()) {
             openChest();
         }
+    }
+
+    private boolean angeklickt() {
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse == null || mouse.getButton() != 1) return false;
+        if (!Greenfoot.mouseClicked(null)) return false;
+        return Math.abs(mouse.getX() - getX()) <= 1 && Math.abs(mouse.getY() - getY()) <= 1;
     }
 
     public void openChest() {
