@@ -6,7 +6,12 @@ import greenfoot.GreenfootImage;
 public class InventorySlot extends Actor {
     private Actor item;
 
-    private static final GreenfootImage EMPTY_SLOT_IMG = new GreenfootImage("EmptySlot.png");
+    private static final int SIZE = 40;
+    private static final GreenfootImage EMPTY_SLOT_IMG;
+    static {
+        EMPTY_SLOT_IMG = new GreenfootImage("EmptySlot.png");
+        EMPTY_SLOT_IMG.scale(SIZE, SIZE);
+    }
 
     public InventorySlot() {
         setImage(new GreenfootImage(EMPTY_SLOT_IMG));
@@ -22,7 +27,9 @@ public class InventorySlot extends Actor {
         if (item == null) {
             setImage(new GreenfootImage(EMPTY_SLOT_IMG));
         } else {
-            getImage().drawImage(new GreenfootImage(item.getImage()), 5, 5);
+            GreenfootImage preview = new GreenfootImage(item.getImage());
+            preview.scale(SIZE - 10, SIZE - 10);
+            getImage().drawImage(preview, 5, 5);
         }
     }
 
