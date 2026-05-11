@@ -31,10 +31,10 @@ public class Player extends DamageableActor {
             moveCounter--;
             return;
         }
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=300;}
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=300;}
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=300;}
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=300;}
+        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=150;}
+        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=150;}
+        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=150;}
+        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         draw(getLife() + "/" + maxLife);

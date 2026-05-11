@@ -1,4 +1,5 @@
 package entities;
+import greenfoot.Greenfoot;
 
 public abstract class DamageableActor extends MovingActor {
     private int life;
