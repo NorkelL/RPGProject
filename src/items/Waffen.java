@@ -21,7 +21,7 @@ public class Waffen extends Item {
         return getX()+dy;
     }
 
-    public void destroyRock() {
+    public void hit() {
         World myWorld = getWorld();
         List<Monster> monsters = myWorld.getObjectsAt(getNextX(1), getNextY(1), Monster.class);
         if (!monsters.isEmpty()) {
