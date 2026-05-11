@@ -6,6 +6,7 @@ import greenfoot.*;
 public class StartButton extends UI implements Clickable{
 
     private GameStarter gameStarter;
+    private boolean starting;
 
     public StartButton(GameStarter gameStarter){
         super();
@@ -17,16 +18,23 @@ public class StartButton extends UI implements Clickable{
 
     @Override
     public void act() {
-        if (Greenfoot.mouseClicked(null)) {
-            MouseInfo mouse = Greenfoot.getMouseInfo();
-            if (mouse != null) {
-                int dx = Math.abs(mouse.getX() - getX());
-                int dy = Math.abs(mouse.getY() - getY());
-                if (dx <= 2 && dy <= 2) {
-                    onClick();
-                }
-            }
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (!starting && mouse != null && Greenfoot.mousePressed(null) && isInsideButton(mouse)) {
+            starting = true;
+            onClick();
         }
+    }
+
+    private boolean isInsideButton(MouseInfo mouse) {
+        if (getImage() == null) {
+            return false;
+        }
+        int halfWidth = getImage().getWidth() / 2;
+        int halfHeight = getImage().getHeight() / 2;
+        return mouse.getX() >= getX() - halfWidth
+            && mouse.getX() <= getX() + halfWidth
+            && mouse.getY() >= getY() - halfHeight
+            && mouse.getY() <= getY() + halfHeight;
     }
 
 

@@ -1,27 +1,29 @@
 package entities;
 
-import greenfoot.Greenfoot;
+import greenfoot.Color;
 
-public class Gnome extends BaseMonster implements Hitting{
-    private int life;
+public class Gnome extends BaseMonster implements Hitting {
+    public Gnome() {
+        super("Gnome", 35, 8, 1);
+    }
 
-    public Gnome(int life) {
-        this.life = life;
-    }
-    public void act(){
-        moveRandom();
-        onDeath();
-    }
     @Override
-    public void moveRandom() {
-        int rotation = Greenfoot.getRandomNumber(4) * 90;
-        setRotation(rotation);
-        if (canMove()){
-            move(2);
-        }else{
-            move(1);
-        }
+    protected int getMoveDelay() {
+        return 34;
     }
 
+    @Override
+    protected int getAttackDelay() {
+        return 30;
+    }
 
+    @Override
+    protected Color getPrimaryColor() {
+        return new Color(78, 128, 92);
+    }
+
+    @Override
+    protected Color getAccentColor() {
+        return new Color(222, 231, 192);
+    }
 }

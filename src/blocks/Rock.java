@@ -1,6 +1,7 @@
 package blocks;
 
 import entities.ImprovedActor;
+import greenfoot.GreenfootImage;
 
 public class Rock extends ImprovedActor {
     private int life;
@@ -27,6 +28,8 @@ public class Rock extends ImprovedActor {
 
     public void setLife(int life) {
         this.life = life;
+        GreenfootImage image = new GreenfootImage("Blocks/Rock.png");
+        setImage(image);
         draw(this.life);
     }
 }

@@ -1,27 +1,29 @@
 package entities;
 
-import greenfoot.Greenfoot;
+import greenfoot.Color;
 
 public class Orc extends BaseMonster implements Hitting {
-    private int life;
-
-    public Orc(int life) {
-        this.life = life;
-    }
-
-    public void act() {
-        moveRandom();
-        onDeath();
+    public Orc() {
+        super("Orc", 60, 14, 2);
     }
 
     @Override
-    public void moveRandom() {
-        int rotation = Greenfoot.getRandomNumber(4) * 90;
-        setRotation(rotation);
-        if (canMove()) {
-            move(3);
-        } else {
-            move(1);
-        }
+    protected int getMoveDelay() {
+        return 42;
+    }
+
+    @Override
+    protected int getAttackDelay() {
+        return 36;
+    }
+
+    @Override
+    protected Color getPrimaryColor() {
+        return new Color(123, 82, 57);
+    }
+
+    @Override
+    protected Color getAccentColor() {
+        return new Color(232, 214, 163);
     }
 }

@@ -1,10 +1,9 @@
 package blocks;
 
 import entities.Player;
-import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
-import greenfoot.MouseInfo;
 import items.ItemTyp;
+import world.DungeonLevel;
 
 public class Chest extends Block {
     private boolean isOpen;
@@ -19,16 +18,7 @@ public class Chest extends Block {
     }
 
     public void act() {
-        if (isTouching(Player.class) && !isOpen && angeklickt()) {
-            openChest();
-        }
-    }
-
-    private boolean angeklickt() {
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        if (mouse == null || mouse.getButton() != 1) return false;
-        if (!Greenfoot.mouseClicked(null)) return false;
-        return Math.abs(mouse.getX() - getX()) <= 1 && Math.abs(mouse.getY() - getY()) <= 1;
+        // Chest interaction is handled by the player via the E key.
     }
 
     public void openChest() {
@@ -41,10 +31,19 @@ public class Chest extends Block {
 
     private void dropRandomItem() {
         if (ItemTyp.values().length == 0) return;
-        getWorld().addObject(ItemTyp.zufällig().erstelleItem(), getX(), getY());
+        if (getWorld() instanceof DungeonLevel) {
+            ((DungeonLevel) getWorld()).addWorldObject(ItemTyp.zufaellig().erstelleItem(), getTileX(), getTileY());
+        } else {
+            getWorld().addObject(ItemTyp.zufaellig().erstelleItem(), getX(), getY());
+        }
     }
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public boolean canBeOpenedBy(Player player) {
+        int distance = Math.abs(player.getTileX() - getTileX()) + Math.abs(player.getTileY() - getTileY());
+        return !isOpen && distance <= 1;
     }
 }

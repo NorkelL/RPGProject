@@ -2,7 +2,7 @@ package world;
 
 import blocks.Block;
 import core.GameStarter;
-import entities.Player;
+import greenfoot.GreenfootImage;
 
 public class Entrance extends Block {
 
@@ -10,6 +10,7 @@ public class Entrance extends Block {
 
     public Entrance(GameStarter gameStarter){
         this.gameStarter = gameStarter;
-        //setImage("Blocks/Entrance.png");
+        GreenfootImage image = new GreenfootImage("World/Entrance.png");
+        setImage(image);
     }
 }

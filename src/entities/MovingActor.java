@@ -1,10 +1,11 @@
 package entities;
 
 import greenfoot.Greenfoot;
+import greenfoot.Color;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import ui.InventorySlot;
 import blocks.Rock;
+import world.DungeonLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ public class MovingActor extends ImprovedActor {
     private int animationStep = 0;
 
     public MovingActor() {
+        setImage(createFallbackImage());
         String imgFolder = "." + File.separator + "images" + File.separator + this.getClass().getSimpleName() + File.separator;
         for (int i = 0; i < Direction.values().length; i++) {
             try {
@@ -23,7 +25,7 @@ public class MovingActor extends ImprovedActor {
                     File img = new File(imgFolder, imgName);
                     if (img.exists()) {
                         movingActorImages[i][j] = new ImprovedGreenfootImage(img.getCanonicalPath());
-                        movingActorImages[i][j].scale(40, 40);
+                        movingActorImages[i][j].scale(52, 52);
                         int rotationAmount = i % 2 == 1 ? -i : i;
                         movingActorImages[i][j].rotate(rotationAmount * 90);
                     } else {
@@ -41,6 +43,17 @@ public class MovingActor extends ImprovedActor {
         setImageRotation(Direction.SOUTH);
     }
 
+    private GreenfootImage createFallbackImage() {
+        GreenfootImage image = new GreenfootImage(52, 52);
+        image.setColor(new Color(35, 49, 58));
+        image.fillOval(10, 8, 32, 32);
+        image.setColor(new Color(191, 158, 95));
+        image.drawOval(10, 8, 32, 32);
+        image.setColor(new Color(96, 152, 148));
+        image.fillRect(22, 36, 8, 12);
+        return image;
+    }
+
     public boolean canMove() {
         return canMove(1);
     }
@@ -49,21 +62,25 @@ public class MovingActor extends ImprovedActor {
         World myWorld = getWorld();
         int x = getNextX(distance);
         int y = getNextY(distance);
+        if (myWorld instanceof DungeonLevel) {
+            return ((DungeonLevel) myWorld).canMoveTo(this, x, y);
+        }
         List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
-        List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
-        return rocks.isEmpty() && slots.isEmpty();
+        return rocks.isEmpty();
     }
 
     public int getNextX(int distance) {
         double radians = Math.toRadians(getRotation());
         int dx = (int) Math.round(Math.cos(radians) * distance);
-        return getX() + dx;
+        int currentX = getWorld() instanceof DungeonLevel ? getTileX() : getX();
+        return currentX + dx;
     }
 
     public int getNextY(int distance) {
         double radians = Math.toRadians(getRotation());
         int dy = (int) Math.round(Math.sin(radians) * distance);
-        return getY() + dy;
+        int currentY = getWorld() instanceof DungeonLevel ? getTileY() : getY();
+        return currentY + dy;
     }
 
     public int getNextX() { return getNextX(1); }
@@ -120,7 +137,9 @@ public class MovingActor extends ImprovedActor {
     public void move(int steps) {
         animationStep = (animationStep + 1) % 4;
         setImage(movingActorImages[Direction.getDirectionByRotation(getRotation()).getValue()][animationStep]);
-        if (canMove(steps)) {
+        if (getWorld() instanceof DungeonLevel) {
+            ((DungeonLevel) getWorld()).moveActor(this, steps);
+        } else if (canMove(steps)) {
             super.move(steps);
         }
     }

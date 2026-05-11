@@ -3,6 +3,7 @@ package world;
 import blocks.Block;
 import core.GameStarter;
 import entities.Player;
+import greenfoot.GreenfootImage;
 
 public class Exit extends Block {
 
@@ -11,13 +12,21 @@ public class Exit extends Block {
 
     public Exit(GameStarter gameStarter){
         this.gameStarter = gameStarter;
-        //setImage("Blocks/Exit.png");
+        GreenfootImage image = new GreenfootImage("World/Exit.png");
+        setImage(image);
     }
 
     @Override
     public void act(){
-        if(isTouching(Player.class)){
+        if (touchesPlayer()) {
             gameStarter.RenderNextWorld();
         }
+    }
+
+    private boolean touchesPlayer() {
+        if (getWorld() instanceof DungeonLevel) {
+            return !((DungeonLevel) getWorld()).getTileObjects(getTileX(), getTileY(), Player.class).isEmpty();
+        }
+        return isTouching(Player.class);
     }
 }

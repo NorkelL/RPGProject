@@ -23,6 +23,10 @@ public class GameStarter extends World {
     }
 
     public void start() {
+        Greenfoot.setWorld(new LoadingScreen(this));
+    }
+
+    public void finishStart() {
         currentLevel = new DungeonLevel(seed.nextLong(),this);
         Greenfoot.setWorld(currentLevel);
     }
@@ -32,7 +36,7 @@ public class GameStarter extends World {
         for(int i = 1;i<currentLevel;i++){
             seed.nextLong();
         }
-        start();
+        finishStart();
     }
 
     public void RenderNextWorld(){
