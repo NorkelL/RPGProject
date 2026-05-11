@@ -1,6 +1,7 @@
 package world;
 
-import blocks.Rock;
+import world.FloorTile;
+import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
@@ -17,10 +18,8 @@ public class DungeonLevel extends World {
     public DungeonLevel(long seed,GameStarter gameStarter) {
         super(calcWidth(seed), calcHeight(seed), 40);
         rng = new Random(seed);
-        GreenfootImage tile = new GreenfootImage("Map/FloorTile2.png");
-        tile.scale(40, 40);
-        setBackground(tile);
-        setPaintOrder(Player.class, Rock.class);
+        generateRandomFloor();
+        setPaintOrder(Player.class, Wall.class);
 
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
@@ -36,6 +35,8 @@ public class DungeonLevel extends World {
             addObject(new Exit(gameStarter),i-1,0);
         }
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
+
+
 
         spawnCorridor();
     }
@@ -55,17 +56,18 @@ public class DungeonLevel extends World {
             int y = getHeight()-3 - i;
             int cx = centerCorridor[i];
             if(cx-2>=0) {
-                addObject(new Rock(), centerCorridor[i] - 2, y);
+                addObject(new Wall(), centerCorridor[i] - 2, y);
             } else if (cx-1>=0) {
-                addObject(new Rock(), centerCorridor[i] - 1, y);
+                addObject(new Wall(), centerCorridor[i] - 1, y);
             }
             if(cx+2<getWidth()) {
-                addObject(new Rock(), centerCorridor[i] + 2, y);
+                addObject(new Wall(), centerCorridor[i] + 2, y);
             } else if (cx+1<getWidth()) {
-                addObject(new Rock(), centerCorridor[i] + 1, y);
+                addObject(new Wall(), centerCorridor[i] + 1, y);
             }
         }
     }
+
 
 
 
@@ -95,5 +97,28 @@ public class DungeonLevel extends World {
             }
         }
         return centerCorridor;
+    }
+    private void generateRandomFloor() {
+
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+
+                int chance = rng.nextInt(100);
+
+
+                if (chance < 60) {
+                    addObject(new FloorTile("Map/FloorTile1.png"), x, y);
+
+                } else if (chance < 85) {
+                    addObject(new FloorTile("Map/FloorTile2.png"), x, y);
+
+                } else if (chance < 95) {
+                    addObject(new FloorTile("Map/FloorTile3.jpg"), x, y);
+
+                } else {
+                    addObject(new FloorTile("Map/FloorTile.jpg"), x, y);
+                }
+            }
+        }
     }
 }
