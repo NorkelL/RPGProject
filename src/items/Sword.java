@@ -1,15 +1,12 @@
 package items;
 
-import entities.Player;
-
-public class Messer extends Waffen{
-
+public class Sword extends Waffen{
     private int damage;
 
-    public Messer() {
-        setDamage(3);
+    public Sword() {
+        setDamage(5);
     }
-    public Messer(int damage){
+    public Sword(int damage){
         setDamage(damage);
     }
 
@@ -22,5 +19,4 @@ public class Messer extends Waffen{
     public void setDamage(int newDamage){
         damage = newDamage;
     }
-
 }
