@@ -11,7 +11,7 @@ public class StartButton extends UI implements Clickable{
         super();
         this.gameStarter = gameStarter;
         GreenfootImage StartButton = new GreenfootImage("Map/StartGame.png");
-        StartButton.scale(310,240);
+        StartButton.scale(310,110);
         setImage(StartButton);
     }
 
@@ -20,9 +20,11 @@ public class StartButton extends UI implements Clickable{
         if (Greenfoot.mouseClicked(null)) {
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
-                int dx = Math.abs(mouse.getX() - getX());
-                int dy = Math.abs(mouse.getY() - getY());
-                if (dx <= 2 && dy <= 2) {
+                int cellSize = getWorld().getCellSize();
+                int halfW = getImage().getWidth() / (2 * cellSize);
+                int halfH = getImage().getHeight() / (2 * cellSize);
+                if (Math.abs(mouse.getX() - getX()) <= halfW &&
+                    Math.abs(mouse.getY() - getY()) <= halfH) {
                     onClick();
                 }
             }

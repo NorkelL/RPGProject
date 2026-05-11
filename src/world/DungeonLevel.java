@@ -130,8 +130,8 @@ public class DungeonLevel extends World {
             }
         }
         boolean touchesCorridor = false;
-        for(int i = room.x; i < room.x + room.width; i++) {
-            for (int j = room.y; j < room.y+room.height; j++) {
+        for(int i = room.x+1; i < room.x + room.width-1; i++) {
+            for (int j = room.y+1; j < room.y+room.height-1; j++) {
                 if(!getObjectsAt(i,j, Rock.class).isEmpty()){
                     removeRockAt(i,j);
                     touchesCorridor = true;

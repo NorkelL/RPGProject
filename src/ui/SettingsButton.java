@@ -11,7 +11,7 @@ public class SettingsButton extends UI {
         super();
         this.gameStarter = gameStarter;
         GreenfootImage SettingsButton = new GreenfootImage("Map/Settings.png");
-        SettingsButton.scale(310,240);
+        SettingsButton.scale(310,110);
         setImage(SettingsButton);
 
     }
