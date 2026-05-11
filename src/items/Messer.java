@@ -4,23 +4,11 @@ import entities.Player;
 
 public class Messer extends Waffen{
 
-    private int damage;
-
-    public Messer() {
-        setDamage(3);
-    }
     public Messer(int damage){
-        setDamage(damage);
+        super(damage);}
+
+    public Messer(){
+        super(3);
     }
-
-
-
-
-    public int getDamage(){
-        return damage;
-    }
-    public void setDamage(int newDamage){
-        damage = newDamage;
-    }
-
 }
+
