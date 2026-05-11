@@ -1,5 +1,6 @@
 package world;
 
+import blocks.Chest;
 import blocks.Rock;
 import core.GameStarter;
 import entities.Player;
