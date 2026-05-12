@@ -2,6 +2,7 @@ package entities;
 
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
+import util.ImprovedGreenfootImage;
 
 public class ImprovedActor extends Actor {
     private GreenfootImage currentImage;
