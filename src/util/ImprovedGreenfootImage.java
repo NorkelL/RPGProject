@@ -1,4 +1,4 @@
-package entities;
+package util;
 
 import greenfoot.Color;
 import greenfoot.GreenfootImage;
