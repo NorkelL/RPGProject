@@ -9,7 +9,7 @@ import items.ItemTyp;
 public class Chest extends Block {
     private boolean isOpen;
 
-    private static final int SIZE = 40;
+    private static final int SIZE = 32;
 
     public Chest() {
         isOpen = false;

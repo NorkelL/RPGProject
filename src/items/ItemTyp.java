@@ -8,7 +8,7 @@ public enum ItemTyp {
     // Beispiel:
     // SWORD(70) { public Item erstelleItem() { return new Sword(); } },
     // POTION(20) { public Item erstelleItem() { return new Potion(); } };
-    TEST(100) { public Item erstelleItem() { return new TestItem(); } };
+    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); } };
 
     public final int gewicht;
 
