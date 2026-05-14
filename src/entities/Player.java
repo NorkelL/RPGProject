@@ -43,8 +43,6 @@ public class Player extends DamageableActor {
     public void move() {
         if (canMove()) {
             move(1);
-        } else {
-            takeDamage(10);
         }
     }
 

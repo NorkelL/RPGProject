@@ -1,6 +1,5 @@
 package world;
 
-import blocks.Chest;
 import blocks.Rock;
 import core.GameStarter;
 import entities.Player;
@@ -25,7 +24,7 @@ public class DungeonLevel extends World {
     }
 
     public DungeonLevel(long seed,GameStarter gameStarter) {
-        super(calcWidth(seed), calcHeight(seed), 40);
+        super(30, 30, 40);
         rng = new Random(seed);
         GreenfootImage tile = new GreenfootImage("cell.jpg");
         tile.scale(40, 40);
