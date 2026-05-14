@@ -52,8 +52,8 @@ public class DungeonLevel extends World {
         while (centerCorridor[centerCorridor.length-1] != centerExit && centerCorridor[centerCorridor.length-1] != centerExit-1 && centerCorridor[centerCorridor.length-1] != centerExit+1){
             centerCorridor = calcCorridor();
         }
-        for (int i = 0; i < getHeight()-3; i++) {
-            int y = getHeight()-3 - i;
+        for (int i = centerCorridor.length - 1; i >= 0; i--) {
+            int y = getHeight() - 3 - i;
             int cx = centerCorridor[i];
             if(cx-2>=0) {
                 addObject(new Wall(), centerCorridor[i] - 2, y);

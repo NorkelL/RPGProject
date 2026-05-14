@@ -5,6 +5,7 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 import ui.InventorySlot;
 import blocks.Rock;
+import blocks.Wall;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,14 @@ public class MovingActor extends ImprovedActor {
         int y = getNextY(distance);
         List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
         List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
-        return rocks.isEmpty() && slots.isEmpty();
+        boolean wallOnTarget = false;
+        for (Wall wall : myWorld.getObjects(Wall.class)) {
+            if (wall.getX() == x && wall.getY() == y) {
+                wallOnTarget = true;
+                break;
+            }
+        }
+        return rocks.isEmpty() && !wallOnTarget && slots.isEmpty();
     }
 
     public int getNextX(int distance) {
