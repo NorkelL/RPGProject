@@ -5,6 +5,7 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 import ui.InventorySlot;
 import blocks.Rock;
+import blocks.Wall;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,11 +48,32 @@ public class MovingActor extends ImprovedActor {
 
     public boolean canMove(int distance) {
         World myWorld = getWorld();
-        int x = getNextX(distance);
-        int y = getNextY(distance);
-        List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
-        List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
-        return rocks.isEmpty() && slots.isEmpty();
+
+        int direction = distance < 0 ? -1 : 1;
+        for (int step = 1; step <= Math.abs(distance); step++) {
+            int x = getNextX(step * direction);
+            int y = getNextY(step * direction);
+
+            if (x < 0 || x >= myWorld.getWidth() || y < 0 || y >= myWorld.getHeight()) {
+                return false;
+            }
+
+            List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
+            List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
+            if (!rocks.isEmpty() || !slots.isEmpty() || hasWallAt(x, y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasWallAt(int x, int y) {
+        for (Wall wall : getWorld().getObjects(Wall.class)) {
+            if (wall.getX() == x && wall.getY() == y) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getNextX(int distance) {
