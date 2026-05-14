@@ -3,6 +3,7 @@ package entities;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import util.ImprovedGreenfootImage;
 import ui.InventorySlot;
 import blocks.Rock;
 
