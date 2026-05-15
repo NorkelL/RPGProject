@@ -1,11 +1,13 @@
 package entities;
 
+import blocks.Block;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import util.ImprovedGreenfootImage;
 import ui.InventorySlot;
 import blocks.Rock;
+import blocks.Wall;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,8 +53,10 @@ public class MovingActor extends ImprovedActor {
         int x = getNextX(distance);
         int y = getNextY(distance);
         List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
+        boolean hasWall = myWorld.getObjects(Wall.class).stream()
+            .anyMatch(w -> w.getX() == x && w.getY() == y);
         List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
-        return rocks.isEmpty() && slots.isEmpty();
+        return rocks.isEmpty() && !hasWall && slots.isEmpty();
     }
 
     public int getNextX(int distance) {

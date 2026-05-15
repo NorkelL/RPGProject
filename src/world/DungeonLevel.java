@@ -1,6 +1,6 @@
 package world;
 
-import blocks.Rock;
+import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
@@ -26,10 +26,8 @@ public class DungeonLevel extends World {
     public DungeonLevel(long seed,GameStarter gameStarter) {
         super(30, 30, 40);
         rng = new Random(seed);
-        GreenfootImage tile = new GreenfootImage("cell.jpg");
-        tile.scale(40, 40);
-        setBackground(tile);
-        setPaintOrder(Player.class, Rock.class);
+        generateRandomFloor();
+        setPaintOrder(Wall.class, Player.class);
 
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
@@ -51,6 +49,8 @@ public class DungeonLevel extends World {
 
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
 
+
+
         spawnCorridor();
         spawnRooms();
     }
@@ -69,14 +69,14 @@ public class DungeonLevel extends World {
             int y = getHeight()-3 - i;
             int cx = centerCorridor[i];
             if(cx-2>=0) {
-                addObject(new Rock(), centerCorridor[i] - 2, y);
+                addObject(new Wall(), centerCorridor[i] - 2, y);
             } else if (cx-1>=0) {
-                addObject(new Rock(), centerCorridor[i] - 1, y);
+                addObject(new Wall(), centerCorridor[i] - 1, y);
             }
             if(cx+2<getWidth()) {
-                addObject(new Rock(), centerCorridor[i] + 2, y);
+                addObject(new Wall(), centerCorridor[i] + 2, y);
             } else if (cx+1<getWidth()) {
-                addObject(new Rock(), centerCorridor[i] + 1, y);
+                addObject(new Wall(), centerCorridor[i] + 1, y);
             }
         }
     }
@@ -171,5 +171,32 @@ public class DungeonLevel extends World {
         int x = rng.nextInt(Math.max(1, getWidth()-w-2))+1;
         int y = rng.nextInt(Math.max(1, getHeight()-h-4))+1;
         return new Room(w, h, x, y);
+    }
+    private void generateRandomFloor() {
+        int cellSize = 40;
+        int w = getWidth();
+        int h = getHeight();
+
+        GreenfootImage[] tiles = {
+            new GreenfootImage("Map/FloorTile1.png"),
+            new GreenfootImage("Map/FloorTile2.png"),
+            new GreenfootImage("Map/FloorTile3.jpg"),
+            new GreenfootImage("Map/FloorTile.jpg"),
+        };
+        for (GreenfootImage t : tiles) t.scale(cellSize, cellSize);
+
+        GreenfootImage bg = new GreenfootImage(w * cellSize, h * cellSize);
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int chance = rng.nextInt(100);
+                GreenfootImage tile;
+                if      (chance < 60) tile = tiles[0];
+                else if (chance < 85) tile = tiles[1];
+                else if (chance < 95) tile = tiles[2];
+                else                  tile = tiles[3];
+                bg.drawImage(tile, x * cellSize, y * cellSize);
+            }
+        }
+        setBackground(bg);
     }
 }
