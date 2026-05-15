@@ -51,15 +51,9 @@ public class MovingActor extends ImprovedActor {
         int x = getNextX(distance);
         int y = getNextY(distance);
         List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
+        List<Wall> walls = myWorld.getObjectsAt(x, y, Wall.class);
         List<InventorySlot> slots = myWorld.getObjectsAt(x, y, InventorySlot.class);
-        boolean wallOnTarget = false;
-        for (Wall wall : myWorld.getObjects(Wall.class)) {
-            if (wall.getX() == x && wall.getY() == y) {
-                wallOnTarget = true;
-                break;
-            }
-        }
-        return rocks.isEmpty() && !wallOnTarget && slots.isEmpty();
+        return rocks.isEmpty() && walls.isEmpty() && slots.isEmpty();
     }
 
     public int getNextX(int distance) {
