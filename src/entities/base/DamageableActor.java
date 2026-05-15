@@ -1,4 +1,4 @@
-package entities;
+package entities.base;
 
 public abstract class DamageableActor extends MovingActor {
     private int life;

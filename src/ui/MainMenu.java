@@ -1,11 +1,8 @@
-package world;
+package ui;
 
 import core.GameStarter;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import ui.LoadGameButton;
-import ui.SettingsButton;
-import ui.StartButton;
 
 public class MainMenu extends World {
 

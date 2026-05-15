@@ -1,6 +1,6 @@
-package entities;
+package entities.base;
 
-import blocks.Block;
+import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;

@@ -1,6 +1,7 @@
-package entities;
+package entities.enemies;
 
-import greenfoot.Greenfoot;
+import entities.base.BaseMonster;
+import entities.util.Hitting;
 
 public class Orc extends BaseMonster implements Hitting {
 

@@ -1,6 +1,8 @@
-package items;
+package items.util;
 
 import greenfoot.Greenfoot;
+import items.Item;
+import items.TestItem;
 
 public enum ItemTyp {
 

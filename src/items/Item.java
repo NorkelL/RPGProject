@@ -1,7 +1,8 @@
 package items;
 
-import entities.ImprovedActor;
+import entities.base.ImprovedActor;
 import greenfoot.Actor;
+import items.util.Useable;
 
 public abstract class Item extends ImprovedActor implements Useable {
 
