@@ -1,5 +1,7 @@
-package entities;
+package entities.base;
 
+import entities.Player;
+import entities.util.ASharpPathfinding;
 import greenfoot.Greenfoot;
 
 public abstract class BaseMonster extends DamageableActor implements ASharpPathfinding {

@@ -1,6 +1,9 @@
-package entities;
+package entities.enemies;
 
-public class Gnome extends BaseMonster implements Hitting{
+import entities.base.BaseMonster;
+import entities.util.Hitting;
+
+public class Gnome extends BaseMonster implements Hitting {
 
     public Gnome(int life) {
         super(100,3,5);

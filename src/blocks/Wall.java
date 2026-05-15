@@ -1,6 +1,6 @@
 package blocks;
 
-import entities.ImprovedActor;
+import entities.base.ImprovedActor;
 import greenfoot.GreenfootImage;
 
 public class Wall extends ImprovedActor {

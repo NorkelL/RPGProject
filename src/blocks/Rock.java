@@ -1,6 +1,6 @@
 package blocks;
 
-import entities.ImprovedActor;
+import entities.base.ImprovedActor;
 
 public class Rock extends ImprovedActor {
     private int life;

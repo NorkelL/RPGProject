@@ -1,5 +1,7 @@
 package entities;
 
+import entities.base.DamageableActor;
+import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;

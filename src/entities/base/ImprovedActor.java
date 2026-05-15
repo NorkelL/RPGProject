@@ -1,4 +1,4 @@
-package entities;
+package entities.base;
 
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;

@@ -1,4 +1,4 @@
-package entities;
+package entities.util;
 
 import blocks.Rock;
 import blocks.Wall;

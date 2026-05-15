@@ -1,4 +1,4 @@
-package entities;
+package entities.util;
 
 public interface Hitting {
 }
