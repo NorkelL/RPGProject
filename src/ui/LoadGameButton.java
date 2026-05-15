@@ -1,10 +1,7 @@
 package ui;
 
 import core.GameStarter;
-import entities.Player;
 import greenfoot.GreenfootImage;
-
-import java.util.List;
 
 public class LoadGameButton extends UI {
 
@@ -14,7 +11,7 @@ public class LoadGameButton extends UI {
         super();
         this.gameStarter = gameStarter;
         GreenfootImage LoadGameButton = new GreenfootImage("Map/LoadGame.png");
-        LoadGameButton.scale(310,240);
+        LoadGameButton.scale(310,110);
         setImage(LoadGameButton);
 
     }
