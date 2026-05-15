@@ -1,6 +1,5 @@
 package world;
 
-import world.FloorTile;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
@@ -19,7 +18,7 @@ public class DungeonLevel extends World {
         super(calcWidth(seed), calcHeight(seed), 40);
         rng = new Random(seed);
         generateRandomFloor();
-        setPaintOrder(Player.class, Wall.class);
+        setPaintOrder(Wall.class, Player.class);
 
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
@@ -99,26 +98,30 @@ public class DungeonLevel extends World {
         return centerCorridor;
     }
     private void generateRandomFloor() {
+        int cellSize = 40;
+        int w = getWidth();
+        int h = getHeight();
 
-        for (int y = 0; y < getHeight(); y++) {
-            for (int x = 0; x < getWidth(); x++) {
+        GreenfootImage[] tiles = {
+            new GreenfootImage("Map/FloorTile1.png"),
+            new GreenfootImage("Map/FloorTile2.png"),
+            new GreenfootImage("Map/FloorTile3.jpg"),
+            new GreenfootImage("Map/FloorTile.jpg"),
+        };
+        for (GreenfootImage t : tiles) t.scale(cellSize, cellSize);
 
+        GreenfootImage bg = new GreenfootImage(w * cellSize, h * cellSize);
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 int chance = rng.nextInt(100);
-
-
-                if (chance < 60) {
-                    addObject(new FloorTile("Map/FloorTile1.png"), x, y);
-
-                } else if (chance < 85) {
-                    addObject(new FloorTile("Map/FloorTile2.png"), x, y);
-
-                } else if (chance < 95) {
-                    addObject(new FloorTile("Map/FloorTile3.jpg"), x, y);
-
-                } else {
-                    addObject(new FloorTile("Map/FloorTile.jpg"), x, y);
-                }
+                GreenfootImage tile;
+                if      (chance < 60) tile = tiles[0];
+                else if (chance < 85) tile = tiles[1];
+                else if (chance < 95) tile = tiles[2];
+                else                  tile = tiles[3];
+                bg.drawImage(tile, x * cellSize, y * cellSize);
             }
         }
+        setBackground(bg);
     }
 }

@@ -116,7 +116,8 @@ public interface ASharpPathfinding {
     // hier neue blöcke, durch die man nicht durchgehen kann hinzufügen:
     default boolean isBlocked(int x, int y) {
         World world = getWorld();
-        return !world.getObjectsAt(x, y, Rock.class).isEmpty()
-            || !world.getObjectsAt(x, y, Wall.class).isEmpty();
+        if (!world.getObjectsAt(x, y, Rock.class).isEmpty()) return true;
+        return world.getObjects(Wall.class).stream()
+            .anyMatch(w -> w.getX() == x && w.getY() == y);
     }
 }
