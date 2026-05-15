@@ -7,8 +7,10 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class DungeonLevel extends World {
 
@@ -37,15 +39,15 @@ public class DungeonLevel extends World {
         for (int i = centerEntrance - 1; i <= centerEntrance +1; i++) {
             addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 2);
         }
-        addObject(new Rock(), centerEntrance - 3, this.getHeight() - 2);
-        addObject(new Rock(), centerEntrance + 1, this.getHeight() - 2);
+        savePlaceWall(centerEntrance - 3,this.getHeight() - 2);
+        savePlaceWall(centerEntrance + 1,this.getHeight() - 2);
 
         centerExit = rng.nextInt(this.getWidth() - 6)+3;
         for (int i = centerExit - 1; i <= centerExit + 1; i++) {
             addObject(new Exit(gameStarter),i-1,0);
         }
-        addObject(new Rock(), centerExit - 3, 0);
-        addObject(new Rock(), centerExit + 1, 0);
+        savePlaceWall(centerExit - 3,0);
+        savePlaceWall(centerExit + 1,0);
 
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
 
@@ -65,7 +67,7 @@ public class DungeonLevel extends World {
         do {
             centerCorridor = calcCorridor();
         } while (centerCorridor[centerCorridor.length - 1] != centerExit && centerCorridor[centerCorridor.length - 1] != centerExit - 1 && centerCorridor[centerCorridor.length - 1] != centerExit + 1);
-        for (int i = 0; i < getHeight()-3; i++) {
+        for (int i = centerCorridor.length - 1; i >= 0; i--) {
             int y = getHeight()-3 - i;
             int cx = centerCorridor[i];
             if(cx-2>=0) {
@@ -132,37 +134,49 @@ public class DungeonLevel extends World {
         boolean touchesCorridor = false;
         for(int i = room.x+1; i < room.x + room.width-1; i++) {
             for (int j = room.y+1; j < room.y+room.height-1; j++) {
-                if(!getObjectsAt(i,j, Rock.class).isEmpty()){
-                    removeRockAt(i,j);
+                int finalI = i;
+                int finalJ = j;
+                if(getObjects(Wall.class).stream().anyMatch(w -> w.getX() == finalI && w.getY() == finalJ)){
+                    removeWallAt(i,j);
                     touchesCorridor = true;
                 }
             }
         }
         if(touchesCorridor){
             for (int i = room.x; i < room.x + room.width+1; i++) {
-                addObject(new Rock(), i, room.y);
-                addObject(new Rock(), i, room.y+room.height);
+                savePlaceWall(i, room.y);
+                savePlaceWall(i, room.y+room.height);
             }
             for (int i = room.y; i < room.y + room.height+1; i++) {
-                addObject(new Rock(), room.x, i);
-                addObject(new Rock(), room.x + room.width, i);
+                savePlaceWall(room.x, i);
+                savePlaceWall(room.x + room.width, i);
             }
         }
         for (int i = 0; i < centerCorridor.length; i++) {
             int worldY = getHeight()-3-i;
             for (int j = centerCorridor[i]-1; j < centerCorridor[i]+2; j++) {
-                removeRockAt(j, worldY);
+                removeWallAt(j, worldY);
             }
         }
         if (touchesCorridor) placedRooms.add(room);
         return touchesCorridor;
     }
 
-    private void removeRockAt(int x, int y) {
-        List<Rock> rocks = getObjectsAt(x,y, Rock.class);
-        for (Rock rock : rocks) {
-            removeObject(rock);
-        }
+    private void savePlaceWall(int x, int y) {
+        removeWallAt(x, y);
+        addObject(new Wall(), x, y);
+        
+        getObjects(Wall.class).stream()
+            .filter(w -> w.getX() == x && w.getY() > y)
+            .sorted(Comparator.comparingInt(Wall::getY))
+            .collect(Collectors.toList())
+            .forEach(w -> { int wy = w.getY(); removeObject(w); addObject(new Wall(), x, wy); });
+    }
+
+    private void removeWallAt(int x, int y) {
+        getObjects(Wall.class).stream()
+            .filter(w -> w.getX() == x && w.getY() == y)
+            .forEach(this::removeObject);
     }
 
     private Room genRandomRoom(){

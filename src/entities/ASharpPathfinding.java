@@ -1,6 +1,7 @@
 package entities;
 
 import blocks.Rock;
+import blocks.Wall;
 import greenfoot.World;
 import java.util.Arrays;
 import java.util.WeakHashMap;
@@ -114,6 +115,9 @@ public interface ASharpPathfinding {
 
     // hier neue blöcke, durch die man nicht durchgehen kann hinzufügen:
     default boolean isBlocked(int x, int y) {
-        return !getWorld().getObjectsAt(x, y, Rock.class).isEmpty();
+        World world = getWorld();
+        if (!world.getObjectsAt(x, y, Rock.class).isEmpty()) return true;
+        return world.getObjects(Wall.class).stream()
+            .anyMatch(w -> w.getX() == x && w.getY() == y);
     }
 }
