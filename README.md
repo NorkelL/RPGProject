@@ -43,14 +43,12 @@ Das Projekt braucht `greenfoot.jar` aus der lokalen Greenfoot-Installation als L
 
 > Alternativ: die `greenfoot.jar` in den `lib/`-Ordner im Projektroot kopieren und
 > dort als Library hinzufügen – dann funktioniert es bei allen Teammitgliedern
-> ohne Pfad-Anpassung. Absprache im ersten Meeting.
+> ohne Pfad-Anpassung.
 
 ### 4. Source-Root konfigurieren
 
 1. **File → Project Structure → Modules**
 2. `src/` als **Sources**-Root markieren (Rechtsklick → Mark as: Sources Root).
-3. Für den Level-Editor: `editor/src/` als Sources-Root eines zweiten Moduls hinzufügen
-   (Details nach Woche 1, wenn Rolle 2 die Editor-Struktur festgelegt hat).
 
 ### 5. Run-Konfiguration starten
 
@@ -62,31 +60,109 @@ Working Directory.
 1. Rechts oben in IntelliJ **"Run Game"** aus dem Dropdown auswählen.
 2. **Run** (▶) drücken.
 
-### Level-Editor starten
-
 ---
 
 ## Projektstruktur
 
 ```
 RPGProject/
-├── src/                        ← Source-Root (IntelliJ)
-│   ├── core/                   ← Architektur & Integration (Rolle 1)
-│   ├── entities/               ← Spielobjekte (gemeinsam)
-│   ├── world/                  ← Welt, Tiles, Räume (Rolle 2 + 3)
-│   ├── combat/                 ← Kampfsystem (Rolle 4)
-│   ├── items/                  ← Item-System (Rolle 1)
-│   ├── ui/                     ← HUD, Menüs (Rolle 5)
-│   └── mapgen/                 ← Map-Generierung (Rolle 2)
-├── editor/
-│   └── src/                    ← Level-Editor (Rolle 2, eigenes Modul)
+├── src/                                  ← Source-Root (IntelliJ)
+│   ├── core/
+│   │   └── GameStarter.java              ← Einstiegspunkt; verwaltet Seed, Level-History und Weltenwechsel
+│   ├── world/
+│   │   ├── DungeonLevel.java             ← Greenfoot-World; prozedurale Dungeon-Generierung (Räume, Korridore)
+│   │   ├── Entrance.java                 ← Eingang zum vorherigen Level
+│   │   └── Exit.java                     ← Ausgang zum nächsten Level
+│   ├── entities/
+│   │   ├── Player.java                   ← Spielersteuerung, Inventar, Bewegung
+│   │   ├── base/
+│   │   │   ├── ImprovedActor.java        ← Actor mit verbessertem Image-Handling (HiDPI-fähig)
+│   │   │   ├── MovingActor.java          ← Kollisionsgeprüfte Bewegung (canMove / move)
+│   │   │   ├── DamageableActor.java      ← HP-System, takeDamage, onDeath
+│   │   │   └── BaseMonster.java          ← Agro-/Leash-Radius, A*-Pathfinding-Integration
+│   │   ├── enemies/
+│   │   │   ├── Gnome.java
+│   │   │   └── Orc.java
+│   │   └── util/
+│   │       ├── ASharpPathfinding.java    ← A*-Interface für Gegner
+│   │       ├── Direction.java            ← Enum für die vier Himmelsrichtungen
+│   │       └── Hitting.java              ← Trefferlogik (Melee-Angriff)
+│   ├── blocks/
+│   │   ├── Block.java                    ← Basis-Klasse für alle platzierbaren Blöcke
+│   │   ├── Wall.java                     ← Undurchdringbare Wand (Kollision)
+│   │   ├── Rock.java                     ← Fels-Variante
+│   │   └── Chest.java                    ← Truhe (interagierbar)
+│   ├── items/
+│   │   ├── Item.java                     ← Basis-Klasse für alle Items
+│   │   ├── TestItem.java
+│   │   └── util/
+│   │       ├── ItemTyp.java              ← Enum der Item-Typen
+│   │       ├── Pickable.java             ← Interface: onTake(Player)
+│   │       └── Useable.java              ← Interface: onUse(Player)
+│   ├── ui/
+│   │   ├── UI.java                       ← Basis-Klasse für alle UI-Elemente
+│   │   ├── MainMenu.java                 ← Hauptmenü-World (Start, Laden, Einstellungen)
+│   │   ├── Clickable.java                ← Interface für klickbare UI-Elemente
+│   │   ├── StartButton.java
+│   │   ├── LoadGameButton.java
+│   │   ├── SettingsButton.java
+│   │   ├── Healthbar.java
+│   │   ├── XPBar.java
+│   │   ├── InventorySlot.java
+│   │   └── InventoryVisualizer.java      ← Zeigt das Spieler-Inventar im HUD an
+│   └── util/
+│       └── ImprovedGreenfootImage.java   ← Erweiterte GreenfootImage-Hilfsmethoden
 ├── assets/
-│   ├── images/                 ← Sprites, Tilesets
-│   └── sounds/                 ← Soundeffekte, Musik
-├── lib/                        ← Optional: greenfoot.jar hier ablegen (s. Setup)
+│   ├── images/                           ← Sprites, Tilesets, Menü-Grafiken
+│   └── sounds/                           ← Soundeffekte, Musik
+├── editor/                               ← (in Entwicklung) Level-Editor
+├── lib/                                  ← Optional: greenfoot.jar hier ablegen (s. Setup)
 ├── .idea/
 │   └── runConfigurations/
-│       └── Run_Game.xml        ← Vorgefertigte Run-Konfiguration (committed)
-└── project.greenfoot           ← Greenfoot-Szenario-Datei (committed)
+│       └── Run_Game.xml                  ← Vorgefertigte Run-Konfiguration (committed)
+└── project.greenfoot                     ← Greenfoot-Szenario-Datei (committed)
 ```
 
+---
+
+## Architektur-Überblick
+
+### Spielablauf
+
+`GameStarter` (minimale, nie sichtbare Greenfoot-World) ist der Einstiegspunkt.
+Er hält einen `Random`-Seed, eine Liste vergangener Level und das aktuelle Level.
+
+```
+GameStarter
+  ├── mainMenu()        → wechselt zu MainMenu-World
+  ├── start()           → erstellt erstes DungeonLevel
+  ├── RenderNextWorld() → speichert aktuelles Level, erstellt nächstes
+  └── setSeed(seed, n)  → lädt einen gespeicherten Stand (Seed + Level-Index)
+```
+
+### Entity-Hierarchie
+
+```
+Actor (Greenfoot)
+└── ImprovedActor          ← verbessertes Image-Handling
+    └── MovingActor        ← canMove / kollisionsgeprüfte Bewegung
+        └── DamageableActor  ← HP, takeDamage, onDeath
+            ├── Player       ← WASD-Steuerung, Inventar (T = nehmen, P = ablegen)
+            └── BaseMonster  ← Agro/Leash, A*-Pathfinding
+                ├── Gnome
+                └── Orc
+
+ImprovedActor
+└── Block              ← platzierbarer Welt-Block
+    ├── Wall
+    ├── Rock
+    └── Chest
+```
+
+### Dungeon-Generierung (DungeonLevel)
+
+Jedes Level wird seed-basiert prozedural generiert:
+1. Eingang (unten) und Ausgang (oben) werden platziert.
+2. Ein zentraler Korridor verbindet Eingang und Ausgang.
+3. Zufällige Räume (variable Größe) werden im verfügbaren Raum platziert.
+4. Wände umranden alle freien Flächen.
