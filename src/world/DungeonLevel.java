@@ -2,8 +2,12 @@ package world;
 
 import blocks.Rock;
 import core.GameStarter;
+import entities.Monster;
 import entities.Player;
 import greenfoot.World;
+import ui.DarkFilter;
+import ui.InventoryOverlay;
+import ui.InventorySlot;
 
 import java.util.Random;
 
@@ -17,7 +21,14 @@ public class DungeonLevel extends World {
         super(12, calcHight(seed), 60);
         rng = new Random(seed);
         setBackground("cell.jpg");
-        setPaintOrder(Player.class, Rock.class);
+        setPaintOrder(
+                InventoryOverlay.class, // Ganz oben
+                InventorySlot.class,    // Die Slots auf dem Inventar
+                DarkFilter.class,       // Der dunkle Schleier
+                Player.class,           // Darunter der Rest
+                Monster.class,
+                Rock.class
+        );
 
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;

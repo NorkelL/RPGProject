@@ -15,6 +15,7 @@ public class InventoryVisualizer extends Actor {
 
     @Override
     public void act() {
+
         update();
     }
 
@@ -33,5 +34,15 @@ public class InventoryVisualizer extends Actor {
                 slots[i].setItem(inventory[i]);
             }
         }
+    }
+    public void removeSelf() {
+        // Entfernt alle Slots, die dieser Visualizer erstellt hat
+        for (InventorySlot slot : slots) {
+            if (slot != null && slot.getWorld() != null) {
+                getWorld().removeObject(slot);
+            }
+        }
+
+        getWorld().removeObject(this);
     }
 }
