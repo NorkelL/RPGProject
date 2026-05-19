@@ -6,24 +6,33 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
+import world.Backpack;
 
 import java.util.List;
 
 public class Player extends DamageableActor {
-    private final int maxItems;
+    private final Item[] items;       // Das ist deine Hotbar / visualizer (z.B. 8 Slots)
+    private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
+
+    private final int maxItems;       // Größe der Hotbar
+    private final int maxBackpack;    // Größe des Rucksacks
     private final int maxLife;
     private int moveCounter;
     private final Item[] items;
     private InventoryVisualizer inventory;
 
     public Player() {
-        this(100, 8, 100);
+        this(100, 8, 15,100);
     }
 
-    public Player(int life, int maxItems, int maxLife) {
+    public Player(int life, int maxItems, int maxBackpack, int maxLife) {
         this.maxItems = maxItems;
+        this.maxBackpack = maxBackpack;
         this.maxLife = maxLife;
-        items = new Item[maxItems];
+
+        this.items = new Item[maxItems];         // z.B. Size 8
+        this.backpack = new Item[maxBackpack];   // z.B. Size 24
+
         setLife(life);
     }
 
@@ -39,6 +48,7 @@ public class Player extends DamageableActor {
         else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
+        else if (Greenfoot.isKeyDown("e")){toggleInventory();}
         draw(getLife() + "/" + maxLife);
     }
 
@@ -49,14 +59,25 @@ public class Player extends DamageableActor {
     }
 
     public void takeItem() {
+        List<Item> onTile = getWorld().getObjectsAt(getX(), getY(), Item.class);
+        if (onTile.isEmpty()) {
+            return;
+        }
+        Item groundItem = onTile.get(0);
         for (int i = 0; i < maxItems; i++) {
             if (items[i] == null) {
-                List<Item> onTile = getWorld().getObjectsAt(getX(), getY(), Item.class);
-                if (!onTile.isEmpty()) {
-                    items[i] = onTile.get(0);
-                    onTile.get(0).onTake(this);
-                    return;
-                }
+                items[i] = groundItem;
+                groundItem.onTake(this);
+
+                return;
+            }
+        }
+        //Wenn inventory voll ist in backpack
+        for (int i = 0; i < maxBackpack; i++) {
+            if (backpack[i] == null) {
+                backpack[i] = groundItem;
+                groundItem.onTake(this);
+                return;
             }
         }
     }
@@ -70,6 +91,14 @@ public class Player extends DamageableActor {
             }
         }
     }
+
+    private void toggleInventory() {
+        World currenWorld = getWorld();
+
+
+        Greenfoot.setWorld(new Backpack(this.items,this.backpack, currenWorld));
+    }
+
 
     @Override
     protected void onDeath()
