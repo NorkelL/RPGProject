@@ -41,6 +41,7 @@ desktop.ini
 
 # ── graphify (knowledge graph) ────────────────────────────────────────────────
 graphify-out/
+.graphifyignore
 
 # ── AI ────────────────────────────────────────────────
 CLAUDE.md
