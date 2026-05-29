@@ -2,23 +2,26 @@ package ui;
 
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
-import javafx.scene.image.Image;
 
 public class InventorySlot extends Actor {
     private Actor item;
 
     private static final int SIZE = 40;
-    private static final GreenfootImage EMPTY_SLOT_IMG;
+    private static final GreenfootImage baseImage;
     static {
-        EMPTY_SLOT_IMG = new GreenfootImage("InventorySlot.png");
-        EMPTY_SLOT_IMG.scale(SIZE, SIZE);
+        baseImage = new GreenfootImage("InventorySlot.png");
+        baseImage.scale(SIZE, SIZE);
     }
 
     public InventorySlot() {
+        this(200, 200); // Default size, assuming 200x200 fills a 2x2 cell area
+    }
 
-        GreenfootImage Image = new GreenfootImage("InventorySlot.png");
-        Image.scale(60,60);
-        setImage(Image);
+    // New constructor to specify slot pixel dimensions
+    public InventorySlot(int pixelWidth, int pixelHeight) {
+        baseImage = new GreenfootImage("InventorySlot.png");
+        baseImage.scale(pixelWidth, pixelHeight);
+        setImage(new GreenfootImage(baseImage));
     }
 
     public InventorySlot(Actor item) {
@@ -28,14 +31,20 @@ public class InventorySlot extends Actor {
 
     public void setItem(Actor item) {
         this.item = item;
-        if (item == null) {
-            Image.scale(60,60);
-            setImage(new GreenfootImage(Image));
-        } else {
-            GreenfootImage preview = new GreenfootImage(item.getImage());
-            preview.scale(SIZE - 10, SIZE - 10);
-            getImage().drawImage(preview, 5, 5);
+        GreenfootImage currentImage = new GreenfootImage(baseImage); // Start with the scaled base image
+
+        if (item != null) {
+            // Draw the item's image onto the scaled base image
+            // Assuming item's image might be smaller, center it
+            GreenfootImage itemImage = item.getImage();
+            // Ensure itemImage is not null before drawing
+            if (itemImage != null) {
+                currentImage.drawImage(itemImage,
+                                       (currentImage.getWidth() - itemImage.getWidth()) / 2,
+                                       (currentImage.getHeight() - itemImage.getHeight()) / 2);
+            }
         }
+        setImage(currentImage);
     }
 
     public Actor getItem() {

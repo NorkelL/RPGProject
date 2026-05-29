@@ -109,7 +109,7 @@ public class Player extends DamageableActor {
 
     @Override
     protected void addedToWorld(World world) {
-        inventory = new InventoryVisualizer(items);
+        inventory = new InventoryVisualizer(items,60,60);
         world.addObject(inventory, 0, world.getHeight() - 1);
     }
 

@@ -25,8 +25,8 @@ public class Backpack extends World {
         bg.scale(1280, 720);
         setBackground(bg);
 
-        // Deine Hotbar (Visualizer) wird ganz unten angezeigt
-        addObject(new InventoryVisualizer(playerItems), 0, getHeight() - 1);
+
+        addObject(new InventoryVisualizer(playerItems,80,80), 0, getHeight() - 1);
 
         // Die Slots im Raster anordnen
         int startX = 2; // Start-Spalte im Raster
