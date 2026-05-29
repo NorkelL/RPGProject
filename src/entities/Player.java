@@ -1,8 +1,10 @@
 package entities;
 
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.Item;
+import ui.GameOverScreen;
 import ui.InventoryVisualizer;
 
 import java.util.List;
@@ -74,8 +76,10 @@ public class Player extends DamageableActor {
     @Override
     protected void onDeath()
     {
+        GreenfootImage bg = new GreenfootImage("GameOverScreen.png");
+        World gameOverWelt = new GameOverScreen();
+        Greenfoot.setWorld(gameOverWelt);
         getWorld().removeObject(this);
-        Greenfoot.stop();
     }
 
     @Override
@@ -88,11 +92,11 @@ public class Player extends DamageableActor {
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
 
-    private void hit(Waffen dieseWaffe){
-        int damage = dieseWaffe.getDamage;
-        if(getCurrentItem instanceof Waffe){
-            getCurrentItem.hit
-        }
+   // private void hit(Waffen dieseWaffe){
+     //   int damage = dieseWaffe.getDamage;
+       // if(getCurrentItem instanceof Waffe){
+         //   getCurrentItem.hit
+        //}
 
-    }
+    //}
 }
