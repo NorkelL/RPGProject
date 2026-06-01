@@ -9,12 +9,12 @@ import java.util.List;
 public class Waffen extends Item {
 
     private int damage;
+    private int distance;
 
-    public Waffen() {
-        setDamage(3);
-    }
-    public Waffen(int damage){
+
+    public Waffen(int damage, int distance){
         setDamage(damage);
+        setDistance(distance);
     }
 
     public int getNextX(int distance){
@@ -32,7 +32,7 @@ public class Waffen extends Item {
 
     public void hit() {
        World myWorld = getWorld();
-        List<Monster> monsters = myWorld.getObjectsAt(getNextX(1), getNextY(1), Monster.class);
+        List<Monster> monsters = myWorld.getObjectsAt(getNextX(distance), getNextY(distance), Monster.class);
        if (!monsters.isEmpty()) {
             Monster monster = monsters.get(0);
            baseMonster.receiveHit;
@@ -47,10 +47,15 @@ public class Waffen extends Item {
     public int getDamage(){
         return damage;
     }
+    public int getDistance(){return distance;}
     public void setDamage(int newDamage){
         damage = newDamage;
         draw(damage);
     }
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
 
 }
 

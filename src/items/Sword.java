@@ -2,11 +2,12 @@ package items;
 
 public class Sword extends Waffen{
 
-    public Sword(int damage){
-        super(damage);}
+    private int damage;
+    private int distance;
 
-    public Sword(){
-        super(5);
+    public Sword(int damage,int distance) {
+        super(10, 2);
+        setImage("Waffe.Schwert.png");
     }
 }
 
