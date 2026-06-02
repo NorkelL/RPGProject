@@ -16,11 +16,15 @@ import java.util.List;
 public class Player extends DamageableActor {
     /** Act-Zyklen pro Lauf-Animationsschritt im smoothen Modus. */
     private static final int ANIM_PERIOD = 8;
+    /** Pixel pro Act = Kachelgroesse / SPEED_DIVISOR. Groesser = langsamer. */
+    private static final double SPEED_DIVISOR = 28.0;
 
     private final int maxItems;
     private final int maxLife;
     private int moveCounter;
     private int animTick;
+    // Rest-Akkumulatoren fuer fraktionale (nicht-ganzzahlige) Geschwindigkeit.
+    private double accX, accY;
     private final Item[] items;
     private InventoryVisualizer inventory;
 
@@ -65,15 +69,19 @@ public class Player extends DamageableActor {
     // ---- Smoother Modus (feines Raster): pixelweises, sauber kollidierendes Laufen ----
 
     private void smoothAct(GridWorld gw) {
-        Direction dir = null;
-        if      (Greenfoot.isKeyDown("W")) dir = Direction.NORTH;
-        else if (Greenfoot.isKeyDown("S")) dir = Direction.SOUTH;
-        else if (Greenfoot.isKeyDown("A")) dir = Direction.WEST;
-        else if (Greenfoot.isKeyDown("D")) dir = Direction.EAST;
+        // Keine Priorisierung: alle gedrueckten Tasten zaehlen, Gegenrichtungen
+        // heben sich auf -> WASD-Kombinationen (z.B. W+A) laufen diagonal.
+        int ddx = 0, ddy = 0;
+        if (Greenfoot.isKeyDown("W")) ddy -= 1;
+        if (Greenfoot.isKeyDown("S")) ddy += 1;
+        if (Greenfoot.isKeyDown("A")) ddx -= 1;
+        if (Greenfoot.isKeyDown("D")) ddx += 1;
 
-        if (dir != null) {
-            turn(dir);
-            walkSmooth(gw, dir);
+        if (ddx != 0 || ddy != 0) {
+            turn(facingOf(ddx, ddy));
+            walkSmooth(gw, ddx, ddy);
+        } else {
+            accX = accY = 0; // im Stand keine Restbewegung mitschleppen
         }
 
         if      (Greenfoot.isKeyDown("T")) takeItem();
@@ -82,40 +90,57 @@ public class Player extends DamageableActor {
         draw(getLife() + "/" + maxLife);
     }
 
+    /** Blickrichtung fuer eine (ggf. diagonale) Eingabe; horizontale Achse hat Vorrang. */
+    private Direction facingOf(int ddx, int ddy) {
+        if (ddx < 0) return Direction.WEST;
+        if (ddx > 0) return Direction.EAST;
+        if (ddy < 0) return Direction.NORTH;
+        return Direction.SOUTH;
+    }
+
     /**
-     * Bewegt den Spieler pixelweise in die gegebene Richtung. Es wird so weit
-     * geschritten, wie frei ist (bis zu {@code speed} Pixel pro Act), und exakt
-     * vor dem Hindernis gestoppt -> fluessige Bewegung, sauberes Anliegen.
+     * Bewegt den Spieler mit normalisierter Geschwindigkeit (gleich schnell in
+     * alle Richtungen, auch diagonal). Die beiden Achsen werden getrennt
+     * geprueft, sodass man an Waenden entlanggleitet statt haengenzubleiben.
      */
-    private void walkSmooth(GridWorld gw, Direction dir) {
-        int ddx = 0, ddy = 0;
-        switch (dir) {
-            case NORTH: ddy = -1; break;
-            case SOUTH: ddy =  1; break;
-            case WEST:  ddx = -1; break;
-            case EAST:  ddx =  1; break;
-        }
+    private void walkSmooth(GridWorld gw, int ddx, int ddy) {
+        double speed = gw.cellsPerTile() / SPEED_DIVISOR;   // Pixel pro Act
+        double len = Math.sqrt(ddx * ddx + ddy * ddy);      // 1 (gerade) bzw. sqrt(2) (diagonal)
+        accX += ddx / len * speed;
+        accY += ddy / len * speed;
 
-        int half  = gw.cellsPerTile() / 2;                 // halbe Kachel = Spieler-Hitbox
-        int speed = Math.max(1, gw.cellsPerTile() / 20);    // Pixel pro Act
+        int stepX = (int) accX; accX -= stepX;
+        int stepY = (int) accY; accY -= stepY;
 
-        // Hindernisse einmal pro Act sammeln (statt pro Pixelschritt).
+        int half = gw.cellsPerTile() / 2;                   // halbe Kachel = Spieler-Hitbox
         List<Wall> walls = getWorld().getObjects(Wall.class);
         List<Rock> rocks = getWorld().getObjects(Rock.class);
         List<InventorySlot> slots = getWorld().getObjects(InventorySlot.class);
 
-        int moved = 0;
-        for (int i = 0; i < speed; i++) {
-            int nx = getX() + ddx;
-            int ny = getY() + ddy;
-            if (blocked(nx, ny, half, walls, rocks, slots)) break;
-            setLocation(nx, ny);
-            moved++;
-        }
+        boolean moved = false;
+        moved |= stepAxis(stepX, 0, half, walls, rocks, slots);
+        moved |= stepAxis(0, stepY, half, walls, rocks, slots);
 
-        if (moved > 0 && (++animTick % ANIM_PERIOD == 0)) {
+        if (moved && (++animTick % ANIM_PERIOD == 0)) {
             advanceWalkAnimation();
         }
+    }
+
+    /** Schrittweises Bewegen entlang einer Achse, stoppt exakt vor Hindernissen. */
+    private boolean stepAxis(int dx, int dy, int half,
+                             List<Wall> walls, List<Rock> rocks, List<InventorySlot> slots) {
+        int steps = Math.abs(dx + dy);          // genau eine Komponente ist != 0
+        int sx = Integer.signum(dx);
+        int sy = Integer.signum(dy);
+        boolean moved = false;
+        for (int i = 0; i < steps; i++) {
+            int nx = getX() + sx;
+            int ny = getY() + sy;
+            if (blocked(nx, ny, half, walls, rocks, slots)) break;
+            setLocation(nx, ny);
+            moved = true;
+        }
+        return moved;
     }
 
     private boolean blocked(int x, int y, int half,
