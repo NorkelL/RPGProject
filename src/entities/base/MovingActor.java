@@ -8,6 +8,7 @@ import util.ImprovedGreenfootImage;
 import ui.InventorySlot;
 import blocks.Rock;
 import blocks.Wall;
+import world.GridWorld;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +53,23 @@ public class MovingActor extends ImprovedActor {
         World myWorld = getWorld();
         int x = getNextX(distance);
         int y = getNextY(distance);
+
+        // In einer GridWorld wird die Kollision auf dem logischen Tile-Raster
+        // geprueft: smoothe (pixelweise) Bewegung, aber Hindernisse blockieren
+        // erst, wenn die Zielzelle in deren Tile faellt.
+        if (myWorld instanceof GridWorld) {
+            GridWorld gw = (GridWorld) myWorld;
+            final int tx = gw.cellToTile(x);
+            final int ty = gw.cellToTile(y);
+            boolean rock = myWorld.getObjects(Rock.class).stream()
+                .anyMatch(r -> gw.cellToTile(r.getX()) == tx && gw.cellToTile(r.getY()) == ty);
+            boolean wall = myWorld.getObjects(Wall.class).stream()
+                .anyMatch(w -> gw.cellToTile(w.getX()) == tx && gw.cellToTile(w.getY()) == ty);
+            boolean slot = myWorld.getObjects(InventorySlot.class).stream()
+                .anyMatch(s -> gw.cellToTile(s.getX()) == tx && gw.cellToTile(s.getY()) == ty);
+            return !rock && !wall && !slot;
+        }
+
         List<Rock> rocks = myWorld.getObjectsAt(x, y, Rock.class);
         boolean hasWall = myWorld.getObjects(Wall.class).stream()
             .anyMatch(w -> w.getX() == x && w.getY() == y);

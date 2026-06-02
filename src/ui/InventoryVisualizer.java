@@ -2,6 +2,7 @@ package ui;
 
 import greenfoot.Actor;
 import greenfoot.World;
+import world.GridWorld;
 
 public class InventoryVisualizer extends Actor {
     private final InventorySlot[] slots;
@@ -20,9 +21,15 @@ public class InventoryVisualizer extends Actor {
 
     @Override
     protected void addedToWorld(World world) {
+        boolean grid = world instanceof GridWorld;
+        int tileY = grid ? ((GridWorld) world).cellToTile(getY()) : getY();
         for (int i = 0; i < slots.length; i++) {
             slots[i] = new InventorySlot();
-            world.addObject(slots[i], i, getY());
+            if (grid) {
+                ((GridWorld) world).addTile(slots[i], i, tileY);
+            } else {
+                world.addObject(slots[i], i, getY());
+            }
         }
     }
 

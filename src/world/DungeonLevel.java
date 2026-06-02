@@ -4,7 +4,6 @@ import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
-import greenfoot.World;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,7 +11,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class DungeonLevel extends World {
+public class DungeonLevel extends GridWorld {
+
+    /** Logische Kachelgröße in Pixeln (Texturgröße). */
+    private static final int TILE = 40;
+    /**
+     * Physische Greenfoot-Zellgröße.
+     *   - {@code 40}: klassisches Verhalten, 1 Zelle == 1 Tile.
+     *   - {@code 1}:  pixelgenaue Platzierung / weichere Bewegung.
+     * Muss {@link #TILE} teilen.
+     */
+    private static final int UNIT = 40;
 
     private final Random rng;
     public int centerExit;
@@ -26,7 +35,7 @@ public class DungeonLevel extends World {
     }
 
     public DungeonLevel(long seed,GameStarter gameStarter) {
-        super(30, 30, 40);
+        super(30, 30, TILE, UNIT);
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(Wall.class, Player.class);
@@ -34,22 +43,22 @@ public class DungeonLevel extends World {
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
         }else{
-            centerEntrance = this.getWidth()/2;
+            centerEntrance = getTilesX()/2;
         }
         for (int i = centerEntrance - 1; i <= centerEntrance +1; i++) {
-            addObject(new Entrance(gameStarter), i - 1, this.getHeight() - 2);
+            addTile(new Entrance(gameStarter), i - 1, getTilesY() - 2);
         }
-        savePlaceWall(centerEntrance - 3,this.getHeight() - 2);
-        savePlaceWall(centerEntrance + 1,this.getHeight() - 2);
+        savePlaceWall(centerEntrance - 3, getTilesY() - 2);
+        savePlaceWall(centerEntrance + 1, getTilesY() - 2);
 
-        centerExit = rng.nextInt(this.getWidth() - 6)+3;
+        centerExit = rng.nextInt(getTilesX() - 6)+3;
         for (int i = centerExit - 1; i <= centerExit + 1; i++) {
-            addObject(new Exit(gameStarter),i-1,0);
+            addTile(new Exit(gameStarter), i-1, 0);
         }
         savePlaceWall(centerExit - 3,0);
         savePlaceWall(centerExit + 1,0);
 
-        addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
+        addTile(new Player(), centerEntrance - 1, getTilesY()-2);
 
 
 
@@ -68,27 +77,27 @@ public class DungeonLevel extends World {
             centerCorridor = calcCorridor();
         } while (centerCorridor[centerCorridor.length - 1] != centerExit && centerCorridor[centerCorridor.length - 1] != centerExit - 1 && centerCorridor[centerCorridor.length - 1] != centerExit + 1);
         for (int i = centerCorridor.length - 1; i >= 0; i--) {
-            int y = getHeight()-3 - i;
+            int y = getTilesY()-3 - i;
             int cx = centerCorridor[i];
             if(cx-2>=0) {
-                addObject(new Wall(), centerCorridor[i] - 2, y);
+                addTile(new Wall(), centerCorridor[i] - 2, y);
             } else if (cx-1>=0) {
-                addObject(new Wall(), centerCorridor[i] - 1, y);
+                addTile(new Wall(), centerCorridor[i] - 1, y);
             }
-            if(cx+2<getWidth()) {
-                addObject(new Wall(), centerCorridor[i] + 2, y);
-            } else if (cx+1<getWidth()) {
-                addObject(new Wall(), centerCorridor[i] + 1, y);
+            if(cx+2<getTilesX()) {
+                addTile(new Wall(), centerCorridor[i] + 2, y);
+            } else if (cx+1<getTilesX()) {
+                addTile(new Wall(), centerCorridor[i] + 1, y);
             }
         }
     }
 
     private int[] calcCorridor(){
-        int[] centerCorridor = new int[getHeight()-3];
+        int[] centerCorridor = new int[getTilesY()-3];
         int pos = centerEntrance;
         int delta = 0;
         int runLeft = 0;
-        int length = getHeight() - 3;
+        int length = getTilesY() - 3;
 
         for (int i = 0; i < length; i++) {
             int stepsLeft = length - i;
@@ -104,7 +113,7 @@ public class DungeonLevel extends World {
                 runLeft = rng.nextInt(3) + 3;
             }
 
-            pos = Math.max(1, Math.min(getWidth() - 2, pos + delta));
+            pos = Math.max(1, Math.min(getTilesX() - 2, pos + delta));
             centerCorridor[i] = pos;
             runLeft--;
         }
@@ -136,7 +145,7 @@ public class DungeonLevel extends World {
             for (int j = room.y+1; j < room.y+room.height-1; j++) {
                 int finalI = i;
                 int finalJ = j;
-                if(getObjects(Wall.class).stream().anyMatch(w -> w.getX() == finalI && w.getY() == finalJ)){
+                if(getObjects(Wall.class).stream().anyMatch(w -> cellToTile(w.getX()) == finalI && cellToTile(w.getY()) == finalJ)){
                     removeWallAt(i,j);
                     touchesCorridor = true;
                 }
@@ -153,7 +162,7 @@ public class DungeonLevel extends World {
             }
         }
         for (int i = 0; i < centerCorridor.length; i++) {
-            int worldY = getHeight()-3-i;
+            int worldY = getTilesY()-3-i;
             for (int j = centerCorridor[i]-1; j < centerCorridor[i]+2; j++) {
                 removeWallAt(j, worldY);
             }
@@ -164,32 +173,32 @@ public class DungeonLevel extends World {
 
     private void savePlaceWall(int x, int y) {
         removeWallAt(x, y);
-        addObject(new Wall(), x, y);
-        
+        addTile(new Wall(), x, y);
+
         getObjects(Wall.class).stream()
-            .filter(w -> w.getX() == x && w.getY() > y)
-            .sorted(Comparator.comparingInt(Wall::getY))
+            .filter(w -> cellToTile(w.getX()) == x && cellToTile(w.getY()) > y)
+            .sorted(Comparator.comparingInt(w -> cellToTile(w.getY())))
             .collect(Collectors.toList())
-            .forEach(w -> { int wy = w.getY(); removeObject(w); addObject(new Wall(), x, wy); });
+            .forEach(w -> { int wy = cellToTile(w.getY()); removeObject(w); addTile(new Wall(), x, wy); });
     }
 
     private void removeWallAt(int x, int y) {
         getObjects(Wall.class).stream()
-            .filter(w -> w.getX() == x && w.getY() == y)
+            .filter(w -> cellToTile(w.getX()) == x && cellToTile(w.getY()) == y)
             .forEach(this::removeObject);
     }
 
     private Room genRandomRoom(){
         int w = rng.nextInt(10)+4;
         int h = rng.nextInt(10)+4;
-        int x = rng.nextInt(Math.max(1, getWidth()-w-2))+1;
-        int y = rng.nextInt(Math.max(1, getHeight()-h-4))+1;
+        int x = rng.nextInt(Math.max(1, getTilesX()-w-2))+1;
+        int y = rng.nextInt(Math.max(1, getTilesY()-h-4))+1;
         return new Room(w, h, x, y);
     }
     private void generateRandomFloor() {
-        int cellSize = 40;
-        int w = getWidth();
-        int h = getHeight();
+        int w = getTilesX();
+        int h = getTilesY();
+        int ts = getTileSize();
 
         GreenfootImage[] tiles = {
             new GreenfootImage("Map/FloorTile1.png"),
@@ -197,9 +206,9 @@ public class DungeonLevel extends World {
             new GreenfootImage("Map/FloorTile3.jpg"),
             new GreenfootImage("Map/FloorTile.jpg"),
         };
-        for (GreenfootImage t : tiles) t.scale(cellSize, cellSize);
+        for (GreenfootImage t : tiles) t.scale(ts, ts);
 
-        GreenfootImage bg = new GreenfootImage(w * cellSize, h * cellSize);
+        GreenfootImage bg = new GreenfootImage(w * ts, h * ts);
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 int chance = rng.nextInt(100);
@@ -208,7 +217,7 @@ public class DungeonLevel extends World {
                 else if (chance < 85) tile = tiles[1];
                 else if (chance < 95) tile = tiles[2];
                 else                  tile = tiles[3];
-                bg.drawImage(tile, x * cellSize, y * cellSize);
+                bg.drawImage(tile, x * ts, y * ts);
             }
         }
         setBackground(bg);

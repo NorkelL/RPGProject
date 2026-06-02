@@ -6,6 +6,7 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
+import world.GridWorld;
 
 import java.util.List;
 
@@ -33,19 +34,45 @@ public class Player extends DamageableActor {
             moveCounter--;
             return;
         }
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
+        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=moveCooldown();}
+        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=moveCooldown();}
+        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=moveCooldown();}
+        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=moveCooldown();}
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         draw(getLife() + "/" + maxLife);
     }
 
     public void move() {
-        if (canMove()) {
-            move(1);
+        int step = moveStep();
+        if (canMove(step)) {
+            move(step);
         }
+    }
+
+    /**
+     * Schrittweite in physischen Zellen. Auf dem klassischen Raster
+     * (1 Zelle == 1 Tile) ist das ein Tile; auf einem feinen Raster ein
+     * kleiner Sub-Tile-Schritt fuer weichere Bewegung.
+     */
+    private int moveStep() {
+        if (getWorld() instanceof GridWorld) {
+            int cpt = ((GridWorld) getWorld()).cellsPerTile();
+            return cpt == 1 ? 1 : Math.max(1, cpt / 8);
+        }
+        return 1;
+    }
+
+    /**
+     * Bewegungs-Cooldown in Act-Zyklen. Auf dem klassischen Raster die
+     * urspruenglichen 150 (ruckartige Tile-Spruenge), auf einem feinen Raster
+     * 0, damit die kleinen Schritte fluessig aneinander anschliessen.
+     */
+    private int moveCooldown() {
+        if (getWorld() instanceof GridWorld && ((GridWorld) getWorld()).cellsPerTile() > 1) {
+            return 0;
+        }
+        return 150;
     }
 
     public void takeItem() {
@@ -81,7 +108,12 @@ public class Player extends DamageableActor {
     @Override
     protected void addedToWorld(World world) {
         inventory = new InventoryVisualizer(items);
-        world.addObject(inventory, 0, world.getHeight() - 1);
+        if (world instanceof GridWorld) {
+            GridWorld gw = (GridWorld) world;
+            gw.addTile(inventory, 0, gw.getTilesY() - 1);
+        } else {
+            world.addObject(inventory, 0, world.getHeight() - 1);
+        }
     }
 
     public int getMaxLife()  { return maxLife; }

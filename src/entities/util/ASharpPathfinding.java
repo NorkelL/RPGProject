@@ -3,9 +3,16 @@ package entities.util;
 import blocks.Rock;
 import blocks.Wall;
 import greenfoot.World;
+import world.GridWorld;
 import java.util.Arrays;
 import java.util.WeakHashMap;
 
+/**
+ * A*-Pathfinding auf dem logischen Tile-Raster. Es arbeitet immer in
+ * Tile-Koordinaten (nicht in physischen Zellen), damit das Suchgitter klein
+ * bleibt – unabhaengig davon, wie fein die {@link GridWorld#getUnit() unit}
+ * gewaehlt ist. Ein Schritt bewegt den Actor um genau ein Tile.
+ */
 public interface ASharpPathfinding {
 
     WeakHashMap<ASharpPathfinding, int[]> RANDOM_TARGETS = new WeakHashMap<>();
@@ -17,14 +24,41 @@ public interface ASharpPathfinding {
     void setRotation(int rotation);
     void move(int steps);
 
-    default void aSharpPathfindTakeStep(int targetX, int targetY) {
-        int startX = getX();
-        int startY = getY();
-        if (startX == targetX && startY == targetY) return;
+    default GridWorld gridWorld() {
+        World w = getWorld();
+        return (w instanceof GridWorld) ? (GridWorld) w : null;
+    }
 
-        World world = getWorld();
-        int W = world.getWidth();
-        int H = world.getHeight();
+    /** physische Zelle -> Tile (Identitaet ausserhalb einer GridWorld). */
+    default int toTile(int cell) {
+        GridWorld g = gridWorld();
+        return g != null ? g.cellToTile(cell) : cell;
+    }
+
+    /** Anzahl physischer Zellen, die ein Tile-Schritt entspricht. */
+    default int tileStepCells() {
+        GridWorld g = gridWorld();
+        return g != null ? g.cellsPerTile() : 1;
+    }
+
+    default int tilesWide() {
+        GridWorld g = gridWorld();
+        return g != null ? g.getTilesX() : getWorld().getWidth();
+    }
+
+    default int tilesHigh() {
+        GridWorld g = gridWorld();
+        return g != null ? g.getTilesY() : getWorld().getHeight();
+    }
+
+    default void aSharpPathfindTakeStep(int targetTileX, int targetTileY) {
+        int startX = toTile(getX());
+        int startY = toTile(getY());
+        if (startX == targetTileX && startY == targetTileY) return;
+
+        int W = tilesWide();
+        int H = tilesHigh();
+        if (targetTileX < 0 || targetTileX >= W || targetTileY < 0 || targetTileY >= H) return;
 
         int[][] g        = new int[W][H];
         int[][] parentX  = new int[W][H];
@@ -46,14 +80,14 @@ public interface ASharpPathfinding {
             for (int x = 0; x < W; x++) {
                 for (int y = 0; y < H; y++) {
                     if (open[x][y]) {
-                        int f = g[x][y] + Math.abs(x - targetX) + Math.abs(y - targetY);
+                        int f = g[x][y] + Math.abs(x - targetTileX) + Math.abs(y - targetTileY);
                         if (f < bestF) { bestF = f; cx = x; cy = y; }
                     }
                 }
             }
             if (cx == -1) return; // no path
 
-            if (cx == targetX && cy == targetY) {
+            if (cx == targetTileX && cy == targetTileY) {
                 // Trace path back to find the first step after start
                 int nx = cx, ny = cy;
                 while (parentX[nx][ny] != startX || parentY[nx][ny] != startY) {
@@ -67,7 +101,7 @@ public interface ASharpPathfinding {
                 else if (dx < 0) setRotation(180);
                 else if (dy > 0) setRotation(90);
                 else             setRotation(270);
-                move(1);
+                move(tileStepCells());
                 return;
             }
 
@@ -92,7 +126,7 @@ public interface ASharpPathfinding {
 
     default void aSharpRandomStep() {
         int[] target = RANDOM_TARGETS.get(this);
-        if (target == null || (getX() == target[0] && getY() == target[1])) {
+        if (target == null || (toTile(getX()) == target[0] && toTile(getY()) == target[1])) {
             target = pickRandomTarget();
             RANDOM_TARGETS.put(this, target);
         }
@@ -100,9 +134,8 @@ public interface ASharpPathfinding {
     }
 
     default int[] pickRandomTarget() {
-        World world = getWorld();
-        int W = world.getWidth();
-        int H = world.getHeight();
+        int W = tilesWide();
+        int H = tilesHigh();
         int x, y;
         int tries = 0;
         do {
@@ -113,11 +146,12 @@ public interface ASharpPathfinding {
         return new int[]{x, y};
     }
 
-    // hier neue blöcke, durch die man nicht durchgehen kann hinzufügen:
-    default boolean isBlocked(int x, int y) {
+    // hier neue blöcke, durch die man nicht durchgehen kann hinzufügen (Tile-Koordinaten):
+    default boolean isBlocked(int tileX, int tileY) {
         World world = getWorld();
-        if (!world.getObjectsAt(x, y, Rock.class).isEmpty()) return true;
+        if (world.getObjects(Rock.class).stream()
+                .anyMatch(r -> toTile(r.getX()) == tileX && toTile(r.getY()) == tileY)) return true;
         return world.getObjects(Wall.class).stream()
-            .anyMatch(w -> w.getX() == x && w.getY() == y);
+            .anyMatch(w -> toTile(w.getX()) == tileX && toTile(w.getY()) == tileY);
     }
 }

@@ -4,6 +4,8 @@ import entities.Player;
 import entities.util.ASharpPathfinding;
 import greenfoot.Greenfoot;
 
+import java.util.List;
+
 public abstract class BaseMonster extends DamageableActor implements ASharpPathfinding {
     private int life;
     private int agroRadius;
@@ -26,8 +28,8 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     public void moveRandom() {
         int rotation = Greenfoot.getRandomNumber(4) * 90;
         setRotation(rotation);
-        if(canMove()){
-            move(1);
+        if(canMove(tileStepCells())){
+            move(tileStepCells());
         }
 
     }
@@ -45,40 +47,29 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
 
 
 
+    /** Findet den Spieler, falls er innerhalb von {@code radius} Tiles liegt. */
+    private boolean playerWithinTiles(int radius){
+        List<Player> players = getWorld().getObjects(Player.class);
+        if (players.isEmpty()) return false;
+        Player p = players.get(0);
+        int dx = Math.abs(toTile(p.getX()) - toTile(getX()));
+        int dy = Math.abs(toTile(p.getY()) - toTile(getY()));
+        return dx <= radius && dy <= radius;
+    }
+
     private boolean checkAgro(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-agroRadius; i < x+agroRadius+1; i++) {
-            for (int j = y-agroRadius; j < y+agroRadius+1; j++) {
-                if(!getWorld().getObjectsAt(i,y, Player.class).isEmpty())
-                    return true;
-            }
-        }
-        return false;
+        return playerWithinTiles(agroRadius);
     }
 
     private boolean checkFollowRadius(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
-            for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                if(!getWorld().getObjectsAt(i,y, Player.class).isEmpty())
-                    return true;
-            }
-        }
-        return false;
+        return playerWithinTiles(leashRadius);
     }
 
     protected void moveToPlayer(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
-            for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                if (!getWorld().getObjectsAt(i, y, Player.class).isEmpty()){
-                    aSharpPathfindTakeStep(i,j);
-                }
-            }
-        }
+        List<Player> players = getWorld().getObjects(Player.class);
+        if (players.isEmpty()) return;
+        Player p = players.get(0);
+        aSharpPathfindTakeStep(toTile(p.getX()), toTile(p.getY()));
     }
 
     private void checkDeath(){

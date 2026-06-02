@@ -5,6 +5,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import items.util.ItemTyp;
+import world.GridWorld;
 
 public class Chest extends Block {
     private boolean isOpen;
@@ -28,7 +29,11 @@ public class Chest extends Block {
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse == null || mouse.getButton() != 1) return false;
         if (!Greenfoot.mouseClicked(null)) return false;
-        return Math.abs(mouse.getX() - getX()) <= 1 && Math.abs(mouse.getY() - getY()) <= 1;
+        // Klick-Toleranz: eine halbe Kachel in physischen Zellen.
+        int tol = (getWorld() instanceof GridWorld)
+            ? Math.max(1, ((GridWorld) getWorld()).cellsPerTile() / 2)
+            : 1;
+        return Math.abs(mouse.getX() - getX()) <= tol && Math.abs(mouse.getY() - getY()) <= tol;
     }
 
     public void openChest() {
