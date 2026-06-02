@@ -17,7 +17,7 @@ public class Player extends DamageableActor {
     /** Act-Zyklen pro Lauf-Animationsschritt im smoothen Modus. */
     private static final int ANIM_PERIOD = 8;
     /** Pixel pro Act = Kachelgroesse / SPEED_DIVISOR. Groesser = langsamer. */
-    private static final double SPEED_DIVISOR = 40.0;
+    private static final double SPEED_DIVISOR = 60.0;
 
     private final int maxItems;
     private final int maxLife;
@@ -53,10 +53,10 @@ public class Player extends DamageableActor {
 
     private void classicAct() {
         if (moveCounter > 0) { moveCounter--; return; }
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); classicMove(); moveCounter = 150; }
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  classicMove(); moveCounter = 150; }
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); classicMove(); moveCounter = 150; }
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  classicMove(); moveCounter = 150; }
+        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); classicMove(); moveCounter = 300; }
+        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  classicMove(); moveCounter = 300; }
+        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); classicMove(); moveCounter = 300; }
+        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  classicMove(); moveCounter = 300; }
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         draw(getLife() + "/" + maxLife);
