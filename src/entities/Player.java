@@ -6,14 +6,21 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
+import ui.InventorySlot;
+import blocks.Rock;
+import blocks.Wall;
 import world.GridWorld;
 
 import java.util.List;
 
 public class Player extends DamageableActor {
+    /** Act-Zyklen pro Lauf-Animationsschritt im smoothen Modus. */
+    private static final int ANIM_PERIOD = 8;
+
     private final int maxItems;
     private final int maxLife;
     private int moveCounter;
+    private int animTick;
     private final Item[] items;
     private InventoryVisualizer inventory;
 
@@ -30,49 +37,97 @@ public class Player extends DamageableActor {
 
     @Override
     public void act() {
-        if(moveCounter>0){
-            moveCounter--;
-            return;
+        World world = getWorld();
+        if (world instanceof GridWorld && ((GridWorld) world).cellsPerTile() > 1) {
+            smoothAct((GridWorld) world);
+        } else {
+            classicAct();
         }
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=moveCooldown();}
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=moveCooldown();}
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=moveCooldown();}
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=moveCooldown();}
+    }
+
+    // ---- Klassischer Modus (1 Zelle == 1 Tile): unveraendertes Verhalten ----
+
+    private void classicAct() {
+        if (moveCounter > 0) { moveCounter--; return; }
+        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); classicMove(); moveCounter = 150; }
+        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  classicMove(); moveCounter = 150; }
+        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); classicMove(); moveCounter = 150; }
+        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  classicMove(); moveCounter = 150; }
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         draw(getLife() + "/" + maxLife);
     }
 
-    public void move() {
-        int step = moveStep();
-        if (canMove(step)) {
-            move(step);
+    private void classicMove() {
+        if (canMove(1)) move(1);
+    }
+
+    // ---- Smoother Modus (feines Raster): pixelweises, sauber kollidierendes Laufen ----
+
+    private void smoothAct(GridWorld gw) {
+        Direction dir = null;
+        if      (Greenfoot.isKeyDown("W")) dir = Direction.NORTH;
+        else if (Greenfoot.isKeyDown("S")) dir = Direction.SOUTH;
+        else if (Greenfoot.isKeyDown("A")) dir = Direction.WEST;
+        else if (Greenfoot.isKeyDown("D")) dir = Direction.EAST;
+
+        if (dir != null) {
+            turn(dir);
+            walkSmooth(gw, dir);
         }
+
+        if      (Greenfoot.isKeyDown("T")) takeItem();
+        else if (Greenfoot.isKeyDown("P")) putItem();
+
+        draw(getLife() + "/" + maxLife);
     }
 
     /**
-     * Schrittweite in physischen Zellen. Auf dem klassischen Raster
-     * (1 Zelle == 1 Tile) ist das ein Tile; auf einem feinen Raster ein
-     * kleiner Sub-Tile-Schritt fuer weichere Bewegung.
+     * Bewegt den Spieler pixelweise in die gegebene Richtung. Es wird so weit
+     * geschritten, wie frei ist (bis zu {@code speed} Pixel pro Act), und exakt
+     * vor dem Hindernis gestoppt -> fluessige Bewegung, sauberes Anliegen.
      */
-    private int moveStep() {
-        if (getWorld() instanceof GridWorld) {
-            int cpt = ((GridWorld) getWorld()).cellsPerTile();
-            return cpt == 1 ? 1 : Math.max(1, cpt / 8);
+    private void walkSmooth(GridWorld gw, Direction dir) {
+        int ddx = 0, ddy = 0;
+        switch (dir) {
+            case NORTH: ddy = -1; break;
+            case SOUTH: ddy =  1; break;
+            case WEST:  ddx = -1; break;
+            case EAST:  ddx =  1; break;
         }
-        return 1;
+
+        int half  = gw.cellsPerTile() / 2;                 // halbe Kachel = Spieler-Hitbox
+        int speed = Math.max(1, gw.cellsPerTile() / 20);    // Pixel pro Act
+
+        // Hindernisse einmal pro Act sammeln (statt pro Pixelschritt).
+        List<Wall> walls = getWorld().getObjects(Wall.class);
+        List<Rock> rocks = getWorld().getObjects(Rock.class);
+        List<InventorySlot> slots = getWorld().getObjects(InventorySlot.class);
+
+        int moved = 0;
+        for (int i = 0; i < speed; i++) {
+            int nx = getX() + ddx;
+            int ny = getY() + ddy;
+            if (blocked(nx, ny, half, walls, rocks, slots)) break;
+            setLocation(nx, ny);
+            moved++;
+        }
+
+        if (moved > 0 && (++animTick % ANIM_PERIOD == 0)) {
+            advanceWalkAnimation();
+        }
     }
 
-    /**
-     * Bewegungs-Cooldown in Act-Zyklen. Auf dem klassischen Raster die
-     * urspruenglichen 150 (ruckartige Tile-Spruenge), auf einem feinen Raster
-     * 0, damit die kleinen Schritte fluessig aneinander anschliessen.
-     */
-    private int moveCooldown() {
-        if (getWorld() instanceof GridWorld && ((GridWorld) getWorld()).cellsPerTile() > 1) {
-            return 0;
-        }
-        return 150;
+    private boolean blocked(int x, int y, int half,
+                            List<Wall> walls, List<Rock> rocks, List<InventorySlot> slots) {
+        for (Wall w : walls) if (overlaps(x, y, half, w.getX(), w.getY(), half)) return true;
+        for (Rock r : rocks) if (overlaps(x, y, half, r.getX(), r.getY(), half)) return true;
+        for (InventorySlot s : slots) if (overlaps(x, y, half, s.getX(), s.getY(), half)) return true;
+        return false;
+    }
+
+    private boolean overlaps(int ax, int ay, int aHalf, int bx, int by, int bHalf) {
+        return Math.abs(ax - bx) < aHalf + bHalf && Math.abs(ay - by) < aHalf + bHalf;
     }
 
     public void takeItem() {

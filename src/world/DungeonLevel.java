@@ -21,7 +21,7 @@ public class DungeonLevel extends GridWorld {
      *   - {@code 1}:  pixelgenaue Platzierung / weichere Bewegung.
      * Muss {@link #TILE} teilen.
      */
-    private static final int UNIT = 40;
+    private static final int UNIT = 1;
 
     private final Random rng;
     public int centerExit;

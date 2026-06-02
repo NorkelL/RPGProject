@@ -121,6 +121,12 @@ public class MovingActor extends ImprovedActor {
         setImage(movingActorImages[direction.getValue()][animationStep]);
     }
 
+    /** Schaltet einen Schritt der Lauf-Animation weiter (fuer smoothe Bewegung). */
+    protected void advanceWalkAnimation() {
+        animationStep = (animationStep + 1) % 4;
+        setImage(movingActorImages[Direction.getDirectionByRotation(getRotation()).getValue()][animationStep]);
+    }
+
     @Override
     public void act() {
         super.act();
