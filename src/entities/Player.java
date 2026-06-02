@@ -17,7 +17,7 @@ public class Player extends DamageableActor {
     /** Act-Zyklen pro Lauf-Animationsschritt im smoothen Modus. */
     private static final int ANIM_PERIOD = 8;
     /** Pixel pro Act = Kachelgroesse / SPEED_DIVISOR. Groesser = langsamer. */
-    private static final double SPEED_DIVISOR = 28.0;
+    private static final double SPEED_DIVISOR = 40.0;
 
     private final int maxItems;
     private final int maxLife;
