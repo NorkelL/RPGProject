@@ -1,8 +1,6 @@
-package world;
+package blocks;
 
-import blocks.Block;
 import core.GameStarter;
-import entities.Player;
 
 public class Entrance extends Block {
 

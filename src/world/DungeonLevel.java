@@ -1,10 +1,15 @@
 package world;
 
+import blocks.Entrance;
+import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import ui.DarkFilter;
+import ui.InventoryOverlay;
+import ui.InventorySlot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,7 +34,13 @@ public class DungeonLevel extends World {
         super(30, 30, 40);
         rng = new Random(seed);
         generateRandomFloor();
-        setPaintOrder(Wall.class, Player.class);
+        setPaintOrder(
+                InventoryOverlay.class, // Ganz oben
+                InventorySlot.class,    // Die Slots auf dem Inventar
+                DarkFilter.class,   // Der dunkle Schleier
+                Wall.class,         // das ist die Wall nur zur Info
+                Player.class         // Darunter der Rest
+        );
 
         if(!gameStarter.pastLevel.isEmpty()){
             centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
@@ -165,7 +176,7 @@ public class DungeonLevel extends World {
     private void savePlaceWall(int x, int y) {
         removeWallAt(x, y);
         addObject(new Wall(), x, y);
-        
+
         getObjects(Wall.class).stream()
             .filter(w -> w.getX() == x && w.getY() > y)
             .sorted(Comparator.comparingInt(Wall::getY))

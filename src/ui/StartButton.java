@@ -3,21 +3,29 @@ package ui;
 import core.GameStarter;
 import greenfoot.*;
 
+import java.util.List;
+
 public class StartButton extends UI implements Clickable{
 
     private GameStarter gameStarter;
+    private GreenfootImage StartButton = new GreenfootImage("UI/MainMenu/StartGame.png");
+    private GreenfootImage StartButtonGlowing = new GreenfootImage("UI/MainMenu/StartGameGlowing.png");
+    private boolean isScaled = false;
+
 
     public StartButton(GameStarter gameStarter){
         super();
         this.gameStarter = gameStarter;
-        GreenfootImage StartButton = new GreenfootImage("Map/StartGame.png");
+        GreenfootImage StartButton = new GreenfootImage("UI/MainMenu/StartGame.png");
+        GreenfootImage StartButtonGlowing = new GreenfootImage("UI/MainMenu/StartGameGlowing.png");
+        StartButtonGlowing.scale(310,110);
         StartButton.scale(310,110);
         setImage(StartButton);
     }
 
     @Override
     public void act() {
-        if (Greenfoot.mouseClicked(null)) {
+        if (Greenfoot.mouseClicked(null)  || Greenfoot.isKeyDown("L")) {
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
                 int cellSize = getWorld().getCellSize();
@@ -29,6 +37,7 @@ public class StartButton extends UI implements Clickable{
                 }
             }
         }
+        mouseHover();
     }
 
 
@@ -37,5 +46,28 @@ public class StartButton extends UI implements Clickable{
     public UI onClick(){
         gameStarter.start();
         return null;
+    }
+
+
+    private void mouseHover(){
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (!isScaled) {
+            StartButton.scale(310, 110);
+            StartButtonGlowing.scale(310, 110);
+            isScaled = true;
+        }
+
+
+        if (mouse != null) {
+            setImage(StartButton);
+            List objects = getWorld().getObjectsAt(mouse.getX(), mouse.getY(), StartButton.class);
+            for (Object object : objects)
+            {
+                if (object == this)
+                {
+                    setImage(StartButtonGlowing);
+                }
+            }
+        }
     }
 }

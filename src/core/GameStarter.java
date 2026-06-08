@@ -1,7 +1,7 @@
 package core;
 
 import greenfoot.*;
-import ui.MainMenu;
+import ui.worlds.MainMenu;
 
 import java.util.*;
 import world.DungeonLevel;
