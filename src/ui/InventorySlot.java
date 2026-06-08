@@ -14,7 +14,7 @@ public class InventorySlot extends Actor {
     }
 
     public InventorySlot() {
-        this(200, 200); // Default size, assuming 200x200 fills a 2x2 cell area
+        this(60, 60); // Default size, assuming 200x200 fills a 2x2 cell area
     }
 
     // New constructor to specify slot pixel dimensions

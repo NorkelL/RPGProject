@@ -26,12 +26,11 @@ public class InventoryVisualizer extends Actor {
     protected void addedToWorld(World world) {
         int numSlots = slots.length;
 
-        // Assuming a Greenfoot cell size of 100x100 pixels for calculation
-        // This means a 200x200 slot occupies 2x2 grid cells
-        int assumedCellSize = 60; // This value might need to be adjusted based on your Greenfoot world's actual cell size
+        int assumedCellSize = 60;
         int slotWidthInCells = slotPixelWidth / assumedCellSize;
         int slotHeightInCells = slotPixelHeight / assumedCellSize;
-
+                        //keine ahnung was das hier ist aber ich habe jetzt einfach getCellSize() benutzt
+                        //muss man nochmal schauen todo
 
         if (slotWidthInCells == 0) slotWidthInCells = 1;
         if (slotHeightInCells == 0) slotHeightInCells = 1;
@@ -45,7 +44,7 @@ public class InventoryVisualizer extends Actor {
 
         for (int i = 0; i < numSlots; i++) {
             // Pass the specified pixel dimensions to the InventorySlot constructor
-            slots[i] = new InventorySlot(slotPixelWidth, slotPixelHeight);
+            slots[i] = new InventorySlot(getWorld().getCellSize(), getWorld().getCellSize());
             world.addObject(slots[i], startX + i * slotWidthInCells, slotY);
         }
     }
