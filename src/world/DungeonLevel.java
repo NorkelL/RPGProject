@@ -2,7 +2,6 @@ package world;
 
 import blocks.Wall;
 import core.GameStarter;
-import entities.Monster;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
@@ -38,9 +37,7 @@ public class DungeonLevel extends World {
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,         // das ist die Wall nur zur Info
-                Player.class,           // Darunter der Rest
-                Monster.class,
-                Rock.class
+                Player.class         // Darunter der Rest
         );
 
         if(!gameStarter.pastLevel.isEmpty()){

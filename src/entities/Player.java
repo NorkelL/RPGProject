@@ -18,7 +18,6 @@ public class Player extends DamageableActor {
     private final int maxBackpack;    // Größe des Rucksacks
     private final int maxLife;
     private int moveCounter;
-    private final Item[] items;
     private InventoryVisualizer inventory;
 
     public Player() {

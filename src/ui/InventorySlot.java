@@ -7,7 +7,7 @@ public class InventorySlot extends Actor {
     private Actor item;
 
     private static final int SIZE = 40;
-    private static final GreenfootImage baseImage;
+    private static GreenfootImage baseImage;
     static {
         baseImage = new GreenfootImage("InventorySlot.png");
         baseImage.scale(SIZE, SIZE);

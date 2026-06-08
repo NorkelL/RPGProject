@@ -25,7 +25,7 @@ public class StartButton extends UI implements Clickable{
 
     @Override
     public void act() {
-        if (Greenfoot.mouseClicked(null)) {
+        if (Greenfoot.mouseClicked(null)  || Greenfoot.isKeyDown("L")) {
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
                 int cellSize = getWorld().getCellSize();
