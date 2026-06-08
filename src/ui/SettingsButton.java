@@ -10,14 +10,14 @@ import java.util.List;
 public class SettingsButton extends UI {
 
     private GameStarter gameStarter;
-    private  GreenfootImage settingsButton = new GreenfootImage("Map/Settings.png");
-    private GreenfootImage settingsButtonGlowing = new GreenfootImage("SettingsGlowing.png");
+    private  GreenfootImage settingsButton = new GreenfootImage("UI/MainMenu/Settings.png");
+    private GreenfootImage settingsButtonGlowing = new GreenfootImage("UI/MainMenu/SettingsGlowing.png");
     private boolean isScaled = false;
 
     public SettingsButton(GameStarter gameStarter){
         super();
         this.gameStarter = gameStarter;
-        GreenfootImage SettingsButton = new GreenfootImage("Map/Settings.png");
+        GreenfootImage SettingsButton = new GreenfootImage("UI/MainMenu/Settings.png");
         SettingsButton.scale(310,110);
         setImage(SettingsButton);
 
@@ -29,8 +29,8 @@ public class SettingsButton extends UI {
     private void mouseHover(){
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (!isScaled) {
-            settingsButton.scale(240, 110);
-            settingsButtonGlowing.scale(240, 110);
+            settingsButton.scale(310, 110);
+            settingsButtonGlowing.scale(310, 110);
             isScaled = true;
         }
 

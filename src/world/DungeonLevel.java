@@ -1,5 +1,7 @@
 package world;
 
+import blocks.Entrance;
+import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;

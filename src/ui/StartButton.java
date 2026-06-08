@@ -8,17 +8,17 @@ import java.util.List;
 public class StartButton extends UI implements Clickable{
 
     private GameStarter gameStarter;
-    private GreenfootImage StartButton = new GreenfootImage("Map/StartGame.png");
-    private GreenfootImage StartButtonGlowing = new GreenfootImage("StartGameGlowing.png");
+    private GreenfootImage StartButton = new GreenfootImage("UI/MainMenu/StartGame.png");
+    private GreenfootImage StartButtonGlowing = new GreenfootImage("UI/MainMenu/StartGameGlowing.png");
     private boolean isScaled = false;
 
 
     public StartButton(GameStarter gameStarter){
         super();
         this.gameStarter = gameStarter;
-        GreenfootImage StartButton = new GreenfootImage("Map/StartGame.png");
-        GreenfootImage StartButtonGlowing = new GreenfootImage("StartGameGlowing.png");
-        StartButtonGlowing.scale(240,110);
+        GreenfootImage StartButton = new GreenfootImage("UI/MainMenu/StartGame.png");
+        GreenfootImage StartButtonGlowing = new GreenfootImage("UI/MainMenu/StartGameGlowing.png");
+        StartButtonGlowing.scale(310,110);
         StartButton.scale(310,110);
         setImage(StartButton);
     }
@@ -52,8 +52,8 @@ public class StartButton extends UI implements Clickable{
     private void mouseHover(){
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (!isScaled) {
-            StartButton.scale(240, 110);
-            StartButtonGlowing.scale(240, 110);
+            StartButton.scale(310, 110);
+            StartButtonGlowing.scale(310, 110);
             isScaled = true;
         }
 

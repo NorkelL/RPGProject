@@ -10,14 +10,14 @@ import java.util.List;
 public class LoadGameButton extends UI {
 
     private GameStarter gameStarter;
-    private  GreenfootImage loadGameButton = new GreenfootImage("Map/LoadGame.png");
-    private GreenfootImage loadGameButtonGlowing = new GreenfootImage("LoadGameGlowing.png");
+    private  GreenfootImage loadGameButton = new GreenfootImage("UI/MainMenu/LoadGame.png");
+    private GreenfootImage loadGameButtonGlowing = new GreenfootImage("UI/MainMenu/LoadGameGlowing.png");
     private boolean isScaled = false;
 
     public LoadGameButton(GameStarter gameStarter){
         super();
         this.gameStarter = gameStarter;
-        GreenfootImage LoadGameButton = new GreenfootImage("Map/LoadGame.png");
+        GreenfootImage LoadGameButton = new GreenfootImage("UI/MainMenu/LoadGame.png");
         LoadGameButton.scale(310,110);
         setImage(LoadGameButton);
 
@@ -29,8 +29,8 @@ public class LoadGameButton extends UI {
     private void mouseHover(){
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (!isScaled) {
-            loadGameButton.scale(240, 110);
-            loadGameButtonGlowing.scale(240, 110);
+            loadGameButton.scale(310, 110);
+            loadGameButtonGlowing.scale(310, 110);
             isScaled = true;
         }
 

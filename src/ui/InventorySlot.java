@@ -9,7 +9,7 @@ public class InventorySlot extends Actor {
     private static final int SIZE = 40;
     private static GreenfootImage baseImage;
     static {
-        baseImage = new GreenfootImage("InventorySlot.png");
+        baseImage = new GreenfootImage("UI/Inventory/InventorySlot.png");
         baseImage.scale(SIZE, SIZE);
     }
 
@@ -19,7 +19,7 @@ public class InventorySlot extends Actor {
 
     // New constructor to specify slot pixel dimensions
     public InventorySlot(int pixelWidth, int pixelHeight) {
-        baseImage = new GreenfootImage("InventorySlot.png");
+        baseImage = new GreenfootImage("UI/Inventory/InventorySlot.png");
         baseImage.scale(pixelWidth, pixelHeight);
         setImage(new GreenfootImage(baseImage));
     }

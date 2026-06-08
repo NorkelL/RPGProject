@@ -6,7 +6,8 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
-import world.Backpack;
+import ui.worlds.Backpack;
+import world.DungeonLevel;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public class Player extends DamageableActor {
 
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
+    private Backpack BackpackWorld; // die backpack welt
+    private int openCooldownE = 0;
+
     private final int maxLife;
     private int moveCounter;
     private InventoryVisualizer inventory;
@@ -41,13 +45,20 @@ public class Player extends DamageableActor {
             moveCounter--;
             return;
         }
+
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+            openCooldownE = 0;
+        } else if (openCooldownE > 0) {
+            openCooldownE--;
+        }
+
         if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
         else if (Greenfoot.isKeyDown("T")) { takeItem(); }
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
-        else if (Greenfoot.isKeyDown("e")){toggleInventory();}
+        else if (Greenfoot.isKeyDown("E") && openCooldownE == 0){openCooldownE=1000; toggleInventory();}
         draw(getLife() + "/" + maxLife);
     }
 
@@ -92,10 +103,13 @@ public class Player extends DamageableActor {
     }
 
     private void toggleInventory() {
-        World currenWorld = getWorld();
+        if(getWorld()instanceof DungeonLevel) {
+            if (BackpackWorld == null) {
+                BackpackWorld = new Backpack(this.items, this.backpack, getWorld());
 
-
-        Greenfoot.setWorld(new Backpack(this.items,this.backpack, currenWorld));
+            }
+            Greenfoot.setWorld(BackpackWorld);
+        }
     }
 
 

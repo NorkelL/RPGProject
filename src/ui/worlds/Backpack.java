@@ -1,6 +1,5 @@
-package world;
+package ui.worlds;
 
-import core.GameStarter;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
@@ -13,6 +12,8 @@ public class Backpack extends World {
     private final Item[] backpackItems;
     private final InventorySlot[] slots;
     private final World previousWorld;
+    private int openCooldownE = 0;
+    private int openCooldownEsc = 0;
 
     public Backpack(Item[] playerItems, Item[] backpack,World world) {
 
@@ -21,7 +22,7 @@ public class Backpack extends World {
         this.slots = new InventorySlot[15];
         this.previousWorld = world;
 
-        GreenfootImage bg = new GreenfootImage("BackgroundFullInventory.png");
+        GreenfootImage bg = new GreenfootImage("UI/Inventory/BackgroundFullInventory.png");
         bg.scale(1280, 720);
         setBackground(bg);
 
@@ -65,8 +66,21 @@ public class Backpack extends World {
         // Genau wie beim InventoryVisualizer: Wir spiegeln Änderungen live!
         updateBackpackSlots();
 
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+            openCooldownE = 0;
+        } else if (openCooldownE > 0) {
+            openCooldownE--;
+        }
+
+        if(openCooldownEsc > 0 && !Greenfoot.isKeyDown("escape")){
+            openCooldownEsc = 0;
+        } else if (openCooldownEsc > 0) {
+            openCooldownEsc--;
+        }
+
         // Möglichkeit bieten, die Inventarwelt wieder zu schließen
-        if (Greenfoot.isKeyDown("escape") || Greenfoot.isKeyDown("e")) {
+        if (Greenfoot.isKeyDown("escape") && openCooldownEsc == 0 || Greenfoot.isKeyDown("e") && openCooldownE ==0) {
+            openCooldownE = openCooldownEsc = 1000;
             Greenfoot.setWorld(previousWorld);
         }
     }
