@@ -17,7 +17,6 @@ public class GameOverScreen extends World {
 
     @Override
     public void act() {
-
         super.act();
     }
 }
