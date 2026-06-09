@@ -1,9 +1,11 @@
 package core;
 
 import greenfoot.*;
-import world.*;
+import ui.worlds.MainMenu;
+
 import java.util.*;
 import world.DungeonLevel;
+
 public class GameStarter extends World {
 
     private Random seed;
