@@ -10,6 +10,7 @@ import greenfoot.World;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
+import ui.Healthbar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -66,6 +67,8 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+
+        addObject(new Healthbar(), 6,26);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
