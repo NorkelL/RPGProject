@@ -1,13 +1,17 @@
 package ui;
 
+import entities.Player;
 import greenfoot.Actor;
 import greenfoot.World;
+
+import java.util.List;
 
 public class InventoryVisualizer extends Actor {
     private final InventorySlot[] slots;
     private final Actor[] inventory;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
+
 
     // Modified constructor to accept slot pixel dimensions
     public InventoryVisualizer(Actor[] inventory, int slotPixelWidth, int slotPixelHeight) {
@@ -21,6 +25,7 @@ public class InventoryVisualizer extends Actor {
     @Override
     public void act() {
         update();
+        checkSlot();
     }
 
     protected void addedToWorld(World world) {
@@ -67,4 +72,23 @@ public class InventoryVisualizer extends Actor {
 
         getWorld().removeObject(this);
     }
+    private void checkSlot() {
+        List<Player> players = getWorld().getObjects(Player.class);
+
+        if (players.isEmpty()) {
+            return;
+        }
+
+        int activeSlot = players.get(0).getActiveSlot();
+
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[i] != null) {
+                slots[i].setSelected(i == activeSlot);
+            }
+        }
+    }
+
+
+
+
 }

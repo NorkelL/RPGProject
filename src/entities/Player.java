@@ -5,6 +5,7 @@ import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
+import ui.InventorySlot;
 import ui.InventoryVisualizer;
 import ui.Settings;
 import ui.worlds.Backpack;
@@ -24,6 +25,7 @@ public class Player extends DamageableActor {
     private final int maxLife;
     private int moveCounter;
     private InventoryVisualizer inventory;
+    private int activeSlot;
 
     public Player() {
         this(100, 8, 15,100);
@@ -59,6 +61,16 @@ public class Player extends DamageableActor {
         else if (Settings.isPressed(Settings.rightKey)) { turn(Direction.EAST); move(); moveCounter=150; }
         else if (Settings.isPressed(Settings.takeItem)) { takeItem(); }
         else if (Settings.isPressed(Settings.putItem)) { putItem(); }
+        else if (Greenfoot.isKeyDown("1")){activeSlot=0;}
+        else if (Greenfoot.isKeyDown("2")){activeSlot=1;}
+        else if (Greenfoot.isKeyDown("3")){activeSlot=2;}
+        else if (Greenfoot.isKeyDown("4")){activeSlot=3;}
+        else if (Greenfoot.isKeyDown("5")){activeSlot=4;}
+        else if (Greenfoot.isKeyDown("6")){activeSlot=5;}
+        else if (Greenfoot.isKeyDown("7")){activeSlot=6;}
+        else if (Greenfoot.isKeyDown("8")){activeSlot=7;}
+
+
         else if (Settings.isPressed(Settings.inventoryToggle) && openCooldownE == 0)
         {
             openCooldownE = 1000;
@@ -134,4 +146,10 @@ public class Player extends DamageableActor {
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
+    private void setActiveSlot(int i ){activeSlot=i;}
+    public int getActiveSlot() {
+        return activeSlot;
+    }
+
+
 }
