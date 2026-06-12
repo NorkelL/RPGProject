@@ -6,6 +6,7 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
 import ui.InventoryVisualizer;
+import ui.Settings;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
@@ -52,13 +53,17 @@ public class Player extends DamageableActor {
             openCooldownE--;
         }
 
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("T")) { takeItem(); }
-        else if (Greenfoot.isKeyDown("P")) { putItem(); }
-        else if (Greenfoot.isKeyDown("E") && openCooldownE == 0){openCooldownE=1000; toggleInventory();}
+        if      (Settings.isPressed(Settings.upKey)) { turn(Direction.NORTH); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.leftKey)) { turn(Direction.WEST); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.downKey)) { turn(Direction.SOUTH); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.rightKey)) { turn(Direction.EAST); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.takeItem)) { takeItem(); }
+        else if (Settings.isPressed(Settings.putItem)) { putItem(); }
+        else if (Settings.isPressed(Settings.inventoryToggle) && openCooldownE == 0)
+        {
+            openCooldownE = 1000;
+            toggleInventory();
+        }
         draw(getLife() + "/" + maxLife);
     }
 
