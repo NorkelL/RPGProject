@@ -12,6 +12,7 @@ public class Settings  {
     public static String takeItem = "t";
     public static String putItem ="p";
     public static String inventoryToggle ="e";
+    public static String useItem ="f";
 
 
     public static boolean soundOn = true;

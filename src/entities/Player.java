@@ -5,6 +5,7 @@ import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
+import items.util.Useable;
 import ui.InventorySlot;
 import ui.InventoryVisualizer;
 import ui.Settings;
@@ -61,6 +62,7 @@ public class Player extends DamageableActor {
         else if (Settings.isPressed(Settings.rightKey)) { turn(Direction.EAST); move(); moveCounter=150; }
         else if (Settings.isPressed(Settings.takeItem)) { takeItem(); }
         else if (Settings.isPressed(Settings.putItem)) { putItem(); }
+        else if (Settings.isPressed(Settings.useItem)){useItem();}
         else if (Greenfoot.isKeyDown("1")){activeSlot=0;}
         else if (Greenfoot.isKeyDown("2")){activeSlot=1;}
         else if (Greenfoot.isKeyDown("3")){activeSlot=2;}
@@ -118,6 +120,13 @@ public class Player extends DamageableActor {
             }
         }
     }
+    public void useItem() {
+        int useSlot = getActiveSlot();
+
+        if (useSlot != -1 && items[useSlot] != null && items[useSlot] instanceof Useable) {
+            items[useSlot].use();
+        }
+    }
 
     private void toggleInventory() {
         if(getWorld()instanceof DungeonLevel) {
@@ -142,6 +151,7 @@ public class Player extends DamageableActor {
         inventory = new InventoryVisualizer(items,60,60);
         world.addObject(inventory, 0, world.getHeight() - 1);
     }
+
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
