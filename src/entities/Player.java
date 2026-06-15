@@ -5,7 +5,10 @@ import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 import items.Item;
+import items.util.Useable;
+import ui.InventorySlot;
 import ui.InventoryVisualizer;
+import ui.Settings;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
@@ -23,6 +26,7 @@ public class Player extends DamageableActor {
     private final int maxLife;
     private int moveCounter;
     private InventoryVisualizer inventory;
+    private int activeSlot;
 
     public Player() {
         this(100, 8, 15,100);
@@ -52,13 +56,28 @@ public class Player extends DamageableActor {
             openCooldownE--;
         }
 
-        if      (Greenfoot.isKeyDown("W")) { turn(Direction.NORTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("A")) { turn(Direction.WEST);  move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("S")) { turn(Direction.SOUTH); move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("D")) { turn(Direction.EAST);  move(); moveCounter=150;}
-        else if (Greenfoot.isKeyDown("T")) { takeItem(); }
-        else if (Greenfoot.isKeyDown("P")) { putItem(); }
-        else if (Greenfoot.isKeyDown("E") && openCooldownE == 0){openCooldownE=1000; toggleInventory();}
+        if      (Settings.isPressed(Settings.upKey)) { turn(Direction.NORTH); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.leftKey)) { turn(Direction.WEST); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.downKey)) { turn(Direction.SOUTH); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.rightKey)) { turn(Direction.EAST); move(); moveCounter=150; }
+        else if (Settings.isPressed(Settings.takeItem)) { takeItem(); }
+        else if (Settings.isPressed(Settings.putItem)) { putItem(); }
+        else if (Settings.isPressed(Settings.useItem)){useItem();}
+        else if (Greenfoot.isKeyDown("1")){activeSlot=0;}
+        else if (Greenfoot.isKeyDown("2")){activeSlot=1;}
+        else if (Greenfoot.isKeyDown("3")){activeSlot=2;}
+        else if (Greenfoot.isKeyDown("4")){activeSlot=3;}
+        else if (Greenfoot.isKeyDown("5")){activeSlot=4;}
+        else if (Greenfoot.isKeyDown("6")){activeSlot=5;}
+        else if (Greenfoot.isKeyDown("7")){activeSlot=6;}
+        else if (Greenfoot.isKeyDown("8")){activeSlot=7;}
+
+
+        else if (Settings.isPressed(Settings.inventoryToggle) && openCooldownE == 0)
+        {
+            openCooldownE = 1000;
+            toggleInventory();
+        }
         draw(getLife() + "/" + maxLife);
     }
 
@@ -101,6 +120,13 @@ public class Player extends DamageableActor {
             }
         }
     }
+    public void useItem() {
+        int useSlot = getActiveSlot();
+
+        if (useSlot != -1 && items[useSlot] != null && items[useSlot] instanceof Useable) {
+            items[useSlot].use();
+        }
+    }
 
     private void toggleInventory() {
         if(getWorld()instanceof DungeonLevel) {
@@ -126,7 +152,14 @@ public class Player extends DamageableActor {
         world.addObject(inventory, 0, world.getHeight() - 1);
     }
 
+
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
+    private void setActiveSlot(int i ){activeSlot=i;}
+    public int getActiveSlot() {
+        return activeSlot;
+    }
+
+
 }

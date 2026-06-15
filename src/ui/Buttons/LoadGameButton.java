@@ -1,9 +1,10 @@
-package ui;
+package ui.Buttons;
 
 import core.GameStarter;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
+import ui.UI;
 
 import java.util.List;
 

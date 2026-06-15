@@ -1,9 +1,11 @@
-package ui;
+package ui.Buttons;
 
 import core.GameStarter;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
+import ui.UI;
+import ui.worlds.SettingsWorld;
 
 import java.util.List;
 
@@ -23,6 +25,13 @@ public class SettingsButton extends UI {
 
     }
     public void act() {
+
+        if (Greenfoot.mouseClicked(this)){
+            Greenfoot.setWorld(new SettingsWorld());
+
+        }
+
+
         mouseHover();
     }
 

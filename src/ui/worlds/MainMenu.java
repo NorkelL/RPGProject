@@ -3,9 +3,9 @@ package ui.worlds;
 import core.GameStarter;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import ui.LoadGameButton;
-import ui.SettingsButton;
-import ui.StartButton;
+import ui.Buttons.LoadGameButton;
+import ui.Buttons.SettingsButton;
+import ui.Buttons.StartButton;
 
 public class MainMenu extends World {
 

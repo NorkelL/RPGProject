@@ -26,6 +26,7 @@ public class GameStarter extends World {
     public void start() {
         currentLevel = new DungeonLevel(seed.nextLong(),this);
         Greenfoot.setWorld(currentLevel);
+
     }
 
     public void setSeed(long savedseed,int currentLevel){

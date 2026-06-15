@@ -1,11 +1,13 @@
-package ui;
+package ui.Buttons;
 
 import core.GameStarter;
 import greenfoot.*;
+import ui.Clickable;
+import ui.UI;
 
 import java.util.List;
 
-public class StartButton extends UI implements Clickable{
+public class StartButton extends UI implements Clickable {
 
     private GameStarter gameStarter;
     private GreenfootImage StartButton = new GreenfootImage("UI/MainMenu/StartGame.png");
