@@ -1,5 +1,6 @@
 package ui.worlds;
 
+import entities.Player;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
@@ -14,13 +15,17 @@ public class Backpack extends World {
     private final World previousWorld;
     private int openCooldownE = 0;
     private int openCooldownEsc = 0;
+    private final InventorySlot headSlot;
+    private final InventorySlot chestSlot;
+    private final Player player;
 
-    public Backpack(Item[] playerItems, Item[] backpack,World world) {
+    public Backpack(Player player, Item[] playerItems, Item[] backpack, World world) {
 
         super(16, 9, 80);
         this.backpackItems = backpack;
         this.slots = new InventorySlot[15];
         this.previousWorld = world;
+        this.player = player;
 
         GreenfootImage bg = new GreenfootImage("UI/Inventory/BackgroundFullInventory.png");
         bg.scale(1280, 720);
@@ -59,12 +64,22 @@ public class Backpack extends World {
                 slotCounter++;
             }
         }
+        // --- 2. RÜSTUNGS-SLOTS INSTANZIIEREN & PLATZIEREN ---
+        // Wir setzen sie etwas abseits, z.B. bei Spalte 6
+        headSlot = new InventorySlot(80,80);
+        headSlot.getImage().scale(80, 80);
+        addObject(headSlot, 8, 1); // Reihe 1 für den Helm
+
+        chestSlot = new InventorySlot(80,80);
+        chestSlot.getImage().scale(80, 80);
+        addObject(chestSlot, 8, 3); // Reihe 2 für die Brust
     }
 
     @Override
     public void act() {
         // Genau wie beim InventoryVisualizer: Wir spiegeln Änderungen live!
         updateBackpackSlots();
+        updateArmorSlots();
 
         if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
             openCooldownE = 0;
@@ -91,6 +106,14 @@ public class Backpack extends World {
             if (slots[i] != null && backpackItems[i] != slots[i].getItem()) {
                 slots[i].setItem(backpackItems[i]);
             }
+        }
+    }
+    private void updateArmorSlots() {
+        if (headSlot.getItem() != player.getHeadArmor()) {
+            headSlot.setItem(player.getHeadArmor());
+        }
+        if (chestSlot.getItem() != player.getChestArmor()) {
+            chestSlot.setItem(player.getChestArmor());
         }
     }
 }

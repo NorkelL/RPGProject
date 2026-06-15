@@ -4,7 +4,10 @@ import entities.base.DamageableActor;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
+import items.Armor;
 import items.Item;
+import items.LeatherArmor;
+import items.util.LeatherHelmet;
 import items.util.Useable;
 import ui.InventorySlot;
 import ui.InventoryVisualizer;
@@ -27,6 +30,10 @@ public class Player extends DamageableActor {
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
+    private boolean hasArmor = false;
+    private String currentArmorType = "none"; //head oder chest
+    private Item headArmor = null; // z.B. "iron", "leather"
+    private Item chestArmor = null;// z.B. "iron", "leather"
 
     public Player() {
         this(100, 8, 15,100);
@@ -38,7 +45,7 @@ public class Player extends DamageableActor {
         this.maxLife = maxLife;
 
         this.items = new Item[maxItems];         // z.B. Size 8
-        this.backpack = new Item[maxBackpack];   // z.B. Size 24
+        this.backpack = new Item[maxBackpack];
 
         setLife(life);
     }
@@ -93,15 +100,38 @@ public class Player extends DamageableActor {
             return;
         }
         Item groundItem = onTile.get(0);
+
+
+        //  prüfen, ob das Item eine Rüstung ist
+        if (groundItem instanceof Armor) {
+            Armor armor = (Armor) groundItem;
+
+            if (armor.getSlotType().equals("head") && headArmor == null) {
+                headArmor = armor;
+                groundItem.onTake(this);
+                updateAppearance();
+                return;
+            }
+
+            // Prüfen, ob es eine Brustplatte ist und der Slot frei ist
+            if (armor.getSlotType().equals("chest") && chestArmor == null) {
+                chestArmor = armor;
+                groundItem.onTake(this);
+                updateAppearance();
+                return;
+            }
+        }
+
+        // Wenn keine Rüstung ist ODER die Rüstungsslots besetzt sind ->
+
         for (int i = 0; i < maxItems; i++) {
             if (items[i] == null) {
                 items[i] = groundItem;
                 groundItem.onTake(this);
-
                 return;
             }
         }
-        //Wenn inventory voll ist in backpack
+
         for (int i = 0; i < maxBackpack; i++) {
             if (backpack[i] == null) {
                 backpack[i] = groundItem;
@@ -131,7 +161,7 @@ public class Player extends DamageableActor {
     private void toggleInventory() {
         if(getWorld()instanceof DungeonLevel) {
             if (BackpackWorld == null) {
-                BackpackWorld = new Backpack(this.items, this.backpack, getWorld());
+                BackpackWorld = new Backpack(this, this.items, this.backpack, getWorld());
 
             }
             Greenfoot.setWorld(BackpackWorld);
@@ -152,14 +182,30 @@ public class Player extends DamageableActor {
         world.addObject(inventory, 0, world.getHeight() - 1);
     }
 
+    public void updateAppearance() {
+        // Basis-Ordner ist immer "Player"
+        String folder = "Player";
+
+
+        if (hasChestArmor()) {
+            Armor chest = (Armor) getChestArmor();
+            folder += "_" + chest.getMaterial();
+        }
+
+
+        loadImages(folder);
+    }
+
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
     private void setActiveSlot(int i ){activeSlot=i;}
-    public int getActiveSlot() {
-        return activeSlot;
-    }
+    public int getActiveSlot() {return activeSlot;}
+    public Item getHeadArmor() {return headArmor;}
+    public Item getChestArmor() {return chestArmor;}
+    public boolean hasChestArmor() {return chestArmor != null;}
+    public boolean hasHeadArmor() {return headArmor != null;}
 
 
 }
