@@ -68,7 +68,7 @@ public class DungeonLevel extends World {
         spawnCorridor();
         spawnRooms();
 
-        addObject(new Healthbar(), 6,26);
+        addObject(new Healthbar(), 7,27);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
