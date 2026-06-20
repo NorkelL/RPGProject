@@ -2,9 +2,17 @@ package items;
 
 import entities.base.ImprovedActor;
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.MouseInfo;
+import items.util.OnHover;
 import items.util.Useable;
+import ui.ItemText;
 
-public abstract class Item extends ImprovedActor implements Useable {
+import java.util.List;
+
+public abstract class Item extends ImprovedActor implements Useable, OnHover {
+
+    protected ItemText currentHoverer;
 
     public Item onTake(Actor trigger) {
         getWorld().removeObject(this);
@@ -17,4 +25,24 @@ public abstract class Item extends ImprovedActor implements Useable {
 
     @Override
     public void use() {}
+
+    public void checkHover() {
+        MouseInfo mouse =  Greenfoot.getMouseInfo();
+        if(mouse != null) {
+            boolean isHovering = getWorld().getObjectsAt(mouse.getX(), mouse.getY(), this.getClass()).contains(this);
+            if (isHovering && currentHoverer == null) {
+                currentHoverer = new ItemText(hovering());
+
+                int x = getX() +2;
+                if(x>getWorld().getWidth()-1){x=getWorld().getWidth()-1;}
+                int y = getY() -1;
+                if(y<0){y=0;}
+
+                getWorld().addObject(currentHoverer, x, y);
+            } else if (!isHovering && currentHoverer != null) {
+                getWorld().removeObject(currentHoverer);
+                currentHoverer = null;
+            }
+        }
+    }
 }

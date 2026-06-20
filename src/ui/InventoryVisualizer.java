@@ -3,18 +3,19 @@ package ui;
 import entities.Player;
 import greenfoot.Actor;
 import greenfoot.World;
+import items.Item;
 
 import java.util.List;
 
 public class InventoryVisualizer extends Actor {
     private final InventorySlot[] slots;
-    private final Actor[] inventory;
+    private final Item[] inventory;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
 
 
     // Modified constructor to accept slot pixel dimensions
-    public InventoryVisualizer(Actor[] inventory, int slotPixelWidth, int slotPixelHeight) {
+    public InventoryVisualizer(Item[] inventory, int slotPixelWidth, int slotPixelHeight) {
         getImage().setTransparency(0);
         slots = new InventorySlot[inventory.length];
         this.inventory = inventory;

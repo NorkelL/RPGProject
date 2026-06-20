@@ -7,6 +7,7 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.TestItem;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
@@ -66,6 +67,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+        addObject(new TestItem(),2,2);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}

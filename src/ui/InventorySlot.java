@@ -1,15 +1,22 @@
 package ui;
 
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import greenfoot.MouseInfo;
+import items.Item;
+import items.util.OnHover;
+import ui.worlds.Backpack;
 
 public class InventorySlot extends Actor {
-    private Actor item;
+    private Item item;
     private final GreenfootImage baseImage;
     private final GreenfootImage glowingImage;
     private boolean isSelected = false;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
+
+    private ItemText currentHoverer;
 
 
     public InventorySlot() {
@@ -31,17 +38,17 @@ public class InventorySlot extends Actor {
         updateImage();
     }
 
-    public InventorySlot(Actor item) {
+    public InventorySlot(Item item) {
         this();
         setItem(item);
     }
 
-    public void setItem(Actor item) {
+    public void setItem(Item item) {
         this.item = item;
         updateImage(); // Bild neu zeichnen, wenn sich das Item ändert
     }
 
-    public Actor getItem() {
+    public Item getItem() {
         return item;
     }
 
@@ -79,5 +86,20 @@ public class InventorySlot extends Actor {
     @Override
     public void act() {
         super.act();
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse != null && item != null && getWorld() instanceof Backpack) {
+            OnHover oh = item;
+            boolean isHovering = getWorld()
+                    .getObjectsAt(mouse.getX(), mouse.getY(), InventorySlot.class)
+                    .contains(this);
+
+            if (isHovering && currentHoverer == null) {
+                currentHoverer = new ItemText(oh.hovering());
+                getWorld().addObject(currentHoverer, getX(), getY() - 1);
+            } else if (!isHovering && currentHoverer != null) {
+                getWorld().removeObject(currentHoverer);
+                currentHoverer = null;
+            }
+        }
     }
 }
