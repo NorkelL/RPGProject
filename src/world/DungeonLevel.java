@@ -1,5 +1,6 @@
 package world;
 
+import blocks.Chest;
 import blocks.Entrance;
 import blocks.Exit;
 import blocks.Wall;
@@ -7,6 +8,7 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.LeatherArmor;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
@@ -37,7 +39,7 @@ public class DungeonLevel extends World {
         setPaintOrder(
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
-                DarkFilter.class,   // Der dunkle Schleier
+                DarkFilter.class,   // Der dunkle Filter
                 Wall.class,         // das ist die Wall nur zur Info
                 Player.class         // Darunter der Rest
         );
@@ -61,9 +63,6 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit + 1,0);
 
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
-
-
-
         spawnCorridor();
         spawnRooms();
     }
