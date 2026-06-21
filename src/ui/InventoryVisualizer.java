@@ -49,7 +49,6 @@ public class InventoryVisualizer extends Actor {
         int slotY = world.getHeight() - (slotHeightInCells / 2);
 
         for (int i = 0; i < numSlots; i++) {
-            // Pass the specified pixel dimensions to the InventorySlot constructor
             slots[i] = new InventorySlot(getWorld().getCellSize(), getWorld().getCellSize());
             world.addObject(slots[i], startX + i * slotWidthInCells, slotY);
         }
@@ -101,13 +100,11 @@ public class InventoryVisualizer extends Actor {
 
     private void checkSlot() {
         List<Player> players = getWorld().getObjects(Player.class);
-
         if (players.isEmpty()) {
             return;
         }
 
         int activeSlot = players.get(0).getActiveSlot();
-
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != null) {
 

@@ -33,7 +33,7 @@ public class InventorySlot extends Actor {
         this.baseImage = new GreenfootImage("UI/Inventory/InventorySlot.png");
         this.baseImage.scale(slotPixelWidth, slotPixelHeight);
 
-        // Leuchtendes Hintergrundbild laden und scalen
+        // Leuchtendes Hintergrundbild laden und skalieren
         this.glowingImage = new GreenfootImage("UI/Inventory/InventorySlotGlowing.png");
         this.glowingImage.scale(slotPixelWidth, slotPixelHeight);
 
@@ -72,7 +72,6 @@ public class InventorySlot extends Actor {
 
 
     private void updateImage() {
-
         GreenfootImage currentBackground = isSelected ? new GreenfootImage(glowingImage) : new GreenfootImage(baseImage);
 
         //  Nur zeichnen, wenn das Item nicht gerade als Ghost unterwegs ist!
@@ -89,7 +88,6 @@ public class InventorySlot extends Actor {
                         (currentBackground.getHeight() - itemImage.getHeight()) / 2);
             }
         }
-
 
         setImage(currentBackground);
     }
@@ -202,7 +200,6 @@ public class InventorySlot extends Actor {
 
     @Override
     public void act() {
-        handleDragAndDrop();
         super.act();
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse != null && item != null && getWorld() instanceof Backpack) {
