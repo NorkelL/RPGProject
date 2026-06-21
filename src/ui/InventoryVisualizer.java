@@ -56,12 +56,37 @@ public class InventoryVisualizer extends Actor {
     }
 
     private void update() {
+        if (slots == null || inventory == null) return;
+
         int length = Math.min(inventory.length, slots.length);
         for (int i = 0; i < length; i++) {
-            if (inventory[i] != slots[i].getItem()) {
-                slots[i].setItem(inventory[i]);
+            if (slots[i] != null) {
+
+                inventory[i] = slots[i].getItem();
             }
         }
+    }
+
+    //  zwingt das Array nach einem Tausch zum Reset
+    public void forceSyncArray() {
+        if (slots == null || inventory == null) return;
+
+        int length = Math.min(inventory.length, slots.length);
+        for (int i = 0; i < length; i++) {
+            if (slots[i] != null) {
+                // Wenn das Item im UI-Slot durch Drag-and-Drop weggezogen (null) wurde,
+                // wird es hier jetzt auch im echten Spieler-Array gelöscht!
+                inventory[i] = slots[i].getItem();
+            }
+        }
+    }
+
+    // Hilfsmethode, um zu prüfen, ob dieser Visualizer einen bestimmten Slot besitzt
+    public boolean containsSlot(InventorySlot slot) {
+        for (InventorySlot s : slots) {
+            if (s == slot) return true;
+        }
+        return false;
     }
     public void removeSelf() {
         // Entfernt alle Slots, die dieser Visualizer erstellt hat
@@ -73,6 +98,7 @@ public class InventoryVisualizer extends Actor {
 
         getWorld().removeObject(this);
     }
+
     private void checkSlot() {
         List<Player> players = getWorld().getObjects(Player.class);
 
@@ -84,7 +110,10 @@ public class InventoryVisualizer extends Actor {
 
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != null) {
-                slots[i].setSelected(i == activeSlot);
+
+                if (slots[i].isSelected() != (i == activeSlot)) {
+                    slots[i].setSelected(i == activeSlot);
+                }
             }
         }
     }

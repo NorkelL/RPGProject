@@ -7,8 +7,6 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.LeatherArmor;
-import items.TestItem;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
@@ -41,7 +39,7 @@ public class DungeonLevel extends World {
                 ItemText.class,
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
-                DarkFilter.class,   // Der dunkle Schleier
+                DarkFilter.class,   // Der dunkle Filter
                 Wall.class,         // das ist die Wall nur zur Info
                 Player.class         // Darunter der Rest
         );
@@ -70,7 +68,6 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
-        addObject(new LeatherArmor(),2,2);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}

@@ -47,10 +47,9 @@ public class Backpack extends World {
                 if (slotCounter >= 15) break;
 
                 // Neuen Slot erstellen
-                slots[slotCounter] = new InventorySlot();
+                slots[slotCounter] = new InventorySlot(80,80);
 
-                // Da deine Kacheln 80x80 groß sind (siehe super(16,9,80)),
-                // skaliere den Slot auch auf 80x80, damit er die Kachel perfekt ausfüllt!
+
                 slots[slotCounter].getImage().scale(80, 80);
 
                 // Prüfen, ob im Rucksack-Array an dieser Stelle schon ein Item liegt
@@ -77,7 +76,7 @@ public class Backpack extends World {
 
     @Override
     public void act() {
-        // Genau wie beim InventoryVisualizer: Wir spiegeln Änderungen live!
+
         updateBackpackSlots();
         updateArmorSlots();
 
@@ -93,7 +92,7 @@ public class Backpack extends World {
             openCooldownEsc--;
         }
 
-        // Möglichkeit bieten, die Inventarwelt wieder zu schließen
+        // Backpack schließen
         if (Greenfoot.isKeyDown("escape") && openCooldownEsc == 0 || Greenfoot.isKeyDown("e") && openCooldownE ==0) {
             openCooldownE = openCooldownEsc = 1000;
             Greenfoot.setWorld(previousWorld);
@@ -103,8 +102,10 @@ public class Backpack extends World {
     private void updateBackpackSlots() {
         int length = Math.min(backpackItems.length, slots.length);
         for (int i = 0; i < length; i++) {
-            if (slots[i] != null && backpackItems[i] != slots[i].getItem()) {
-                slots[i].setItem(backpackItems[i]);
+            if (slots[i] != null) {
+                if (backpackItems[i] != slots[i].getItem()) {
+                    backpackItems[i] = (items.Item) slots[i].getItem();
+                }
             }
         }
     }
@@ -116,4 +117,15 @@ public class Backpack extends World {
             chestSlot.setItem(player.getChestArmor());
         }
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+    public InventorySlot getChestSlot() {
+        return chestSlot;
+    }
+    public InventorySlot getHeadSlot() {
+        return headSlot;
+    }
+
 }
