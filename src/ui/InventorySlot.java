@@ -165,7 +165,7 @@ public class InventorySlot extends Actor {
         if (slotA == slotB) return;
 
         // Items tauschen
-        Actor tempItem = slotA.getItem();
+        Item tempItem = slotA.getItem();
         slotA.setItem(slotB.getItem());
         slotB.setItem(tempItem);
 
