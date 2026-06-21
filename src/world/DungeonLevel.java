@@ -7,10 +7,12 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.LeatherArmor;
 import items.TestItem;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
+import ui.ItemText;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,6 +38,7 @@ public class DungeonLevel extends World {
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
+                ItemText.class,
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 DarkFilter.class,   // Der dunkle Schleier
@@ -67,7 +70,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
-        addObject(new TestItem(),2,2);
+        addObject(new LeatherArmor(),2,2);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}

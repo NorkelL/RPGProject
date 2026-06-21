@@ -67,23 +67,16 @@ public interface OnHover {
     }
 
     public default Field[] getOnHoverFields() {
-        Field[] fields = this.getClass().getDeclaredFields();
-        int indexcouter = 0;
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].isAnnotationPresent(ShowOnHover.class)) {
-                indexcouter++;
-            }else  {
-                fields[i] = null;
+        List<Field> foundFields = new ArrayList<>();
+        Class<?> clazz = this.getClass();
+        while (clazz != null && clazz != Object.class) {
+            for (Field f : clazz.getDeclaredFields()) {
+                if (f.isAnnotationPresent(ShowOnHover.class)) {
+                    foundFields.add(f);
+                }
             }
+            clazz = clazz.getSuperclass();
         }
-        Field[] onHoverFields = new Field[indexcouter];
-        indexcouter = 0;
-        for (Field field : fields) {
-            if (field != null) {
-                onHoverFields[indexcouter] = field;
-                indexcouter++;
-            }
-        }
-        return onHoverFields;
+        return foundFields.toArray(new Field[0]);
     }
 }

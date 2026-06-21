@@ -31,7 +31,7 @@ public abstract class Item extends ImprovedActor implements Useable, OnHover {
         if(mouse != null) {
             boolean isHovering = getWorld().getObjectsAt(mouse.getX(), mouse.getY(), this.getClass()).contains(this);
             if (isHovering && currentHoverer == null) {
-                currentHoverer = new ItemText(hovering());
+                currentHoverer = new ItemText(hovering(),this);
 
                 int x = getX() +2;
                 if(x>getWorld().getWidth()-1){x=getWorld().getWidth()-1;}

@@ -1,15 +1,24 @@
 package items;
 
 import greenfoot.GreenfootImage;
+import items.util.OnHover;
+import items.util.Rarity;
 
 // Wichtig: Armor erbt von Item, damit es ins Inventar/Backpack passt!
 public class Armor extends Item {
-    private final String slotType; // "head" oder "chest"
+    @OnHover.ShowOnHover
+    private final String slotType;// "head" oder "chest"
+    @OnHover.ShowOnHover
     private final String material; // "leather", "iron", etc.
+
+    @OnHover.ShowOnHover
+    public Rarity rarity;
 
     public Armor(String slotType, String material) {
         this.slotType = slotType;
         this.material = material;
+
+        rarity = Rarity.setRarity();
 
         // Setzt das Bild für das Item auf dem Boden oder im Slot
         // z.B. "items/leather_chest.png"
@@ -24,5 +33,11 @@ public class Armor extends Item {
 
     public String getMaterial() {
         return material;
+    }
+
+    @Override
+    public void act(){
+        super.act();
+        checkHover();
     }
 }

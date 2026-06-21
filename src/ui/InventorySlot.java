@@ -94,7 +94,7 @@ public class InventorySlot extends Actor {
                     .contains(this);
 
             if (isHovering && currentHoverer == null) {
-                currentHoverer = new ItemText(oh.hovering());
+                currentHoverer = new ItemText(oh.hovering(),this);
                 getWorld().addObject(currentHoverer, getX(), getY() - 1);
             } else if (!isHovering && currentHoverer != null) {
                 getWorld().removeObject(currentHoverer);
