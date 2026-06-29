@@ -7,6 +7,8 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.util.GoldArmor;
+import items.util.IronArmor;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
@@ -61,6 +63,9 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit + 1,0);
 
         addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
+        addObject(new IronArmor("chest"),centerEntrance - 1,this.getHeight()-2);
+
+
 
 
 
@@ -134,7 +139,6 @@ public class DungeonLevel extends World {
             }
         }
     }
-
     private boolean tryPlaceRoom(Room room){
         for (Room placed : placedRooms) {
             if (room.x <= placed.x + placed.width && room.x + room.width >= placed.x &&
