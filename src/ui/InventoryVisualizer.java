@@ -3,18 +3,19 @@ package ui;
 import entities.Player;
 import greenfoot.Actor;
 import greenfoot.World;
+import items.Item;
 
 import java.util.List;
 
 public class InventoryVisualizer extends Actor {
     private final InventorySlot[] slots;
-    private final Actor[] inventory;
+    private final Item[] inventory;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
 
 
     // Modified constructor to accept slot pixel dimensions
-    public InventoryVisualizer(Actor[] inventory, int slotPixelWidth, int slotPixelHeight) {
+    public InventoryVisualizer(Item[] inventory, int slotPixelWidth, int slotPixelHeight) {
         getImage().setTransparency(0);
         slots = new InventorySlot[inventory.length];
         this.inventory = inventory;
@@ -48,19 +49,43 @@ public class InventoryVisualizer extends Actor {
         int slotY = world.getHeight() - (slotHeightInCells / 2);
 
         for (int i = 0; i < numSlots; i++) {
-            // Pass the specified pixel dimensions to the InventorySlot constructor
             slots[i] = new InventorySlot(getWorld().getCellSize(), getWorld().getCellSize());
             world.addObject(slots[i], startX + i * slotWidthInCells, slotY);
         }
     }
 
     private void update() {
+        if (slots == null || inventory == null) return;
+
         int length = Math.min(inventory.length, slots.length);
         for (int i = 0; i < length; i++) {
-            if (inventory[i] != slots[i].getItem()) {
-                slots[i].setItem(inventory[i]);
+            if (slots[i] != null) {
+
+                inventory[i] = slots[i].getItem();
             }
         }
+    }
+
+    //  zwingt das Array nach einem Tausch zum Reset
+    public void forceSyncArray() {
+        if (slots == null || inventory == null) return;
+
+        int length = Math.min(inventory.length, slots.length);
+        for (int i = 0; i < length; i++) {
+            if (slots[i] != null) {
+                // Wenn das Item im UI-Slot durch Drag-and-Drop weggezogen (null) wurde,
+                // wird es hier jetzt auch im echten Spieler-Array gelöscht!
+                inventory[i] = slots[i].getItem();
+            }
+        }
+    }
+
+    // Hilfsmethode, um zu prüfen, ob dieser Visualizer einen bestimmten Slot besitzt
+    public boolean containsSlot(InventorySlot slot) {
+        for (InventorySlot s : slots) {
+            if (s == slot) return true;
+        }
+        return false;
     }
     public void removeSelf() {
         // Entfernt alle Slots, die dieser Visualizer erstellt hat
@@ -72,18 +97,20 @@ public class InventoryVisualizer extends Actor {
 
         getWorld().removeObject(this);
     }
+
     private void checkSlot() {
         List<Player> players = getWorld().getObjects(Player.class);
-
         if (players.isEmpty()) {
             return;
         }
 
         int activeSlot = players.get(0).getActiveSlot();
-
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != null) {
-                slots[i].setSelected(i == activeSlot);
+
+                if (slots[i].isSelected() != (i == activeSlot)) {
+                    slots[i].setSelected(i == activeSlot);
+                }
             }
         }
     }

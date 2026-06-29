@@ -10,7 +10,6 @@ import items.LeatherArmor;
 import items.util.GoldArmor;
 import items.util.LeatherHelmet;
 import items.util.Useable;
-import ui.InventorySlot;
 import ui.InventoryVisualizer;
 import ui.Settings;
 import ui.worlds.Backpack;
@@ -21,7 +20,7 @@ import java.util.List;
 public class Player extends DamageableActor {
     private final Item[] items;       // Das ist deine Hotbar / visualizer (z.B. 8 Slots)
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
-
+    private final Item[] armor = new Item[2];
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
     private Backpack BackpackWorld; // die backpack welt
@@ -35,6 +34,7 @@ public class Player extends DamageableActor {
     private String currentArmorType = "none"; //head oder chest
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
+
 
     public Player() {
         this(100, 8, 15,100);
@@ -207,6 +207,10 @@ public class Player extends DamageableActor {
     public Item getChestArmor() {return chestArmor;}
     public boolean hasChestArmor() {return chestArmor != null;}
     public boolean hasHeadArmor() {return headArmor != null;}
+    public void setHeadArmor(Item headArmor) {
+        this.headArmor = headArmor;
+    }
+    public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor;}
 
 
 }
