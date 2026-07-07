@@ -7,13 +7,11 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.LeatherArmor;
 import items.TestItem;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
 import ui.ItemText;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -70,7 +68,6 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
-        addObject(new LeatherArmor(),2,2);
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}

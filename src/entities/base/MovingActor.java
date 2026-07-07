@@ -1,5 +1,6 @@
 package entities.base;
 
+import entities.enemies.Zombie;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
@@ -18,7 +19,7 @@ public class MovingActor extends ImprovedActor {
     private int animationStep = 0;
 
     public MovingActor() {
-        loadImages(this.getClass().getSimpleName());
+        loadImages(this.getClass().getSimpleName(), "Walking");
     }
 
     public boolean canMove() {
@@ -100,36 +101,52 @@ public class MovingActor extends ImprovedActor {
 
     @Override
     public void move(int steps) {
+        loadImages(this.getClass().getSimpleName(), "Walking");
         animationStep = (animationStep + 1) % 4;
+
         setImage(movingActorImages[Direction.getDirectionByRotation(getRotation()).getValue()][animationStep]);
         if (canMove(steps)) {
             super.move(steps);
         }
     }
-    public void loadImages(String folderName) {
-        String imgFolder = "." + File.separator + "images" + File.separator + folderName + File.separator;
+    public void loadImages(String folderName, String subFolder ) {
+
+        String projectPath = "." + File.separator + "images" + File.separator + folderName + File.separator;
+        String finalPath = projectPath;
+
+
+        if (subFolder != null && !subFolder.isEmpty()) {
+            File subFolderFile = new File(projectPath + subFolder);
+            if (subFolderFile.exists() && subFolderFile.isDirectory()) {
+
+                finalPath = projectPath + subFolder + File.separator;
+            }
+
+        }
+
+
         for (int i = 0; i < Direction.values().length; i++) {
-            try {
-                for (int j = 0; j < 4; j++) {
-                    String imgName = Direction.values()[i].name() + j + ".png";
-                    File img = new File(imgFolder, imgName);
-                    if (img.exists()) {
-                        movingActorImages[i][j] = new ImprovedGreenfootImage(img.getCanonicalPath());
-                        movingActorImages[i][j].scale(40, 40);
-                        int rotationAmount = i % 2 == 1 ? -i : i;
-                        movingActorImages[i][j].rotate(rotationAmount * 90);
+            String directionName = Direction.values()[i].name();
+
+            for (int j = 0; j < 4; j++) {
+                String imgName = directionName + j + ".png";
+                File imgFile = new File(finalPath, imgName);
+
+                if (imgFile.exists()) {
+
+                    movingActorImages[i][j] = new ImprovedGreenfootImage(imgFile.getPath());
+                    int rotationAmount = i % 2 == 1 ? -i : i;
+                    movingActorImages[i][j].rotate(rotationAmount * 90);
+                } else {
+                    if (j == 0) {
+                        movingActorImages[i][j] = new ImprovedGreenfootImage(getImage());
                     } else {
-                        if (j == 0) {
-                            movingActorImages[i][j] = new ImprovedGreenfootImage(getImage());
-                        } else {
-                            movingActorImages[i][j] = new ImprovedGreenfootImage(movingActorImages[i][j - 1]);
-                        }
+                        movingActorImages[i][j] = movingActorImages[i][j - 1];
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
+
 
         Direction currentDir = Direction.getDirectionByRotation(getRotation());
         setImage(movingActorImages[currentDir.getValue()][animationStep]);
