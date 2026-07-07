@@ -19,7 +19,7 @@ public class Chest extends Block {
     }
 
     public void act() {
-        if (isTouching(Player.class) && !isOpen && angeklickt()) {
+        if (isTouching(Player.class) && !isOpen && Greenfoot.isKeyDown("E")) {
             openChest();
         }
     }
