@@ -194,6 +194,15 @@ public class Player extends DamageableActor {
     }
 
 
+    public void removeItem(Item item) {
+        for (int i = 0; i < maxItems; i++) {
+            if (items[i] == item) {
+                items[i] = null;
+                return;
+            }
+        }
+    }
+
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
