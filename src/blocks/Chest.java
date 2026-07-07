@@ -9,7 +9,7 @@ import items.util.ItemTyp;
 public class Chest extends Block {
     private boolean isOpen;
 
-    private static final int SIZE = 40;
+    private static final int SIZE = 32;
 
     public Chest() {
         isOpen = false;
@@ -19,7 +19,7 @@ public class Chest extends Block {
     }
 
     public void act() {
-        if (isTouching(Player.class) && !isOpen && angeklickt()) {
+        if (isTouching(Player.class) && !isOpen && Greenfoot.isKeyDown("E")) {
             openChest();
         }
     }
