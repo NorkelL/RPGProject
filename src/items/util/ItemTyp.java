@@ -1,8 +1,12 @@
 package items.util;
 
 import greenfoot.Greenfoot;
+import items.HealthPotion;
 import items.Item;
+import items.LeatherArmor;
 import items.TestItem;
+
+
 
 public enum ItemTyp {
 
@@ -10,7 +14,10 @@ public enum ItemTyp {
     // Beispiel:
     // SWORD(70) { public Item erstelleItem() { return new Sword(); } },
     // POTION(20) { public Item erstelleItem() { return new Potion(); } };
-    TEST(100) { public Item erstelleItem() { return new TestItem(); } };
+    LeatherArmor(40){ public Item erstelleItem() { return new LeatherArmor("chest"); }};
+
+
+    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); } };
 
     public final int gewicht;
 

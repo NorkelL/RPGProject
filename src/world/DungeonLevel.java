@@ -36,7 +36,6 @@ public class DungeonLevel extends World {
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
-                ItemText.class,
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 DarkFilter.class,   // Der dunkle Schleier
