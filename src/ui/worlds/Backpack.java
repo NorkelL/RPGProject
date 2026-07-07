@@ -1,0 +1,119 @@
+package ui.worlds;
+
+import entities.Player;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
+import greenfoot.World;
+import items.Item;
+import ui.InventorySlot;
+import ui.InventoryVisualizer;
+
+public class Backpack extends World {
+    // Wir merken uns das Rucksack-Array, um es wie beim Visualizer upzudaten
+    private final Item[] backpackItems;
+    private final InventorySlot[] slots;
+    private final World previousWorld;
+    private int openCooldownE = 0;
+    private int openCooldownEsc = 0;
+    private final InventorySlot headSlot;
+    private final InventorySlot chestSlot;
+    private final Player player;
+
+    public Backpack(Player player, Item[] playerItems, Item[] backpack, World world) {
+
+        super(16, 9, 80);
+        this.backpackItems = backpack;
+        this.slots = new InventorySlot[15];
+        this.previousWorld = world;
+        this.player = player;
+
+        GreenfootImage bg = new GreenfootImage("UI/Inventory/BackgroundFullInventory.png");
+        bg.scale(1280, 720);
+        setBackground(bg);
+
+
+        addObject(new InventoryVisualizer(playerItems,80,80), 0, getHeight() - 1);
+
+        // Die Slots im Raster anordnen
+        int startX = 2; // Start-Spalte im Raster
+        int startY = 1; // Start-Zeile im Raster
+        int slotCounter = 0;
+
+        // Äußere Schleife für die ZEILEN (Y-Achse)
+        for (int y = 0; y < 5; y++) {
+            // Innere Schleife für die SPALTEN (X-Achse)
+            for (int x = 0; x < 3; x++) {
+                // Sobald wir 15 Slots gebaut haben, hören wir auf
+                if (slotCounter >= 15) break;
+
+                // Neuen Slot erstellen
+                slots[slotCounter] = new InventorySlot();
+
+                // Da deine Kacheln 80x80 groß sind (siehe super(16,9,80)),
+                // skaliere den Slot auch auf 80x80, damit er die Kachel perfekt ausfüllt!
+                slots[slotCounter].getImage().scale(80, 80);
+
+                // Prüfen, ob im Rucksack-Array an dieser Stelle schon ein Item liegt
+                if (slotCounter < backpackItems.length && backpackItems[slotCounter] != null) {
+                    slots[slotCounter].setItem(backpackItems[slotCounter]);
+                }
+
+                // Slot an der  Raster-Position hinzufügen
+                addObject(slots[slotCounter], startX + x, startY + y);
+
+                slotCounter++;
+            }
+        }
+        // --- 2. RÜSTUNGS-SLOTS INSTANZIIEREN & PLATZIEREN ---
+        // Wir setzen sie etwas abseits, z.B. bei Spalte 6
+        headSlot = new InventorySlot(80,80);
+        headSlot.getImage().scale(80, 80);
+        addObject(headSlot, 8, 1); // Reihe 1 für den Helm
+
+        chestSlot = new InventorySlot(80,80);
+        chestSlot.getImage().scale(80, 80);
+        addObject(chestSlot, 8, 3); // Reihe 2 für die Brust
+    }
+
+    @Override
+    public void act() {
+        // Genau wie beim InventoryVisualizer: Wir spiegeln Änderungen live!
+        updateBackpackSlots();
+        updateArmorSlots();
+
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+            openCooldownE = 0;
+        } else if (openCooldownE > 0) {
+            openCooldownE--;
+        }
+
+        if(openCooldownEsc > 0 && !Greenfoot.isKeyDown("escape")){
+            openCooldownEsc = 0;
+        } else if (openCooldownEsc > 0) {
+            openCooldownEsc--;
+        }
+
+        // Möglichkeit bieten, die Inventarwelt wieder zu schließen
+        if (Greenfoot.isKeyDown("escape") && openCooldownEsc == 0 || Greenfoot.isKeyDown("e") && openCooldownE ==0) {
+            openCooldownE = openCooldownEsc = 1000;
+            Greenfoot.setWorld(previousWorld);
+        }
+    }
+
+    private void updateBackpackSlots() {
+        int length = Math.min(backpackItems.length, slots.length);
+        for (int i = 0; i < length; i++) {
+            if (slots[i] != null && backpackItems[i] != slots[i].getItem()) {
+                slots[i].setItem(backpackItems[i]);
+            }
+        }
+    }
+    private void updateArmorSlots() {
+        if (headSlot.getItem() != player.getHeadArmor()) {
+            headSlot.setItem(player.getHeadArmor());
+        }
+        if (chestSlot.getItem() != player.getChestArmor()) {
+            chestSlot.setItem(player.getChestArmor());
+        }
+    }
+}

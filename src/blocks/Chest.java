@@ -4,7 +4,7 @@ import entities.Player;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
-import items.ItemTyp;
+import items.util.ItemTyp;
 
 public class Chest extends Block {
     private boolean isOpen;
@@ -13,7 +13,7 @@ public class Chest extends Block {
 
     public Chest() {
         isOpen = false;
-        GreenfootImage img = new GreenfootImage("Chest/ChestClosed.png");
+        GreenfootImage img = new GreenfootImage("Blocks/Chest/ChestClosed.png");
         img.scale(SIZE, SIZE);
         setImage(img);
     }
@@ -33,7 +33,7 @@ public class Chest extends Block {
 
     public void openChest() {
         isOpen = true;
-        GreenfootImage img = new GreenfootImage("Chest/ChestOpen.png");
+        GreenfootImage img = new GreenfootImage("Blocks/Chest/ChestOpen.png");
         img.scale(SIZE, SIZE);
         setImage(img);
         dropRandomItem();

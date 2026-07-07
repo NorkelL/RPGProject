@@ -21,9 +21,7 @@ bin/
 bluej.pkg
 
 # ── Greenfoot ─────────────────────────────────────────────────────────────────
-# project.greenfoot → COMMIT IT (defines the scenario / World class).
-# If Greenfoot rewrites it on every open and causes constant diffs, discuss
-# as a team whether to ignore it and document the world class in the README.
+
 
 # ── OS junk ───────────────────────────────────────────────────────────────────
 .DS_Store
@@ -40,3 +38,11 @@ desktop.ini
 *.swp
 *.swo
 *.orig
+
+# ── graphify (knowledge graph) ────────────────────────────────────────────────
+graphify-out/
+.graphifyignore
+
+# ── AI ────────────────────────────────────────────────
+CLAUDE.md
+.claude/*
