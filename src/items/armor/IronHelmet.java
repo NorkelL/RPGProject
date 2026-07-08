@@ -1,6 +1,4 @@
-package items.util;
-
-import items.Armor;
+package items.armor;
 
 public class IronHelmet extends Armor {
 
