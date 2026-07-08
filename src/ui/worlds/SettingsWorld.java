@@ -4,9 +4,8 @@ import core.GameStarter;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import ui.Buttons.KeyButton;
-import ui.Settings;
-import ui.Buttons.StandardButton;
+import ui.buttons.KeyButton;
+import ui.buttons.StandardButton;
 
 public class SettingsWorld extends World {
 

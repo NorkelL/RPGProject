@@ -1,4 +1,4 @@
-package ui.Buttons;
+package ui.buttons;
 
 import core.GameStarter;
 import greenfoot.Greenfoot;

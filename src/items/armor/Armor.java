@@ -1,6 +1,7 @@
-package items;
+package items.armor;
 
 import greenfoot.GreenfootImage;
+import items.Item;
 import items.util.OnHover;
 import items.util.Rarity;
 
@@ -15,10 +16,13 @@ public class Armor extends Item {
     public Rarity rarity;
 
     public Armor(String slotType, String material) {
+        this(slotType,material,Rarity.setRarity());
+    }
+
+    public Armor(String slotType, String material, Rarity rarity) {
         this.slotType = slotType;
         this.material = material;
-
-        rarity = Rarity.setRarity();
+        this.rarity = rarity;
 
         // Setzt das Bild für das Item auf dem Boden oder im Slot
         // z.B. "items/leather_chest.png"

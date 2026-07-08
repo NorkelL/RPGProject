@@ -1,5 +1,6 @@
 package world;
 
+import blocks.Chest;
 import blocks.Entrance;
 import blocks.Exit;
 import blocks.Wall;
@@ -8,12 +9,9 @@ import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.*;
-import items.util.GoldArmor;
-import items.util.IronArmor;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
-import ui.ItemText;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +26,7 @@ public class DungeonLevel extends World {
     private int centerEntrance;
     private int[] centerCorridor;
     private List<Room> placedRooms = new ArrayList<>();
+    public final Player player;
 
     private static class Room {
         int width, height, x, y;
@@ -46,8 +45,8 @@ public class DungeonLevel extends World {
                 Player.class         // Darunter der Rest
         );
 
-        if(!gameStarter.pastLevel.isEmpty()){
-            centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
+        if(!gameStarter.pastLevels.isEmpty()){
+            centerEntrance = gameStarter.pastLevels.get(gameStarter.pastLevels.size() - 1).centerExit;
         }else{
             centerEntrance = this.getWidth()/2;
         }
@@ -64,7 +63,8 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit - 3,0);
         savePlaceWall(centerExit + 1,0);
 
-        addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
+        player = new Player();
+        addObject(player,centerEntrance - 1,this.getHeight()-2);
 
 
 
@@ -227,5 +227,18 @@ public class DungeonLevel extends World {
             }
         }
         setBackground(bg);
+    }
+
+    public List<int[]> getOpenedChests() {
+        List<int[]> opened = new ArrayList<>();
+        for (Chest chest : getObjects(Chest.class)) {
+            if (chest.isOpen()) opened.add(new int[]{chest.getX(), chest.getY()});
+        }
+        return opened;
+    }
+
+    public void movePlayer(int x, int y) {
+        removeObject(player);
+        addObject(player, x, y);
     }
 }

@@ -5,7 +5,7 @@ import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.Armor;
+import items.armor.Armor;
 import items.Item;
 import items.util.Useable;
 import ui.InventoryVisualizer;
@@ -13,6 +13,7 @@ import ui.Settings;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
+import java.nio.file.Path;
 import java.util.List;
 
 public class Player extends DamageableActor {

@@ -1,4 +1,4 @@
-package items;
+package items.armor;
 
 public class LeatherArmor extends Armor {
 

@@ -3,14 +3,30 @@ package items;
 import entities.Player;
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
+import items.util.OnHover;
+import items.util.Rarity;
 
 public class HealthPotion extends Item {
-    private static final int HEAL_AMOUNT = 30;
+
+    private static int HEAL_AMOUNT = 30;
+    private static final int SIZE = 32;
 
     private Player owner;
 
-    public HealthPotion() {
-        super();
+    @OnHover.ShowOnHover
+    public Rarity rarity;
+
+    public HealthPotion(){
+        this(Rarity.setRarity());
+    }
+
+    public HealthPotion(Rarity rarity) {
+        GreenfootImage img = new GreenfootImage("HealthPotion/HealthPotion.png");
+        img.scale(SIZE, SIZE);
+        setImage(img);
+
+        this.rarity = rarity;
+        HEAL_AMOUNT = Rarity.makeRare(HEAL_AMOUNT,rarity);
     }
 
     @Override
@@ -26,4 +42,6 @@ public class HealthPotion extends Item {
         owner.removeItem(this);
     }
 
+    @Override
+    public void act() {}
 }
