@@ -224,6 +224,11 @@ public class Player extends DamageableActor {
         }
     }
 
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+        super.setInvisible(invisible);
+    }
+
     public List<List<ItemData>> getInventorys(){
         List<List<ItemData>> inventorys = new ArrayList<>();
         List<ItemData> backpackData = new ArrayList<>();
