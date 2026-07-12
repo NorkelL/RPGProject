@@ -2,27 +2,30 @@ package items;
 
 import entities.Player;
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import items.util.Useable;
 
-public class HealthPotion extends Item {
-    private static final int HEAL_AMOUNT = 30;
 
+public class HoneyBottle extends Item implements Useable {
+    private int HealthCapacity;
     private Player owner;
 
-    public HealthPotion() {
-        super();
-    }
 
+    public HoneyBottle(){
+        super();
+
+    }
     @Override
     public Item onTake(Actor trigger) {
         if (trigger instanceof Player) owner = (Player) trigger;
         return super.onTake(trigger);
     }
 
-    @Override
     public void use() {
         if (owner == null) return;
-        owner.setLife(Math.min(owner.getLife() + HEAL_AMOUNT, owner.getMaxLife()));
+        owner.setInvisible(true);
+        owner.setInvisibleTimer(600);
         owner.removeItem(this);
     }
 

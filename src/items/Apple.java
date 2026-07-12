@@ -2,17 +2,18 @@ package items;
 
 import entities.Player;
 import greenfoot.Actor;
-import greenfoot.GreenfootImage;
+import items.util.Useable;
 
-public class HealthPotion extends Item {
-    private static final int HEAL_AMOUNT = 30;
+public class Apple extends Item implements Useable {
 
+    private int healing;
     private Player owner;
 
-    public HealthPotion() {
-        super();
-    }
 
+    public Apple (int Healing){
+        super();
+        this.healing = Healing;
+    }
     @Override
     public Item onTake(Actor trigger) {
         if (trigger instanceof Player) owner = (Player) trigger;
@@ -22,8 +23,7 @@ public class HealthPotion extends Item {
     @Override
     public void use() {
         if (owner == null) return;
-        owner.setLife(Math.min(owner.getLife() + HEAL_AMOUNT, owner.getMaxLife()));
+        owner.setLife(owner.getLife()+ healing);
         owner.removeItem(this);
     }
-
 }

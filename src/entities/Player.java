@@ -3,12 +3,10 @@ package entities;
 import entities.base.DamageableActor;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.Armor;
 import items.Item;
-import items.LeatherArmor;
-import items.util.GoldArmor;
-import items.util.LeatherHelmet;
 import items.util.Useable;
 import ui.InventoryVisualizer;
 import ui.Settings;
@@ -18,13 +16,21 @@ import world.DungeonLevel;
 import java.util.List;
 
 public class Player extends DamageableActor {
-    private final Item[] items;       // Das ist deine Hotbar / visualizer (z.B. 8 Slots)
+    private final Item[] items;       // Das ist die Hotbar / visualizer (z.B. 8 Slots)
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
     private final Item[] armor = new Item[2];
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
     private Backpack BackpackWorld; // die backpack welt
     private int openCooldownE = 0;
+
+
+    //Item Variablen für Effekte
+    private boolean invisible = false;
+    private int invisibleTimer;
+    private double DamageMultiplier = 1.0;
+    private int multiplierTimer = 0;
+    
 
     private final int maxLife;
     private int moveCounter;
@@ -36,6 +42,7 @@ public class Player extends DamageableActor {
     private Item chestArmor = null;// z.B. "iron", "leather"
 
 
+
     public Player() {
         this(100, 8, 15,100);
     }
@@ -45,7 +52,8 @@ public class Player extends DamageableActor {
         this.maxBackpack = maxBackpack;
         this.maxLife = maxLife;
 
-        this.items = new Item[maxItems];         // z.B. Size 8
+
+        this.items = new Item[maxItems];
         this.backpack = new Item[maxBackpack];
 
         setLife(life);
@@ -87,6 +95,14 @@ public class Player extends DamageableActor {
             toggleInventory();
         }
         draw(getLife() + "/" + maxLife);
+
+        if (invisibleTimer > 0) {
+            invisibleTimer--;
+
+            if (invisibleTimer == 0) {
+                setInvisible(false);
+            }
+        }
     }
 
     public void move() {
@@ -207,6 +223,11 @@ public class Player extends DamageableActor {
         }
     }
 
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+        super.setInvisible(invisible);
+    }
+
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
@@ -220,6 +241,8 @@ public class Player extends DamageableActor {
         this.headArmor = headArmor;
     }
     public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor;}
+    public void setInvisibleTimer(int invisibleTimer) {this.invisibleTimer = invisibleTimer;}
+    public boolean isInvisible() {return invisible;}
 
 
 }

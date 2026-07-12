@@ -37,7 +37,6 @@ public class Armor extends Item {
 
     @Override
     public void act(){
-        super.act();
         checkHover();
     }
 }
