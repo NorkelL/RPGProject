@@ -3,11 +3,10 @@ package core;
 import blocks.Chest;
 import com.google.gson.*;
 import greenfoot.*;
-import items.ItemData;
+import items.util.ItemData;
 import ui.worlds.MainMenu;
 import world.DungeonLevel;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,6 +81,7 @@ public class GameStarter extends World {
         }
         currentLevel.movePlayer(save.playerX,save.playerY);
         currentLevel.player.setLife(save.health);
+        currentLevel.player.setInventorys(save.inventorys);
 
         Greenfoot.setWorld(currentLevel);
     }
@@ -98,6 +98,7 @@ public class GameStarter extends World {
             save.pastLevelLootedChests.add(pastLevel.getOpenedChests());
         }
         save.currentLevelLootedChests = currentLevel.getOpenedChests();
+        save.inventorys = currentLevel.player.getInventorys();
 
         String filename = "save_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm")) + ".json";
         Files.writeString(SAVE_DIR.resolve(filename), new GsonBuilder().setPrettyPrinting().create().toJson(save));
@@ -109,9 +110,7 @@ class SaveData{
     int health;
     int currentLevel;
     long seed;
-    List<ItemData> hotbar;
-    List<ItemData> backpack;
-    List<ItemData> armor;
+    List<List<ItemData>> inventorys;
     List<List<int[]>> pastLevelLootedChests;
     List<int[]> currentLevelLootedChests;
 }
