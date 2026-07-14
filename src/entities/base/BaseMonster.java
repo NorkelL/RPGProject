@@ -86,6 +86,9 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
             onDeath();
         }
     }
+    public void receiveHit(int damage){
+        this.life -= damage;
+    }
 
     @Override
     protected void onDeath() {

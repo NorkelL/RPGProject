@@ -62,7 +62,19 @@ public class Player extends DamageableActor {
         else if (Greenfoot.isKeyDown("P")) { putItem(); }
         else if (Greenfoot.isKeyDown("E") && openCooldownE == 0){openCooldownE=1000; toggleInventory();}
         draw(getLife() + "/" + maxLife);
+
     }
+
+
+   // private void checkKeyPress() {
+     //   if ("escape".equals(Greenfoot.getKey())) {
+       //     if (!isPaused) {
+         //       showPauseScreen();
+           // } else {
+             //   hidePauseScreen();
+            //}
+        //}
+    //}
 
     public void move() {
         if (canMove()) {
@@ -134,11 +146,10 @@ public class Player extends DamageableActor {
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }
 
-   // private void hit(Waffen dieseWaffe){
-     //   int damage = dieseWaffe.getDamage;
-       // if(getCurrentItem instanceof Waffe){
-         //   getCurrentItem.hit
-        //}
+  //  private void hit(){
+    //    if(getCurrentItem instanceof Waffen){
+      //      getCurrentItem.hit
+       // }
 
-    //}
+   // }
 }
