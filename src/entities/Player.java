@@ -8,7 +8,7 @@ import items.Armor;
 import items.Item;
 import items.LeatherArmor;
 import items.util.GoldArmor;
-import items.util.LeatherHelmet;
+import items.LeatherHelmet;
 import items.util.Useable;
 import ui.InventoryVisualizer;
 import ui.Settings;

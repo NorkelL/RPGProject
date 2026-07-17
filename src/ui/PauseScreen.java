@@ -4,24 +4,14 @@ import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 
-public class PauseScreen extends Actor {
+public class PauseScreen extends DarkFilter {
 
-
-    private boolean isPaused= false;
-
-    public boolean isPaused() {
-        return isPaused;
+    public PauseScreen(int width, int hight){
+        super (width,hight);
     }
 
-    public void activate () {
-        World myWorld = getWorld();
-        myWorld.addObject();
-    }
-    public void deactivate () {
-        World myWorld = getWorld();
-        myWorld.removeObject();
-    }
-//hi
+
+
 
 
 

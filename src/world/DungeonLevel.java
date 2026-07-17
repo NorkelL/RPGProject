@@ -10,10 +10,17 @@ import greenfoot.World;
 import items.util.GoldArmor;
 import items.util.IronArmor;
 import items.TestItem;
+import ui.Buttons.*;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
 import ui.ItemText;
+import ui.PauseScreen;
+import ui.Buttons.restartButton;
+import ui.Buttons.SaveGameButton;
+import ui.Buttons.settingPauseButton;
+import greenfoot.Greenfoot;
+import ui.Settings;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +35,11 @@ public class DungeonLevel extends World {
     private int centerEntrance;
     private int[] centerCorridor;
     private List<Room> placedRooms = new ArrayList<>();
+    private boolean paused = false;
+    private SaveGameButton saveGameButton;
+    private settingPauseButton settingPauseButton;
+    private restartButton restartButton;
+    private PauseScreen pauseScreen;
 
     private static class Room {
         int width, height, x, y;
@@ -39,9 +51,11 @@ public class DungeonLevel extends World {
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
+                PauseButtons.class,
+                PauseScreen.class,
+                DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
-                DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,         // das ist die Wall nur zur Info
                 Player.class         // Darunter der Rest
         );
@@ -70,6 +84,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
@@ -228,4 +243,45 @@ public class DungeonLevel extends World {
         }
         setBackground(bg);
     }
+    @Override public void act(){
+        String key = Greenfoot.getKey();
+
+        if (Settings.pauseKey.equals(key)) {
+            togglePause();
+        }
+    }
+    public void togglePause(){
+        paused = !paused;
+        if (paused){
+            showPause();
+        }else{
+            hidePause();
+        }
+    }
+    public void showPause(){
+        int cx = getWidth() / 2;
+        int cy = getHeight() / 2;
+
+        pauseScreen = new PauseScreen(getWidth() * getCellSize(), getHeight() * getCellSize());
+        addObject(pauseScreen, cx, cy);
+
+        restartButton = new restartButton();
+        addObject(restartButton, cx, cy - 3);
+
+        settingPauseButton = new settingPauseButton();
+        addObject(settingPauseButton, cx, cy);
+
+        saveGameButton = new SaveGameButton();
+        addObject(saveGameButton, cx, cy + 3);
+    }
+
+    public void hidePause(){
+        removeObject(pauseScreen);
+        removeObject(restartButton);
+        removeObject(settingPauseButton);
+        removeObject(saveGameButton);
+    }
+
 }
+
+

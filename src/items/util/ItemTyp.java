@@ -14,7 +14,7 @@ public enum ItemTyp {
     // Beispiel:
     // SWORD(70) { public Item erstelleItem() { return new Sword(); } },
     // POTION(20) { public Item erstelleItem() { return new Potion(); } };
-    LeatherArmor(40){ public Item erstelleItem() { return new LeatherArmor("chest"); }};
+    LeatherArmor(40){ public Item erstelleItem() { return new LeatherArmor("chest"); }},
 
 
     HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); } };
