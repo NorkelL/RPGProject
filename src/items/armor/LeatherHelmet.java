@@ -1,4 +1,4 @@
-package items;
+package items.armor;
 
 public class LeatherHelmet extends Armor {
     public LeatherHelmet(String slotType) {

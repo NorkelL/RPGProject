@@ -1,5 +1,7 @@
 package items.util;
 
+import entities.Player;
+
 public interface Useable {
-    void use();
+    void use(Player trigger);
 }

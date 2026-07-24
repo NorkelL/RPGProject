@@ -17,6 +17,7 @@ import java.util.List;
 public class MovingActor extends ImprovedActor {
     private  GreenfootImage[][] movingActorImages = new ImprovedGreenfootImage[4][4];
     private int animationStep = 0;
+    private boolean invisible = false;
 
     public MovingActor() {
         loadImages(this.getClass().getSimpleName(), "Walking");
@@ -150,5 +151,24 @@ public class MovingActor extends ImprovedActor {
 
         Direction currentDir = Direction.getDirectionByRotation(getRotation());
         setImage(movingActorImages[currentDir.getValue()][animationStep]);
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+
+        for (int i = 0; i < movingActorImages.length; i++) {
+            for (int j = 0; j < movingActorImages[i].length; j++) {
+                if (movingActorImages[i][j] != null) {
+                    movingActorImages[i][j].setTransparency(invisible ? 80 : 255);
+                }
+            }
+        }
+
+        updateCurrentImage();
+    }
+
+    private void updateCurrentImage() {
+        Direction dir = Direction.getDirectionByRotation(getRotation());
+        setImage(movingActorImages[dir.getValue()][animationStep]);
     }
 }

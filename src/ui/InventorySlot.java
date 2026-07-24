@@ -32,8 +32,6 @@ public class InventorySlot extends Actor {
         this.slotPixelHeight = pixelHeight;
         this.baseImage = new GreenfootImage("UI/Inventory/InventorySlot.png");
         this.baseImage.scale(slotPixelWidth, slotPixelHeight);
-
-        // Leuchtendes Hintergrundbild laden und skalieren
         this.glowingImage = new GreenfootImage("UI/Inventory/InventorySlotGlowing.png");
         this.glowingImage.scale(slotPixelWidth, slotPixelHeight);
 
@@ -200,6 +198,7 @@ public class InventorySlot extends Actor {
 
     @Override
     public void act() {
+        handleDragAndDrop();
         super.act();
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse != null && item != null && getWorld() instanceof Backpack) {

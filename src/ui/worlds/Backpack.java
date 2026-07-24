@@ -34,9 +34,9 @@ public class Backpack extends World {
 
         addObject(new InventoryVisualizer(playerItems,80,80), 0, getHeight() - 1);
 
-        // Die Slots im Raster anordnen
-        int startX = 2; // Start-Spalte im Raster
-        int startY = 1; // Start-Zeile im Raster
+
+        int startX = 2;
+        int startY = 1;
         int slotCounter = 0;
 
         // Äußere Schleife für die ZEILEN (Y-Achse)
@@ -64,7 +64,7 @@ public class Backpack extends World {
             }
         }
         // --- 2. RÜSTUNGS-SLOTS INSTANZIIEREN & PLATZIEREN ---
-        // Wir setzen sie etwas abseits, z.B. bei Spalte 6
+
         headSlot = new InventorySlot(80,80);
         headSlot.getImage().scale(80, 80);
         addObject(headSlot, 8, 1); // Reihe 1 für den Helm
