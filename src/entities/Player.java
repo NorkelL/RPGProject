@@ -211,7 +211,7 @@ public class Player extends DamageableActor {
         }
 
 
-        loadImages(folder);
+        loadImages(folder,null);
     }
 
 

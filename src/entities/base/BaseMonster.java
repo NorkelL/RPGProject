@@ -14,7 +14,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     private int moveCooldown = 0;
     private int moveDelay = 20; // Anzahl der act()-Aufrufe zwischen Bewegungen
 
-    public BaseMonster(int life, int agroRadius, int leashRadius) {
+    public BaseMonster(int life, int agroRadius, int leashRadius ) {
         this.life = life;
         this.agroRadius = agroRadius;
         this.leashRadius = leashRadius;
@@ -110,5 +110,11 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     @Override
     protected void onDeath() {
         getWorld().removeObject(this);
+    }
+
+    public void hit (){
+            loadImages(this.getClass().getSimpleName(), "Attacking");
+            Greenfoot.delay(15);
+            loadImages(this.getClass().getSimpleName(), "Walking");
     }
 }
