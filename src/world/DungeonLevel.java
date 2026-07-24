@@ -8,6 +8,7 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.*;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;

@@ -4,6 +4,7 @@ import entities.Player;
 import entities.base.ImprovedActor;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import items.util.OnHover;
 import items.util.Rarity;
@@ -28,6 +29,11 @@ public abstract class Item extends ImprovedActor implements Useable, OnHover {
     public Item onTake(Actor trigger) {
         getWorld().removeObject(this);
         return this;
+    }
+    public Item(){
+        GreenfootImage img = new GreenfootImage("items/" +this.getClass().getSimpleName() + ".png");
+        img.scale(32,32);
+        setImage(img);
     }
 
     public void onPut(int x, int y) {

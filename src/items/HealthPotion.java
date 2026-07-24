@@ -11,7 +11,11 @@ public class HealthPotion extends Item {
     private static int HEAL_AMOUNT = 30;
     private static final int SIZE = 32;
 
-    public HealthPotion() {
+    public HealthPotion(){
+        this(Rarity.setRarity());
+    }
+
+    public HealthPotion(Rarity rarity) {
         GreenfootImage img = new GreenfootImage("HealthPotion/HealthPotion.png");
         img.scale(SIZE, SIZE);
         setImage(img);
