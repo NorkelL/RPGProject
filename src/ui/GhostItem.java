@@ -3,8 +3,9 @@ package ui;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
+import items.Item;
 
-public class GhostItem extends Actor {
+public class GhostItem extends Item {
     public GhostItem(GreenfootImage itemImage) {
         setImage(new GreenfootImage(itemImage));
     }

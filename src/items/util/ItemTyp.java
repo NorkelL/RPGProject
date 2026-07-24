@@ -31,7 +31,9 @@ public enum ItemTyp {
         this.gewicht = gewicht;
     }
 
-    public Item erstelleItem() { return null; }
+    public Item erstelleItem() {
+        return null;
+    }
 
     public static ItemTyp zufällig() {
         int gesamt = 0;
