@@ -1,6 +1,8 @@
-package items;
+package items.waffen;
 
-public class Pfeile extends Waffen{
+import items.Waffen;
+
+public class Pfeile extends Waffen {
         private int damage;
         private int distance;
 

@@ -348,12 +348,6 @@ public class Player extends DamageableActor {
         }
     }
 
-
-    public void setInvisible(boolean invisible) {
-        this.invisible = invisible;
-        super.setInvisible(invisible);
-    }
-
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
     public Item[] getItems() { return items; }

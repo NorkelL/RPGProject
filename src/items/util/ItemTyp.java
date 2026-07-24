@@ -1,7 +1,7 @@
 package items.util;
 
 import greenfoot.Greenfoot;
-import items.HealthPotion;
+import items.misc.HealthPotion;
 import items.Item;
 import items.armor.LeatherArmor;
 

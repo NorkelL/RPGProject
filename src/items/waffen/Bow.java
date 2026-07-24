@@ -1,4 +1,6 @@
-package items;
+package items.waffen;
+
+import items.Waffen;
 
 public class Bow  extends Waffen {
     private int damage;

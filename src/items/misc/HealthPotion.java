@@ -1,14 +1,15 @@
-package items;
+package items.misc;
 
 import entities.Player;
 import greenfoot.GreenfootImage;
+import items.Item;
 import items.util.OnHover;
 import items.util.Rarity;
 
 public class HealthPotion extends Item {
 
     @OnHover.ShowOnHover
-    private static int HEAL_AMOUNT = 30;
+    private int HEAL_AMOUNT = 30;
     private static final int SIZE = 32;
 
     public HealthPotion(){

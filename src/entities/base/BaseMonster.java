@@ -117,4 +117,8 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
             Greenfoot.delay(15);
             loadImages(this.getClass().getSimpleName(), "Walking");
     }
+
+    public void reciveHit(int damage){
+        life = life - damage;
+    }
 }

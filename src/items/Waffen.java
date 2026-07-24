@@ -1,12 +1,11 @@
 package items;
 
-import entities.BaseMonster;
-import entities.Monster;
+import entities.base.BaseMonster;
 import greenfoot.World;
 
 import java.util.List;
 
-public class Waffen extends Item {
+public abstract class Waffen extends Item {
 
     private int damage;
     private int distance;
@@ -32,10 +31,10 @@ public class Waffen extends Item {
 
     public void hit() {
        World myWorld = getWorld();
-        List<Monster> monsters = myWorld.getObjectsAt(getNextX(distance), getNextY(distance), Monster.class);
+        List<BaseMonster> monsters = myWorld.getObjectsAt(getNextX(distance), getNextY(distance), BaseMonster.class);
        if (!monsters.isEmpty()) {
-            Monster monster = monsters.get(0);
-           baseMonster.receiveHit;
+            BaseMonster monster = monsters.get(0);
+            monster.reciveHit(damage);
        }
 
 

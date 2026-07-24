@@ -1,6 +1,6 @@
-package items;
+package items.waffen;
 
-import entities.Player;
+import items.Waffen;
 
 public class Messer extends Waffen {
     private int damage;
