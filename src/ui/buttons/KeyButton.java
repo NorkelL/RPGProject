@@ -1,4 +1,4 @@
-package ui.Buttons;
+package ui.buttons;
 
 import greenfoot.*;
 import ui.Settings;

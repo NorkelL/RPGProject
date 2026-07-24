@@ -4,23 +4,23 @@ import entities.base.DamageableActor;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.World;
-import items.Armor;
+import items.armor.Armor;
 import items.Item;
-import items.LeatherArmor;
-import items.util.GoldArmor;
-import items.util.LeatherHelmet;
+import items.util.ItemData;
+import items.util.Rarity;
 import items.util.Useable;
 import ui.InventoryVisualizer;
 import ui.Settings;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends DamageableActor {
     private final Item[] items;       // Das ist deine Hotbar / visualizer (z.B. 8 Slots)
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
-    private final Item[] armor = new Item[2];
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
     private Backpack BackpackWorld; // die backpack welt
@@ -30,10 +30,10 @@ public class Player extends DamageableActor {
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
-    private boolean hasArmor = false;
-    private String currentArmorType = "none"; //head oder chest
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
+
+    private static List<String> itemPackages; //für item erstellen
 
 
     public Player() {
@@ -155,7 +155,7 @@ public class Player extends DamageableActor {
         int useSlot = getActiveSlot();
 
         if (useSlot != -1 && items[useSlot] != null && items[useSlot] instanceof Useable) {
-            items[useSlot].use();
+            items[useSlot].use(this);
         }
     }
 
@@ -206,6 +206,126 @@ public class Player extends DamageableActor {
             }
         }
     }
+
+    public List<List<ItemData>> getInventorys(){
+        List<List<ItemData>> inventorys = new ArrayList<>();
+        List<ItemData> backpackData = new ArrayList<>();
+        inventorys.add(backpackData);
+        for (int i = 0; i < backpack.length; i++) {
+            if (backpack[i] != null) {
+                ItemData data = new ItemData();
+                data.slot = i;
+                data.classname = backpack[i].getClass().getSimpleName();
+                data.rarity = backpack[i].rarity.name();
+                backpackData.add(data);
+            }
+        }
+
+        List<ItemData> hotbarData = new ArrayList<>();
+        inventorys.add(hotbarData);
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                ItemData data = new ItemData();
+                data.slot = i;
+                data.classname = items[i].getClass().getSimpleName();
+                data.rarity = items[i].rarity.name();
+                hotbarData.add(data);
+            }
+        }
+
+
+        List<ItemData> armorData = new ArrayList<>();
+        inventorys.add(armorData);
+
+        if (headArmor != null) {
+            ItemData headArmorData = new ItemData();
+            headArmorData.slot = 0;
+            headArmorData.classname = headArmor.getClass().getSimpleName();
+            headArmorData.rarity = headArmor.rarity.name();
+            armorData.add(headArmorData);
+        }
+
+        if (chestArmor != null) {
+            ItemData chestArmorData = new ItemData();
+            chestArmorData.slot = 1;
+            chestArmorData.classname = chestArmor.getClass().getSimpleName();
+            chestArmorData.rarity = chestArmor.rarity.name();
+            armorData.add(chestArmorData);
+        }
+
+        return inventorys;
+    }
+
+    public void setInventorys(List<List<ItemData>> inventorys) {
+        for (int i = 0; i < backpack.length; i++) { backpack[i] = null; }
+        for (int i = 0; i < items.length; i++) { items[i] = null; }
+        headArmor = null;
+        chestArmor = null;
+
+        for (ItemData data : inventorys.get(0)) {
+            backpack[data.slot] = createItem(data);
+        }
+
+        for (ItemData data : inventorys.get(1)) {
+            items[data.slot] = createItem(data);
+        }
+
+        for (ItemData data : inventorys.get(2)) {
+            if (data.slot == 0) { headArmor = createItem(data); }
+            else if (data.slot == 1) { chestArmor = createItem(data); }
+        }
+
+        updateAppearance();
+    }
+
+    private Item createItem(ItemData data) {
+        if (data == null || data.classname == null) {
+            return null;
+        }
+
+        for (String pkg : getItemPackages()) {
+            try {
+                Item item = (Item) Class.forName(pkg + data.classname).getDeclaredConstructor().newInstance();
+                if (data.rarity != null) {
+                    item.rarity = Rarity.valueOf(data.rarity);
+                }
+                return item;
+            } catch (ClassNotFoundException e) {
+                // Klasse liegt in einem anderen Package, nächstes probieren
+            } catch (ReflectiveOperationException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private static List<String> getItemPackages() {
+        if (itemPackages != null) { return itemPackages; }
+
+        itemPackages = new ArrayList<>();
+        itemPackages.add("items.");
+        try {
+            File codeRoot = new File(Item.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            collectSubPackages(new File(codeRoot, "items"), "items.", itemPackages);
+        } catch (Exception e) {
+            // Scan fehlgeschlagen (z.B. exportiertes Jar) -> nur Basis-Package "items."
+        }
+        return itemPackages;
+    }
+
+    private static void collectSubPackages(File dir, String prefix, List<String> result) {
+        File[] children = dir.listFiles();
+        if (children == null) { return; }
+
+        for (File child : children) {
+            if (child.isDirectory()) {
+                String pkg = prefix + child.getName() + ".";
+                result.add(pkg);
+                collectSubPackages(child, pkg, result);
+            }
+        }
+    }
+
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }

@@ -44,4 +44,8 @@ public enum Rarity {
         return COMMON;
 
     }
+
+    public static int makeRare(int oldValue, Rarity rarity) {
+        return (int) Math.round(oldValue * rarity.Multiplier);
+    }
 }

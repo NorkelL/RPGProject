@@ -1,16 +1,27 @@
 package items;
 
+import entities.Player;
 import entities.base.ImprovedActor;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.MouseInfo;
 import items.util.OnHover;
+import items.util.Rarity;
 import items.util.Useable;
 import ui.ItemText;
 
-import java.util.List;
-
 public abstract class Item extends ImprovedActor implements Useable, OnHover {
+
+    @OnHover.ShowOnHover
+    public Rarity rarity;
+
+    protected Item(){
+        this(Rarity.setRarity());
+    }
+
+    protected Item(Rarity rarity) {
+        this.rarity = rarity;
+    }
 
     protected ItemText currentHoverer;
 
@@ -24,7 +35,7 @@ public abstract class Item extends ImprovedActor implements Useable, OnHover {
     }
 
     @Override
-    public void use() {}
+    public void use(Player trigger) {}
 
     public void checkHover() {
         MouseInfo mouse =  Greenfoot.getMouseInfo();
@@ -46,3 +57,4 @@ public abstract class Item extends ImprovedActor implements Useable, OnHover {
         }
     }
 }
+

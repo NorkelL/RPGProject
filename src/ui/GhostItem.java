@@ -1,6 +1,5 @@
 package ui;
 
-import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
