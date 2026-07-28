@@ -12,6 +12,7 @@ import items.util.Rarity;
 import items.util.Useable;
 import ui.InventoryVisualizer;
 import ui.Settings;
+import ui.XPBar;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
@@ -39,6 +40,10 @@ public class Player extends DamageableActor {
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
+    private int currentXP = 0;
+    private int currentLevel = 1;
+    private int xpToNextLevel = 100;
+    private int levelUpTimer = 0;
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
 
@@ -96,6 +101,7 @@ public class Player extends DamageableActor {
             toggleInventory();
         }
         draw(getLife() + "/" + maxLife);
+        updateLevelUpText();
 
         if (invisibleTimer > 0) {
             invisibleTimer--;
@@ -198,6 +204,7 @@ public class Player extends DamageableActor {
     protected void addedToWorld(World world) {
         inventory = new InventoryVisualizer(items,60,60);
         world.addObject(inventory, 0, world.getHeight() - 1);
+        world.addObject(new XPBar(this), world.getWidth() - 6, world.getHeight() - 1);
     }
 
     public void updateAppearance() {
@@ -347,6 +354,29 @@ public class Player extends DamageableActor {
             }
         }
     }
+
+    public void gainXP(int xp) {
+        currentXP += xp;
+        while (currentXP >= xpToNextLevel) {
+            currentXP -= xpToNextLevel;
+            currentLevel++;
+            xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
+            levelUpTimer = 50;
+        }
+    }
+
+    private void updateLevelUpText() {
+        if (levelUpTimer > 0) {
+            levelUpTimer--;
+            getWorld().showText("LEVEL UP!", getX(), getY() - 1);
+        } else {
+            getWorld().showText("", getX(), getY() - 1);
+        }
+    }
+
+    public int getCurrentXP()     { return currentXP; }
+    public int getCurrentLevel()   { return currentLevel; }
+    public int getXpToNextLevel()  { return xpToNextLevel; }
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
