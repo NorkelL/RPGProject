@@ -10,6 +10,8 @@ import items.Item;
 import items.util.ItemData;
 import items.util.Rarity;
 import items.util.Useable;
+import items.waffen.Bow;
+import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
 import ui.Settings;
 import ui.worlds.Backpack;
@@ -41,6 +43,7 @@ public class Player extends DamageableActor {
     private int activeSlot;
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
+    private BowSprite activeBowSprite;
 
     private static List<String> itemPackages; //für item erstellen
 
@@ -104,6 +107,7 @@ public class Player extends DamageableActor {
                 setInvisible(false);
             }
         }
+        updateActiveWeapon();
     }
 
     public void move() {
@@ -344,6 +348,30 @@ public class Player extends DamageableActor {
                 String pkg = prefix + child.getName() + ".";
                 result.add(pkg);
                 collectSubPackages(child, pkg, result);
+            }
+        }
+    }
+    private void updateActiveWeapon() {
+
+        Item currentItem = (activeSlot >= 0 && activeSlot < items.length) ? items[activeSlot] : null;
+
+
+        if (currentItem instanceof Bow) {
+            Bow bow = (Bow) currentItem;
+
+
+            if (activeBowSprite == null) {
+                activeBowSprite = new BowSprite(bow);
+                getWorld().addObject(activeBowSprite, getX(), getY());
+            }
+
+            activeBowSprite.update(this);
+
+        } else {
+
+            if (activeBowSprite != null) {
+                getWorld().removeObject(activeBowSprite);
+                activeBowSprite = null;
             }
         }
     }
