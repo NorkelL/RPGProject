@@ -6,8 +6,12 @@ import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
+import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.waffen.Arrow;
+import items.waffen.Bow;
+import items.waffen.BowSprite;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
@@ -47,7 +51,9 @@ public class DungeonLevel extends World {
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 DarkFilter.class,   // Der dunkle Schleier
-                Wall.class,         // das ist die Wall nur zur Info
+                Wall.class,
+                Arrow.class,
+                BowSprite.class,           // das ist die Wall nur zur Info
                 Player.class         // Darunter der Rest
         );
 
