@@ -13,6 +13,7 @@ public class Settings  {
     public static String putItem ="p";
     public static String inventoryToggle ="e";
     public static String useItem ="f";
+    public static String attack ="MOUSE1";
 
 
     public static boolean soundOn = true;

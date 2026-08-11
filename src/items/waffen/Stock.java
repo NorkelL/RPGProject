@@ -10,6 +10,8 @@ public class Stock extends Waffen {
         super(5, 2);
         setImage("Waffen.Stock.png");
     }
+
+    public Stock(){this(5,2);}
 }
 
 

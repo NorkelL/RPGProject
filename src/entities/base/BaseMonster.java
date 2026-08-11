@@ -7,28 +7,36 @@ import greenfoot.Greenfoot;
 import java.util.List;
 
 public abstract class BaseMonster extends DamageableActor implements ASharpPathfinding {
-    private int life;
     private int agroRadius;
     private int leashRadius;
     private boolean isFollowingPlayer = false;
     private int moveCooldown = 0;
     private int moveDelay = 20; // Anzahl der act()-Aufrufe zwischen Bewegungen
+    private int attackCooldown = 0; // laeuft nach hit() runter, statt delay()
 
     public BaseMonster(int life, int agroRadius, int leashRadius ) {
-        this.life = life;
         this.agroRadius = agroRadius;
         this.leashRadius = leashRadius;
+        setLife(life);
     }
 
     @Override
     public void act(){
+        super.act();
+
+        if(attackCooldown > 0){
+            attackCooldown--;
+            if(attackCooldown == 0){
+                loadImages(this.getClass().getSimpleName(), "Walking");
+            }
+        }
+
         if(moveCooldown > 0){
             moveCooldown--;
             return;
         }
 
         move();
-        checkDeath();
 
         moveCooldown = moveDelay;
     }
@@ -89,21 +97,13 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         return false;
     }
 
+    // spieler einmal suchen, dann ein a*-aufruf
     protected void moveToPlayer(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
-            for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                if (!getWorld().getObjectsAt(i, y, Player.class).isEmpty()){
-                    aSharpPathfindTakeStep(i,j);
-                }
+        for (Player player : getWorld().getObjects(Player.class)) {
+            if (!player.isInvisible()) {
+                aSharpPathfindTakeStep(player.getX(), player.getY());
+                return;
             }
-        }
-    }
-
-    private void checkDeath(){
-        if(life <= 0){
-            onDeath();
         }
     }
 
@@ -113,12 +113,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     }
 
     public void hit (){
-            loadImages(this.getClass().getSimpleName(), "Attacking");
-            Greenfoot.delay(15);
-            loadImages(this.getClass().getSimpleName(), "Walking");
-    }
-
-    public void reciveHit(int damage){
-        life = life - damage;
+        loadImages(this.getClass().getSimpleName(), "Attacking");
+        attackCooldown = 15;
     }
 }

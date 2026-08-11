@@ -10,5 +10,7 @@ public class Messer extends Waffen {
         super(15, 1);
         setImage("Waffe.Messer.png");
     }
+
+    public Messer(){this(15,1);}
 }
 

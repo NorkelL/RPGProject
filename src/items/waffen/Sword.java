@@ -11,5 +11,7 @@ public class Sword extends Waffen {
         super(10, 2);
         setImage("Waffe.Schwert.png");
     }
+
+    public Sword(){this(10,2);}
 }
 

@@ -26,6 +26,8 @@ public class Bow  extends Waffen implements Useable {
         setImage(normalImage);
     }
 
+    public Bow(){this(5,3);}
+
 
 
 

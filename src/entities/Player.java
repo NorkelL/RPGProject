@@ -14,6 +14,7 @@ import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
 import ui.Settings;
+import ui.Healthbar;
 import ui.XPBar;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
@@ -45,7 +46,7 @@ public class Player extends DamageableActor {
     private int currentXP = 0;
     private int currentLevel = 1;
     private int xpToNextLevel = 100;
-    private int levelUpTimer = 0;
+    private int debugXPCooldown = 0; // nur zum testen der xp-bar, kann spaeter wieder raus
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
     private BowSprite activeBowSprite;
@@ -70,12 +71,14 @@ public class Player extends DamageableActor {
 
     @Override
     public void act() {
+        super.act();
+
         if(moveCounter>0){
             moveCounter--;
             return;
         }
 
-        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown(Settings.inventoryToggle)){
             openCooldownE = 0;
         } else if (openCooldownE > 0) {
             openCooldownE--;
@@ -103,8 +106,6 @@ public class Player extends DamageableActor {
             openCooldownE = 1000;
             toggleInventory();
         }
-        draw(getLife() + "/" + maxLife);
-        updateLevelUpText();
 
         if (invisibleTimer > 0) {
             invisibleTimer--;
@@ -206,9 +207,21 @@ public class Player extends DamageableActor {
 
     @Override
     protected void addedToWorld(World world) {
+        // movePlayer() nimmt den spieler raus und setzt ihn neu rein -> sonst haengt die ui doppelt drin
+        if (!world.getObjects(XPBar.class).isEmpty()) {
+            return;
+        }
+
         inventory = new InventoryVisualizer(items,60,60);
         world.addObject(inventory, 0, world.getHeight() - 1);
-        world.addObject(new XPBar(this), world.getWidth() - 6, world.getHeight() - 1);
+
+        XPBar xpBar = new XPBar(this);
+        int barCells = xpBar.getImage().getWidth() / world.getCellSize();
+        world.addObject(xpBar, world.getWidth() - barCells / 2 - 1, world.getHeight() - 1);
+
+        Healthbar healthbar = new Healthbar(this);
+        int lebenCells = healthbar.getImage().getWidth() / world.getCellSize();
+        world.addObject(healthbar, lebenCells / 2, world.getHeight() - 1);
     }
 
     public void updateAppearance() {
@@ -290,6 +303,11 @@ public class Player extends DamageableActor {
     }
 
     public void setInventorys(List<List<ItemData>> inventorys) {
+        // kaputter save -> lieber gar nichts laden als mittendrin abbrechen
+        if (inventorys == null || inventorys.size() < 3) {
+            return;
+        }
+
         for (int i = 0; i < backpack.length; i++) { backpack[i] = null; }
         for (int i = 0; i < items.length; i++) { items[i] = null; }
         headArmor = null;
@@ -389,16 +407,7 @@ public class Player extends DamageableActor {
             currentXP -= xpToNextLevel;
             currentLevel++;
             xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
-            levelUpTimer = 50;
-        }
-    }
-
-    private void updateLevelUpText() {
-        if (levelUpTimer > 0) {
-            levelUpTimer--;
-            getWorld().showText("LEVEL UP!", getX(), getY() - 1);
-        } else {
-            getWorld().showText("", getX(), getY() - 1);
+            say("LEVEL UP!");
         }
     }
 

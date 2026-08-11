@@ -13,9 +13,11 @@ import items.waffen.Arrow;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.DarkFilter;
+import ui.Healthbar;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
 import ui.ItemText;
+import ui.XPBar;
 import items.*;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
@@ -43,13 +45,15 @@ public class DungeonLevel extends World {
         Room(int width, int height, int x, int y) { this.width = width; this.height = height; this.x = x; this.y = y; }
     }
 
-    public DungeonLevel(long seed,GameStarter gameStarter) {
+    public DungeonLevel(long seed,GameStarter gameStarter,Player p) {
         super(30, 30, 40);
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
+                Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
+                XPBar.class,
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,
                 Arrow.class,
@@ -75,7 +79,7 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit - 3,0);
         savePlaceWall(centerExit + 1,0);
 
-        player = new Player();
+        player = p;
         addObject(player,centerEntrance - 1,this.getHeight()-2);
 
 

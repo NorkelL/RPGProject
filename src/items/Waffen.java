@@ -24,9 +24,9 @@ public abstract class Waffen extends Item {
     }
     public int getNextY(int distance){
         double radians = Math.toRadians(getRotation());
-        int dy = (int) Math.round(Math.cos(radians) * distance);
+        int dy = (int) Math.round(Math.sin(radians) * distance);
 
-        return getX()+dy;
+        return getY()+dy;
     }
 
     public void hit() {
@@ -34,7 +34,7 @@ public abstract class Waffen extends Item {
         List<BaseMonster> monsters = myWorld.getObjectsAt(getNextX(maxDistance), getNextY(maxDistance), BaseMonster.class);
        if (!monsters.isEmpty()) {
             BaseMonster monster = monsters.get(0);
-            monster.reciveHit(damage);
+            monster.takeDamage(damage);
        }
 
 
