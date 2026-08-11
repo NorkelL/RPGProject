@@ -2,6 +2,7 @@ package entities.enemies;
 
 import entities.base.BaseMonster;
 import entities.util.Hitting;
+import util.SoundManager;
 
 public class Gnome extends BaseMonster implements Hitting {
 
@@ -13,5 +14,11 @@ public class Gnome extends BaseMonster implements Hitting {
     public void act() {
         super.move();
         super.act();
+    }
+
+    @Override
+    protected void onDeath() {
+        SoundManager.play("death_gnome.mp3");
+        super.onDeath();
     }
 }

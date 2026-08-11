@@ -5,6 +5,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import items.util.ItemTyp;
+import util.SoundManager;
 
 public class Chest extends Block {
     private boolean isOpen;
@@ -19,7 +20,7 @@ public class Chest extends Block {
     }
 
     public void act() {
-        if (isTouching(Player.class) && !isOpen && Greenfoot.isKeyDown("E")) {
+        if (isTouching(Player.class) && !isOpen && Greenfoot.isKeyDown("R")) {
             openChest();
         }
     }
@@ -33,6 +34,7 @@ public class Chest extends Block {
 
     public void openChest() {
         isOpen = true;
+        SoundManager.play("chest_open.mp3");
         GreenfootImage img = new GreenfootImage("Blocks/Chest/ChestOpen.png");
         img.scale(SIZE, SIZE);
         setImage(img);

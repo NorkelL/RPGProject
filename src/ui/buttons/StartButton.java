@@ -46,6 +46,7 @@ public class StartButton extends UI implements Clickable {
 
     @Override
     public UI onClick(){
+        playClickSound();
         gameStarter.start();
         return null;
     }

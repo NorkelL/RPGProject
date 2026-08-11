@@ -46,7 +46,8 @@ public class SettingsWorld extends World {
         addObject(new StandardButton("Put Item"),220,900);
         addObject(new StandardButton("Inventory"), 220, 1020);
         addObject(new StandardButton("Sound"), 220, 1140);
-        addObject(new StandardButton("use Item"), 220, 1260);
+        addObject(new StandardButton("Music"), 220, 1260);
+        addObject(new StandardButton("use Item"), 220, 1380);
 
 
         addObject(new KeyButton("W","up"), 700, 180);
@@ -58,7 +59,8 @@ public class SettingsWorld extends World {
         addObject(new KeyButton("p","putItem"), 700, 900);
         addObject(new KeyButton("e","toggleInventory"), 700, 1020);
         addObject(new KeyButton("on/off","Sound"), 700, 1140);
-        addObject(new KeyButton("f","useItem"), 700, 1260);
+        addObject(new KeyButton("on/off","Music"), 700, 1260);
+        addObject(new KeyButton("f","useItem"), 700, 1380);
 
 
     }

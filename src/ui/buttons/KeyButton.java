@@ -3,6 +3,7 @@ package ui.buttons;
 import greenfoot.*;
 import ui.Settings;
 import ui.worlds.SettingsWorld;
+import util.SoundManager;
 
 public class KeyButton extends StandardButton
 {
@@ -102,6 +103,11 @@ public class KeyButton extends StandardButton
         if(action.equals("Sound")){
             Settings.soundOn = !Settings.soundOn;
             currentKey = Settings.soundOn ? "on" : "off";
+        }
+
+        if(action.equals("Music")){
+            SoundManager.toggleMusic();
+            currentKey = Settings.musicOn ? "on" : "off";
         }
 
         waitingForInput = false;

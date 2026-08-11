@@ -27,6 +27,7 @@ public class SettingsButton extends UI {
     public void act() {
 
         if (Greenfoot.mouseClicked(this)){
+            util.SoundManager.play("button_click.mp3");
             Greenfoot.setWorld(new SettingsWorld());
 
         }

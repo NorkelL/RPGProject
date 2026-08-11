@@ -95,7 +95,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
-
+        util.SoundManager.startMusic();
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
