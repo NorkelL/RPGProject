@@ -14,6 +14,7 @@ import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
 import ui.Settings;
+import util.SoundManager;
 import ui.Healthbar;
 import ui.XPBar;
 import ui.worlds.Backpack;
@@ -107,6 +108,8 @@ public class Player extends DamageableActor {
             toggleInventory();
         }
 
+        if (stepSoundCooldown > 0) stepSoundCooldown--;
+
         if (invisibleTimer > 0) {
             invisibleTimer--;
 
@@ -117,9 +120,15 @@ public class Player extends DamageableActor {
         updateActiveWeapon();
     }
 
+    private int stepSoundCooldown = 0;
+
     public void move() {
         if (canMove()) {
             move(1);
+            if (stepSoundCooldown <= 0) {
+                SoundManager.play("steps.mp3", 20);
+                stepSoundCooldown = 8;
+            }
         }
     }
 
@@ -201,8 +210,14 @@ public class Player extends DamageableActor {
     @Override
     protected void onDeath()
     {
+        SoundManager.play("death_player.mp3");
         getWorld().removeObject(this);
         Greenfoot.stop();
+    }
+
+    @Override
+    protected void onDamageSound() {
+        SoundManager.play("damage.mp3");
     }
 
     @Override
@@ -407,6 +422,7 @@ public class Player extends DamageableActor {
             currentXP -= xpToNextLevel;
             currentLevel++;
             xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
+            SoundManager.play("levelup.mp3", 20);
             say("LEVEL UP!");
         }
     }

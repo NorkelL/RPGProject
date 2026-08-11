@@ -3,6 +3,7 @@ package entities.base;
 import entities.Player;
 import entities.util.ASharpPathfinding;
 import greenfoot.Greenfoot;
+import util.SoundManager;
 
 import java.util.List;
 
@@ -109,11 +110,18 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
 
     @Override
     protected void onDeath() {
+        SoundManager.play("death_monster.wav");
         getWorld().removeObject(this);
     }
 
     public void hit (){
+        SoundManager.play("attack.mp3");
         loadImages(this.getClass().getSimpleName(), "Attacking");
         attackCooldown = 15;
+    }
+
+    @Override
+    protected void onDamageSound() {
+        // Monster haben keinen eigenen Schaden-Sound
     }
 }

@@ -1,5 +1,7 @@
 package entities.base;
 
+import util.SoundManager;
+
 public abstract class DamageableActor extends MovingActor {
     private int life;
 
@@ -16,7 +18,13 @@ public abstract class DamageableActor extends MovingActor {
         setLife(life - damage);
         if (life < 1) {
             onDeath();
+        } else {
+            onDamageSound();
         }
+    }
+
+    protected void onDamageSound() {
+        SoundManager.play("damage.mp3");
     }
 
     public void hit(int damage) {

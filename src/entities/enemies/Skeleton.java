@@ -4,6 +4,7 @@ import entities.base.BaseMonster;
 import entities.util.Direction;
 import entities.util.Hitting;
 import greenfoot.Greenfoot;
+import util.SoundManager;
 
 public class Skeleton extends BaseMonster implements Hitting {
 
@@ -16,4 +17,9 @@ public class Skeleton extends BaseMonster implements Hitting {
         super.act();
     }
 
+    @Override
+    protected void onDeath() {
+        SoundManager.play("death_skeleton.mp3");
+        super.onDeath();
+    }
 }
