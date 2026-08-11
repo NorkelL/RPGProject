@@ -44,6 +44,7 @@ public class DungeonLevel extends World {
     private settingPauseButton settingPauseButton;
     private restartButton restartButton;
     private PauseScreen pauseScreen;
+    private final GameStarter gameStarter;
     public final Player player;
 
     private static class Room {
@@ -53,6 +54,7 @@ public class DungeonLevel extends World {
 
     public DungeonLevel(long seed,GameStarter gameStarter,Player p) {
         super(30, 30, 40);
+        this.gameStarter = gameStarter;
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
@@ -276,17 +278,18 @@ public class DungeonLevel extends World {
         pauseScreen = new PauseScreen(getWidth() * getCellSize(), getHeight() * getCellSize());
         addObject(pauseScreen, cx, cy);
 
-        restartButton = new restartButton();
+        restartButton = new restartButton(gameStarter);
         addObject(restartButton, cx, cy - 3);
 
         settingPauseButton = new settingPauseButton();
         addObject(settingPauseButton, cx, cy);
 
-        saveGameButton = new SaveGameButton();
+        saveGameButton = new SaveGameButton(gameStarter);
         addObject(saveGameButton, cx, cy + 3);
     }
 
     public void hidePause(){
+        showText(null, saveGameButton.getX(), saveGameButton.getY() - 2);   // speicher-meldung weg
         removeObject(pauseScreen);
         removeObject(restartButton);
         removeObject(settingPauseButton);

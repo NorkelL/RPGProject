@@ -23,7 +23,7 @@ public class GameStarter extends World {
     public List<DungeonLevel> pastLevels = new ArrayList<>();
     public DungeonLevel currentLevel;
     public static final Path SAVE_DIR = Path.of("saves");
-    private final Player player;
+    private Player player;
 
 
     public GameStarter() {
@@ -42,6 +42,15 @@ public class GameStarter extends World {
         currentLevel = new DungeonLevel(seed.nextLong(),this,player);
         Greenfoot.setWorld(currentLevel);
 
+    }
+
+    // komplett neues spiel: neuer seed, neuer spieler, keine alten level
+    public void restart(){
+        seedsseed = System.currentTimeMillis();
+        seed = new Random(seedsseed);
+        pastLevels = new ArrayList<>();
+        player = new Player();
+        start();
     }
 
     public void RenderNextWorld(){
@@ -105,6 +114,8 @@ public class GameStarter extends World {
         }
         save.currentLevelLootedChests = currentLevel.getOpenedChests();
         save.inventorys = currentLevel.player.getInventorys();
+
+        Files.createDirectories(SAVE_DIR);   // ordner gibt es beim ersten start noch nicht
 
         String filename = "save_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm")) + ".json";
         Files.writeString(SAVE_DIR.resolve(filename), new GsonBuilder().setPrettyPrinting().create().toJson(save));
