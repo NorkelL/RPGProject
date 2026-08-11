@@ -1,8 +1,8 @@
-package ui.Buttons;
+package ui.buttons;
 
 public class settingPauseButton extends PauseButtons{
 
     public settingPauseButton(){
-        super("UI/PauseScreen/settingButton.png");
+        super("UI/PauseScreen/SettingButton.png");
     }
 }

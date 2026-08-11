@@ -6,32 +6,23 @@ import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
-import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.util.GoldArmor;
-import items.util.IronArmor;
-import items.TestItem;
-import ui.Buttons.*;
+import ui.buttons.*;
 import items.waffen.Arrow;
-import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.DarkFilter;
 import ui.Healthbar;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
-import ui.ItemText;
 import ui.PauseScreen;
-import ui.Buttons.restartButton;
-import ui.Buttons.SaveGameButton;
-import ui.Buttons.settingPauseButton;
+import ui.buttons.restartButton;
+import ui.buttons.SaveGameButton;
+import ui.buttons.settingPauseButton;
 import greenfoot.Greenfoot;
 import ui.Settings;
 import ui.XPBar;
 import items.*;
-import ui.DarkFilter;
-import ui.InventoryOverlay;
-import ui.InventorySlot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -65,7 +56,7 @@ public class DungeonLevel extends World {
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
-                PauseButtons.class,
+                ui.buttons.PauseButtons.class,
                 PauseScreen.class,
                 DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben

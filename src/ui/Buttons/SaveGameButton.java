@@ -1,10 +1,10 @@
-package ui.Buttons;
+package ui.buttons;
 
 
 public class SaveGameButton extends PauseButtons{
 
     public SaveGameButton(){
-            super("UI/PauseScreen/saveButton.png");
+            super("UI/PauseScreen/SaveButton.png");
     }
 }
 
