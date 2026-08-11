@@ -1,5 +1,6 @@
 package entities.base;
 
+import entities.enemies.Zombie;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
@@ -16,9 +17,13 @@ import java.util.List;
 public class MovingActor extends ImprovedActor {
     private  GreenfootImage[][] movingActorImages = new ImprovedGreenfootImage[4][4];
     private int animationStep = 0;
+    private boolean invisible = false;
+    private int sayTimer = 0; // laeuft in act() runter, statt delay()
+    private int sayX;
+    private int sayY;
 
     public MovingActor() {
-        loadImages(this.getClass().getSimpleName());
+        loadImages(this.getClass().getSimpleName(), "Walking");
     }
 
     public boolean canMove() {
@@ -83,15 +88,22 @@ public class MovingActor extends ImprovedActor {
     @Override
     public void act() {
         super.act();
+
+        if (sayTimer > 0) {
+            sayTimer--;
+            if (sayTimer == 0 && getWorld() != null) {
+                getWorld().showText("", sayX, sayY);
+            }
+        }
     }
 
     public void say(String text) {
         int y = getY() - 1;
         if (y < 0) y = 1;
-        getWorld().showText(text, getX(), y);
-        System.out.println("a " + this.getClass().getName() + " says: " + text);
-        Greenfoot.delay(4);
-        getWorld().showText("", getX(), y);
+        sayX = getX();
+        sayY = y;
+        getWorld().showText(text, sayX, sayY);
+        sayTimer = 4;
     }
 
     public void say(boolean text) { say(String.valueOf(text)); }
@@ -101,37 +113,71 @@ public class MovingActor extends ImprovedActor {
     @Override
     public void move(int steps) {
         animationStep = (animationStep + 1) % 4;
+
         setImage(movingActorImages[Direction.getDirectionByRotation(getRotation()).getValue()][animationStep]);
         if (canMove(steps)) {
             super.move(steps);
         }
     }
-    public void loadImages(String folderName) {
-        String imgFolder = "." + File.separator + "images" + File.separator + folderName + File.separator;
+    public void loadImages(String folderName, String subFolder ) {
+
+        String projectPath = "." + File.separator + "images" + File.separator + folderName + File.separator;
+        String finalPath = projectPath;
+
+
+        if (subFolder != null && !subFolder.isEmpty()) {
+            File subFolderFile = new File(projectPath + subFolder);
+            if (subFolderFile.exists() && subFolderFile.isDirectory()) {
+
+                finalPath = projectPath + subFolder + File.separator;
+            }
+
+        }
+
+
         for (int i = 0; i < Direction.values().length; i++) {
-            try {
-                for (int j = 0; j < 4; j++) {
-                    String imgName = Direction.values()[i].name() + j + ".png";
-                    File img = new File(imgFolder, imgName);
-                    if (img.exists()) {
-                        movingActorImages[i][j] = new ImprovedGreenfootImage(img.getCanonicalPath());
-                        movingActorImages[i][j].scale(40, 40);
-                        int rotationAmount = i % 2 == 1 ? -i : i;
-                        movingActorImages[i][j].rotate(rotationAmount * 90);
+            String directionName = Direction.values()[i].name();
+
+            for (int j = 0; j < 4; j++) {
+                String imgName = directionName + j + ".png";
+                File imgFile = new File(finalPath, imgName);
+
+                if (imgFile.exists()) {
+
+                    movingActorImages[i][j] = new ImprovedGreenfootImage(imgFile.getPath());
+                    int rotationAmount = i % 2 == 1 ? -i : i;
+                    movingActorImages[i][j].rotate(rotationAmount * 90);
+                } else {
+                    if (j == 0) {
+                        movingActorImages[i][j] = new ImprovedGreenfootImage(getImage());
                     } else {
-                        if (j == 0) {
-                            movingActorImages[i][j] = new ImprovedGreenfootImage(getImage());
-                        } else {
-                            movingActorImages[i][j] = new ImprovedGreenfootImage(movingActorImages[i][j - 1]);
-                        }
+                        movingActorImages[i][j] = movingActorImages[i][j - 1];
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
+
         Direction currentDir = Direction.getDirectionByRotation(getRotation());
         setImage(movingActorImages[currentDir.getValue()][animationStep]);
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+
+        for (int i = 0; i < movingActorImages.length; i++) {
+            for (int j = 0; j < movingActorImages[i].length; j++) {
+                if (movingActorImages[i][j] != null) {
+                    movingActorImages[i][j].setTransparency(invisible ? 80 : 255);
+                }
+            }
+        }
+
+        updateCurrentImage();
+    }
+
+    private void updateCurrentImage() {
+        Direction dir = Direction.getDirectionByRotation(getRotation());
+        setImage(movingActorImages[dir.getValue()][animationStep]);
     }
 }

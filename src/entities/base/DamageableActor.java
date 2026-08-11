@@ -9,7 +9,6 @@ public abstract class DamageableActor extends MovingActor {
 
     public void setLife(int life) {
         this.life = Math.max(0, life);
-        draw(this.life);
     }
 
     public void takeDamage(int damage) {

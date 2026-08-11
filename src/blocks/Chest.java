@@ -39,6 +39,13 @@ public class Chest extends Block {
         dropRandomItem();
     }
 
+    public void openChestWithoutDrops() {
+        isOpen = true;
+        GreenfootImage img = new GreenfootImage("Blocks/Chest/ChestOpen.png");
+        img.scale(SIZE, SIZE);
+        setImage(img);
+    }
+
     private void dropRandomItem() {
         if (ItemTyp.values().length == 0) return;
         getWorld().addObject(ItemTyp.zufällig().erstelleItem(), getX(), getY());

@@ -1,17 +1,23 @@
 package world;
 
+import blocks.Chest;
 import blocks.Entrance;
 import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
+import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.util.GoldArmor;
 import items.util.IronArmor;
 import items.TestItem;
 import ui.Buttons.*;
+import items.waffen.Arrow;
+import items.waffen.Bow;
+import items.waffen.BowSprite;
 import ui.DarkFilter;
+import ui.Healthbar;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
 import ui.ItemText;
@@ -21,12 +27,19 @@ import ui.Buttons.SaveGameButton;
 import ui.Buttons.settingPauseButton;
 import greenfoot.Greenfoot;
 import ui.Settings;
+import ui.XPBar;
+import items.*;
+import ui.DarkFilter;
+import ui.InventoryOverlay;
+import ui.InventorySlot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+
 
 public class DungeonLevel extends World {
 
@@ -40,13 +53,14 @@ public class DungeonLevel extends World {
     private settingPauseButton settingPauseButton;
     private restartButton restartButton;
     private PauseScreen pauseScreen;
+    public final Player player;
 
     private static class Room {
         int width, height, x, y;
         Room(int width, int height, int x, int y) { this.width = width; this.height = height; this.x = x; this.y = y; }
     }
 
-    public DungeonLevel(long seed,GameStarter gameStarter) {
+    public DungeonLevel(long seed,GameStarter gameStarter,Player p) {
         super(30, 30, 40);
         rng = new Random(seed);
         generateRandomFloor();
@@ -56,12 +70,17 @@ public class DungeonLevel extends World {
                 DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
-                Wall.class,         // das ist die Wall nur zur Info
+                Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
+                XPBar.class,
+                DarkFilter.class,   // Der dunkle Schleier
+                Wall.class,
+                Arrow.class,
+                BowSprite.class,           // das ist die Wall nur zur Info
                 Player.class         // Darunter der Rest
         );
 
-        if(!gameStarter.pastLevel.isEmpty()){
-            centerEntrance = gameStarter.pastLevel.get(gameStarter.pastLevel.size() - 1).centerExit;
+        if(!gameStarter.pastLevels.isEmpty()){
+            centerEntrance = gameStarter.pastLevels.get(gameStarter.pastLevels.size() - 1).centerExit;
         }else{
             centerEntrance = this.getWidth()/2;
         }
@@ -78,7 +97,8 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit - 3,0);
         savePlaceWall(centerExit + 1,0);
 
-        addObject(new Player(),centerEntrance - 1,this.getHeight()-2);
+        player = p;
+        addObject(player,centerEntrance - 1,this.getHeight()-2);
 
 
 
@@ -282,6 +302,19 @@ public class DungeonLevel extends World {
         removeObject(saveGameButton);
     }
 
+
+    public List<int[]> getOpenedChests() {
+        List<int[]> opened = new ArrayList<>();
+        for (Chest chest : getObjects(Chest.class)) {
+            if (chest.isOpen()) opened.add(new int[]{chest.getX(), chest.getY()});
+        }
+        return opened;
+    }
+
+    public void movePlayer(int x, int y) {
+        removeObject(player);
+        addObject(player, x, y);
+    }
 }
 
 

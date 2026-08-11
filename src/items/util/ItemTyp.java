@@ -1,11 +1,9 @@
 package items.util;
 
 import greenfoot.Greenfoot;
-import items.HealthPotion;
+import items.misc.HealthPotion;
 import items.Item;
-import items.LeatherArmor;
-import items.TestItem;
-
+import items.armor.LeatherArmor;
 
 
 public enum ItemTyp {
@@ -17,7 +15,7 @@ public enum ItemTyp {
     LeatherArmor(40){ public Item erstelleItem() { return new LeatherArmor("chest"); }},
 
 
-    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); } };
+    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); }};
 
     public final int gewicht;
 
@@ -25,7 +23,9 @@ public enum ItemTyp {
         this.gewicht = gewicht;
     }
 
-    public Item erstelleItem() { return null; }
+    public Item erstelleItem() {
+        return null;
+    }
 
     public static ItemTyp zufällig() {
         int gesamt = 0;

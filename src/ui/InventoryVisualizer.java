@@ -14,7 +14,7 @@ public class InventoryVisualizer extends Actor {
     private final int slotPixelHeight;
 
 
-    // Modified constructor to accept slot pixel dimensions
+
     public InventoryVisualizer(Item[] inventory, int slotPixelWidth, int slotPixelHeight) {
         getImage().setTransparency(0);
         slots = new InventorySlot[inventory.length];
@@ -60,8 +60,10 @@ public class InventoryVisualizer extends Actor {
         int length = Math.min(inventory.length, slots.length);
         for (int i = 0; i < length; i++) {
             if (slots[i] != null) {
-
-                inventory[i] = slots[i].getItem();
+                // Wenn das UI-Item nicht mit dem Array-Item übereinstimmt, UI updaten!
+                if (slots[i].getItem() != inventory[i]) {
+                    slots[i].setItem(inventory[i]);
+                }
             }
         }
     }

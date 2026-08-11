@@ -3,37 +3,55 @@ package entities;
 import entities.base.DamageableActor;
 import entities.util.Direction;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.Armor;
+import items.armor.Armor;
 import items.Item;
-import items.LeatherArmor;
-import items.util.GoldArmor;
-import items.LeatherHelmet;
+import items.util.ItemData;
+import items.util.Rarity;
 import items.util.Useable;
+import items.waffen.Bow;
+import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
 import ui.Settings;
+import ui.Healthbar;
+import ui.XPBar;
 import ui.worlds.Backpack;
 import world.DungeonLevel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends DamageableActor {
-    private final Item[] items;       // Das ist deine Hotbar / visualizer (z.B. 8 Slots)
+    private final Item[] items;       // Das ist die Hotbar / visualizer (z.B. 8 Slots)
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
-    private final Item[] armor = new Item[2];
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
     private Backpack BackpackWorld; // die backpack welt
     private int openCooldownE = 0;
 
+
+    //Item Variablen für Effekte
+    private boolean invisible = false;
+    private int invisibleTimer;
+    private double DamageMultiplier = 1.0;
+    private int multiplierTimer = 0;
+
+
     private final int maxLife;
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
-    private boolean hasArmor = false;
-    private String currentArmorType = "none"; //head oder chest
+    private int currentXP = 0;
+    private int currentLevel = 1;
+    private int xpToNextLevel = 100;
+    private int debugXPCooldown = 0; // nur zum testen der xp-bar, kann spaeter wieder raus
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
+    private BowSprite activeBowSprite;
+
+    private static List<String> itemPackages; //für item erstellen
 
 
     public Player() {
@@ -45,7 +63,7 @@ public class Player extends DamageableActor {
         this.maxBackpack = maxBackpack;
         this.maxLife = maxLife;
 
-        this.items = new Item[maxItems];         // z.B. Size 8
+        this.items = new Item[maxItems];
         this.backpack = new Item[maxBackpack];
 
         setLife(life);
@@ -53,12 +71,14 @@ public class Player extends DamageableActor {
 
     @Override
     public void act() {
+        super.act();
+
         if(moveCounter>0){
             moveCounter--;
             return;
         }
 
-        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown(Settings.inventoryToggle)){
             openCooldownE = 0;
         } else if (openCooldownE > 0) {
             openCooldownE--;
@@ -86,7 +106,15 @@ public class Player extends DamageableActor {
             openCooldownE = 1000;
             toggleInventory();
         }
-        draw(getLife() + "/" + maxLife);
+
+        if (invisibleTimer > 0) {
+            invisibleTimer--;
+
+            if (invisibleTimer == 0) {
+                setInvisible(false);
+            }
+        }
+        updateActiveWeapon();
     }
 
     public void move() {
@@ -155,7 +183,7 @@ public class Player extends DamageableActor {
         int useSlot = getActiveSlot();
 
         if (useSlot != -1 && items[useSlot] != null && items[useSlot] instanceof Useable) {
-            items[useSlot].use();
+            items[useSlot].use(this);
         }
     }
 
@@ -179,8 +207,21 @@ public class Player extends DamageableActor {
 
     @Override
     protected void addedToWorld(World world) {
+        // movePlayer() nimmt den spieler raus und setzt ihn neu rein -> sonst haengt die ui doppelt drin
+        if (!world.getObjects(XPBar.class).isEmpty()) {
+            return;
+        }
+
         inventory = new InventoryVisualizer(items,60,60);
         world.addObject(inventory, 0, world.getHeight() - 1);
+
+        XPBar xpBar = new XPBar(this);
+        int barCells = xpBar.getImage().getWidth() / world.getCellSize();
+        world.addObject(xpBar, world.getWidth() - barCells / 2 - 1, world.getHeight() - 1);
+
+        Healthbar healthbar = new Healthbar(this);
+        int lebenCells = healthbar.getImage().getWidth() / world.getCellSize();
+        world.addObject(healthbar, lebenCells / 2, world.getHeight() - 1);
     }
 
     public void updateAppearance() {
@@ -194,7 +235,7 @@ public class Player extends DamageableActor {
         }
 
 
-        loadImages(folder);
+        loadImages(folder,null);
     }
 
 
@@ -206,6 +247,173 @@ public class Player extends DamageableActor {
             }
         }
     }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+        super.setInvisible(invisible);
+    }
+
+    public List<List<ItemData>> getInventorys(){
+        List<List<ItemData>> inventorys = new ArrayList<>();
+        List<ItemData> backpackData = new ArrayList<>();
+        inventorys.add(backpackData);
+        for (int i = 0; i < backpack.length; i++) {
+            if (backpack[i] != null) {
+                ItemData data = new ItemData();
+                data.slot = i;
+                data.classname = backpack[i].getClass().getSimpleName();
+                data.rarity = backpack[i].rarity.name();
+                backpackData.add(data);
+            }
+        }
+
+        List<ItemData> hotbarData = new ArrayList<>();
+        inventorys.add(hotbarData);
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                ItemData data = new ItemData();
+                data.slot = i;
+                data.classname = items[i].getClass().getSimpleName();
+                data.rarity = items[i].rarity.name();
+                hotbarData.add(data);
+            }
+        }
+
+
+        List<ItemData> armorData = new ArrayList<>();
+        inventorys.add(armorData);
+
+        if (headArmor != null) {
+            ItemData headArmorData = new ItemData();
+            headArmorData.slot = 0;
+            headArmorData.classname = headArmor.getClass().getSimpleName();
+            headArmorData.rarity = headArmor.rarity.name();
+            armorData.add(headArmorData);
+        }
+
+        if (chestArmor != null) {
+            ItemData chestArmorData = new ItemData();
+            chestArmorData.slot = 1;
+            chestArmorData.classname = chestArmor.getClass().getSimpleName();
+            chestArmorData.rarity = chestArmor.rarity.name();
+            armorData.add(chestArmorData);
+        }
+
+        return inventorys;
+    }
+
+    public void setInventorys(List<List<ItemData>> inventorys) {
+        // kaputter save -> lieber gar nichts laden als mittendrin abbrechen
+        if (inventorys == null || inventorys.size() < 3) {
+            return;
+        }
+
+        for (int i = 0; i < backpack.length; i++) { backpack[i] = null; }
+        for (int i = 0; i < items.length; i++) { items[i] = null; }
+        headArmor = null;
+        chestArmor = null;
+
+        for (ItemData data : inventorys.get(0)) {
+            backpack[data.slot] = createItem(data);
+        }
+
+        for (ItemData data : inventorys.get(1)) {
+            items[data.slot] = createItem(data);
+        }
+
+        for (ItemData data : inventorys.get(2)) {
+            if (data.slot == 0) { headArmor = createItem(data); }
+            else if (data.slot == 1) { chestArmor = createItem(data); }
+        }
+
+        updateAppearance();
+    }
+
+    private Item createItem(ItemData data) {
+        if (data == null || data.classname == null) {
+            return null;
+        }
+
+        for (String pkg : getItemPackages()) {
+            try {
+                Item item = (Item) Class.forName(pkg + data.classname).getDeclaredConstructor().newInstance();
+                if (data.rarity != null) {
+                    item.rarity = Rarity.valueOf(data.rarity);
+                }
+                return item;
+            } catch (ClassNotFoundException e) {
+                // Klasse liegt in einem anderen Package, nächstes probieren
+            } catch (ReflectiveOperationException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private static List<String> getItemPackages() {
+        if (itemPackages != null) { return itemPackages; }
+
+        itemPackages = new ArrayList<>();
+        itemPackages.add("items.");
+        try {
+            File codeRoot = new File(Item.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            collectSubPackages(new File(codeRoot, "items"), "items.", itemPackages);
+        } catch (Exception e) {
+            // Scan fehlgeschlagen (z.B. exportiertes Jar) -> nur Basis-Package "items."
+        }
+        return itemPackages;
+    }
+
+    private static void collectSubPackages(File dir, String prefix, List<String> result) {
+        File[] children = dir.listFiles();
+        if (children == null) { return; }
+
+        for (File child : children) {
+            if (child.isDirectory()) {
+                String pkg = prefix + child.getName() + ".";
+                result.add(pkg);
+                collectSubPackages(child, pkg, result);
+            }
+        }
+    }
+    private void updateActiveWeapon() {
+
+        Item currentItem = (activeSlot >= 0 && activeSlot < items.length) ? items[activeSlot] : null;
+
+
+        if (currentItem instanceof Bow) {
+            Bow bow = (Bow) currentItem;
+
+
+            if (activeBowSprite == null) {
+                activeBowSprite = new BowSprite(bow);
+                getWorld().addObject(activeBowSprite, getX(), getY());
+            }
+
+            activeBowSprite.update(this);
+
+        } else {
+
+            if (activeBowSprite != null) {
+                getWorld().removeObject(activeBowSprite);
+                activeBowSprite = null;
+            }
+        }
+    }
+
+    public void gainXP(int xp) {
+        currentXP += xp;
+        while (currentXP >= xpToNextLevel) {
+            currentXP -= xpToNextLevel;
+            currentLevel++;
+            xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
+            say("LEVEL UP!");
+        }
+    }
+
+    public int getCurrentXP()     { return currentXP; }
+    public int getCurrentLevel()   { return currentLevel; }
+    public int getXpToNextLevel()  { return xpToNextLevel; }
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
@@ -220,6 +428,8 @@ public class Player extends DamageableActor {
         this.headArmor = headArmor;
     }
     public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor;}
+    public void setInvisibleTimer(int invisibleTimer) {this.invisibleTimer = invisibleTimer;}
+    public boolean isInvisible() {return invisible;}
 
 
 }

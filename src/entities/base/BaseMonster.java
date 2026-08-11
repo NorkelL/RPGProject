@@ -4,22 +4,41 @@ import entities.Player;
 import entities.util.ASharpPathfinding;
 import greenfoot.Greenfoot;
 
+import java.util.List;
+
 public abstract class BaseMonster extends DamageableActor implements ASharpPathfinding {
-    private int life;
     private int agroRadius;
     private int leashRadius;
     private boolean isFollowingPlayer = false;
+    private int moveCooldown = 0;
+    private int moveDelay = 20; // Anzahl der act()-Aufrufe zwischen Bewegungen
+    private int attackCooldown = 0; // laeuft nach hit() runter, statt delay()
 
-    public BaseMonster(int life, int agroRadius, int leashRadius) {
-        this.life = life;
+    public BaseMonster(int life, int agroRadius, int leashRadius ) {
         this.agroRadius = agroRadius;
         this.leashRadius = leashRadius;
+        setLife(life);
     }
 
     @Override
     public void act(){
+        super.act();
+
+        if(attackCooldown > 0){
+            attackCooldown--;
+            if(attackCooldown == 0){
+                loadImages(this.getClass().getSimpleName(), "Walking");
+            }
+        }
+
+        if(moveCooldown > 0){
+            moveCooldown--;
+            return;
+        }
+
         move();
-        checkDeath();
+
+        moveCooldown = moveDelay;
     }
 
     // ersetzt durch a*
@@ -50,8 +69,12 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         int y = getY();
         for (int i = x-agroRadius; i < x+agroRadius+1; i++) {
             for (int j = y-agroRadius; j < y+agroRadius+1; j++) {
-                if(!getWorld().getObjectsAt(i,y, Player.class).isEmpty())
-                    return true;
+                List<Player> players = getWorld().getObjectsAt(i, j, Player.class);
+                for (Player player : players) {
+                    if (!player.isInvisible()) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -62,33 +85,35 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         int y = getY();
         for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
             for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                if(!getWorld().getObjectsAt(i,y, Player.class).isEmpty())
-                    return true;
+                List<Player> players = getWorld().getObjectsAt(i, j, Player.class);
+
+                for (Player player : players) {
+                    if (!player.isInvisible()) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
+    // spieler einmal suchen, dann ein a*-aufruf
     protected void moveToPlayer(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
-            for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                if (!getWorld().getObjectsAt(i, y, Player.class).isEmpty()){
-                    aSharpPathfindTakeStep(i,j);
-                }
+        for (Player player : getWorld().getObjects(Player.class)) {
+            if (!player.isInvisible()) {
+                aSharpPathfindTakeStep(player.getX(), player.getY());
+                return;
             }
-        }
-    }
-
-    private void checkDeath(){
-        if(life <= 0){
-            onDeath();
         }
     }
 
     @Override
     protected void onDeath() {
         getWorld().removeObject(this);
+    }
+
+    public void hit (){
+        loadImages(this.getClass().getSimpleName(), "Attacking");
+        attackCooldown = 15;
     }
 }
