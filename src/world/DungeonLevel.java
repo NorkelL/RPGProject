@@ -9,6 +9,10 @@ import entities.Player;
 import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.util.GoldArmor;
+import items.util.IronArmor;
+import items.TestItem;
+import ui.Buttons.*;
 import items.waffen.Arrow;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
@@ -17,6 +21,12 @@ import ui.Healthbar;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
 import ui.ItemText;
+import ui.PauseScreen;
+import ui.Buttons.restartButton;
+import ui.Buttons.SaveGameButton;
+import ui.Buttons.settingPauseButton;
+import greenfoot.Greenfoot;
+import ui.Settings;
 import ui.XPBar;
 import items.*;
 import ui.DarkFilter;
@@ -38,6 +48,11 @@ public class DungeonLevel extends World {
     private int centerEntrance;
     private int[] centerCorridor;
     private List<Room> placedRooms = new ArrayList<>();
+    private boolean paused = false;
+    private SaveGameButton saveGameButton;
+    private settingPauseButton settingPauseButton;
+    private restartButton restartButton;
+    private PauseScreen pauseScreen;
     public final Player player;
 
     private static class Room {
@@ -50,6 +65,9 @@ public class DungeonLevel extends World {
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
+                PauseButtons.class,
+                PauseScreen.class,
+                DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
@@ -86,6 +104,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
@@ -244,6 +263,45 @@ public class DungeonLevel extends World {
         }
         setBackground(bg);
     }
+    @Override public void act(){
+        String key = Greenfoot.getKey();
+
+        if (Settings.pauseKey.equals(key)) {
+            togglePause();
+        }
+    }
+    public void togglePause(){
+        paused = !paused;
+        if (paused){
+            showPause();
+        }else{
+            hidePause();
+        }
+    }
+    public void showPause(){
+        int cx = getWidth() / 2;
+        int cy = getHeight() / 2;
+
+        pauseScreen = new PauseScreen(getWidth() * getCellSize(), getHeight() * getCellSize());
+        addObject(pauseScreen, cx, cy);
+
+        restartButton = new restartButton();
+        addObject(restartButton, cx, cy - 3);
+
+        settingPauseButton = new settingPauseButton();
+        addObject(settingPauseButton, cx, cy);
+
+        saveGameButton = new SaveGameButton();
+        addObject(saveGameButton, cx, cy + 3);
+    }
+
+    public void hidePause(){
+        removeObject(pauseScreen);
+        removeObject(restartButton);
+        removeObject(settingPauseButton);
+        removeObject(saveGameButton);
+    }
+
 
     public List<int[]> getOpenedChests() {
         List<int[]> opened = new ArrayList<>();
@@ -258,3 +316,5 @@ public class DungeonLevel extends World {
         addObject(player, x, y);
     }
 }
+
+
