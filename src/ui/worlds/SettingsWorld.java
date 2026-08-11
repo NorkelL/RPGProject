@@ -12,6 +12,7 @@ public class SettingsWorld extends World {
     public static boolean waitingForKey = false;
     public static String switchKey = "";
     public boolean blinkActivated = false;
+    private World lastWorld;   // null heisst: kam aus dem hauptmenue
 
 
 
@@ -26,7 +27,12 @@ public class SettingsWorld extends World {
 
 
     public SettingsWorld() {
+        this(null);
+    }
+
+    public SettingsWorld(World lastWorld) {
         super(1376, 1300, 1);
+        this.lastWorld = lastWorld;
         showText("Press ESC to go back", 150, 50);
         GreenfootImage bg = new GreenfootImage("UI/Inventory/BackgroundFullInventory.png");
         bg.scale(getWidth() * getCellSize(), getHeight() * getCellSize());
@@ -61,7 +67,11 @@ public class SettingsWorld extends World {
 
 
         if (Greenfoot.isKeyDown("escape")) {
-            Greenfoot.setWorld(new MainMenu(new GameStarter()));
+            if(lastWorld != null){
+                Greenfoot.setWorld(lastWorld);
+            }else{
+                Greenfoot.setWorld(new MainMenu(new GameStarter()));
+            }
         }
 
     }
