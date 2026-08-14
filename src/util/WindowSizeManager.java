@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -27,6 +28,7 @@ public final class WindowSizeManager {
             Platform.runLater(WindowSizeManager::tryEnforce);
             return;
         }
+        stage.getScene().setFill(Color.web("#313944"));
         stage.setMaximized(true);
         stage.iconifiedProperty().addListener((obs, wasIconified, isIconified) -> {
             if (isIconified) {
@@ -54,6 +56,7 @@ public final class WindowSizeManager {
             return;
         }
         Region wrapperRegion = (Region) wrapper;
+        wrapperRegion.setStyle("-fx-background-color: #313944;");
 
         worldDisplay.setMaxWidth(Region.USE_PREF_SIZE);
         worldDisplay.setMaxHeight(Region.USE_PREF_SIZE);
