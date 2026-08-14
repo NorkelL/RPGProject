@@ -5,13 +5,16 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import items.Item;
+import items.armor.Armor;
 import items.util.OnHover;
+import items.util.SlotType;
 import ui.worlds.Backpack;
 
 public class InventorySlot extends Actor {
+    private SlotType slotType;
     private Item item;
-    private final GreenfootImage baseImage;
-    private final GreenfootImage glowingImage;
+    protected GreenfootImage baseImage;
+    protected GreenfootImage glowingImage;
     private boolean isSelected = false;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
@@ -23,14 +26,18 @@ public class InventorySlot extends Actor {
 
 
     public InventorySlot() {
-        this(60, 60);
+        this(60, 60, SlotType.GENERIC);
+    }
+    public InventorySlot(int pixelWidth, int pixelHeight) {
+        this(pixelWidth, pixelHeight, SlotType.GENERIC);
     }
 
 
-    public InventorySlot(int pixelWidth, int pixelHeight) {
+    public InventorySlot(int pixelWidth, int pixelHeight, SlotType slotType) {
         this.slotPixelWidth = pixelWidth;
         this.slotPixelHeight = pixelHeight;
-        this.baseImage = new GreenfootImage("UI/Inventory/InventorySlot.png");
+        this.slotType = slotType;
+        this.baseImage = new GreenfootImage(slotType.getImagePath());
         this.baseImage.scale(slotPixelWidth, slotPixelHeight);
         this.glowingImage = new GreenfootImage("UI/Inventory/InventorySlotGlowing.png");
         this.glowingImage.scale(slotPixelWidth, slotPixelHeight);
@@ -69,7 +76,7 @@ public class InventorySlot extends Actor {
     }
 
 
-    private void updateImage() {
+    protected void updateImage() {
         GreenfootImage currentBackground = isSelected ? new GreenfootImage(glowingImage) : new GreenfootImage(baseImage);
 
         //  Nur zeichnen, wenn das Item nicht gerade als Ghost unterwegs ist!
@@ -160,10 +167,16 @@ public class InventorySlot extends Actor {
     private void swapItems(InventorySlot slotA, InventorySlot slotB) {
         if (slotA == slotB) return;
 
-        // Items tauschen
-        Item tempItem = slotA.getItem();
-        slotA.setItem(slotB.getItem());
-        slotB.setItem(tempItem);
+        Item itemA = slotA.getItem();
+        Item itemB = slotB.getItem();
+
+        if (!slotB.canAcceptItem(itemA) || !slotA.canAcceptItem(itemB)) {
+            return;
+        }
+
+        // Tausch ausführen
+        slotA.setItem(itemB);
+        slotB.setItem(itemA);
 
         if (getWorld() != null) {
 
@@ -190,6 +203,18 @@ public class InventorySlot extends Actor {
             if (getWorld() instanceof ui.worlds.Backpack) {
                 ((ui.worlds.Backpack) getWorld()).act();
             }
+        }
+    }
+    public boolean canAcceptItem(Item itemToPlace) {
+        if (itemToPlace == null) return true; // Slot leeren ist immer erlaubt
+
+        switch (this.slotType) {
+            case HELMET:
+                return itemToPlace instanceof Armor;
+            case CHESTPLATE:
+                return itemToPlace instanceof Armor;
+            default:
+                return true; // Normale Slots akzeptieren alles
         }
     }
 

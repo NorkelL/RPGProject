@@ -9,6 +9,7 @@ import entities.Player;
 import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.armor.LeatherArmor;
 import items.waffen.Arrow;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
@@ -20,6 +21,7 @@ import items.*;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
+import Material.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
