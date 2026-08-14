@@ -5,6 +5,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import ui.UI;
+import ui.worlds.MainMenu;
 
 import java.util.List;
 
@@ -24,8 +25,12 @@ public class LoadGameButton extends UI {
 
     }
     public void act(){
-        mouseHover();
+        if (Greenfoot.mouseClicked(this)){
+            ((MainMenu) getWorld()).showLoadSelect();
+            return;
+        }
 
+        mouseHover();
     }
     private void mouseHover(){
         MouseInfo mouse = Greenfoot.getMouseInfo();

@@ -21,7 +21,8 @@ public class restartButton extends PauseButtons {
 
     public void act(){
         if (Greenfoot.mouseClicked(this)){
-            gameStarter.restart();
+            gameStarter.mainMenu();
+            return;
         }
 
         mouseHover();

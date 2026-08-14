@@ -1,17 +1,21 @@
 package util;
 
+import greenfoot.guifx.WorldDisplay;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public final class WindowSizeManager {
 
-    private static boolean listenerInstalled = false;
-    private static double expectedWidth = -1;
-    private static double expectedHeight = -1;
+    private static boolean pinned = false;
 
-    private WindowSizeManager() {
-    }
+    private WindowSizeManager() {}
 
     public static void enforce() {
         Platform.runLater(WindowSizeManager::tryEnforce);
@@ -19,60 +23,71 @@ public final class WindowSizeManager {
 
     private static void tryEnforce() {
         Stage stage = findStage();
-        if (stage == null) {
-            // Fenster existiert beim ersten Weltwechsel evtl. noch nicht, also nochmal probieren
+        if (stage == null || stage.getScene() == null) {
             Platform.runLater(WindowSizeManager::tryEnforce);
             return;
         }
-
-        installSelfHealingListener(stage);
-        remaximize(stage);
-    }
-
-    // Greenfoot resized das Fenster bei jedem Weltwechsel mit unterschiedlicher Pixelgroesse per
-    // sizeToScene() (GreenfootScenarioViewer.setWorldImage). Das setzt Breite/Hoehe direkt, ohne den
-    // normalen "restore"-Weg zu gehen - deshalb bleibt maximizedProperty() weiterhin true, obwohl das
-    // Fenster jetzt kleiner ist, und der Maximize/Restore-Button in der Titelleiste haengt fest.
-    // Deshalb wird hier auf die tatsaechliche Groesse gehoert statt auf maximizedProperty(), und bei
-    // jeder Abweichung ein echter Maximize-Zyklus (aus, dann an) erzwungen, damit Windows die
-    // Fenstergroesse UND den Titelleisten-Button wieder synchron setzt.
-    private static void installSelfHealingListener(Stage stage) {
-        if (listenerInstalled) {
-            return;
-        }
-        listenerInstalled = true;
-
-        stage.widthProperty().addListener((obs, oldV, newV) -> {
-            if (newV.doubleValue() != expectedWidth) {
-                Platform.runLater(() -> remaximize(stage));
-            }
-        });
-        stage.heightProperty().addListener((obs, oldV, newV) -> {
-            if (newV.doubleValue() != expectedHeight) {
-                Platform.runLater(() -> remaximize(stage));
-            }
-        });
+        stage.setMaximized(true);
         stage.iconifiedProperty().addListener((obs, wasIconified, isIconified) -> {
             if (isIconified) {
-                Platform.runLater(() -> {
-                    stage.setIconified(false);
-                    remaximize(stage);
-                });
+                Platform.runLater(() -> stage.setIconified(false));
             }
         });
+        pinWorldDisplaySize(stage.getScene());
     }
 
-    private static void remaximize(Stage stage) {
-        if (stage.isIconified()) {
-            stage.setIconified(false);
+    private static void pinWorldDisplaySize(Scene scene) {
+        if (pinned) {
+            return;
         }
-        stage.setMaximized(false);
-        Platform.runLater(() -> {
-            stage.setMaximized(true);
-            expectedWidth = stage.getWidth();
-            expectedHeight = stage.getHeight();
-        });
+
+        Parent root = scene.getRoot();
+        WorldDisplay worldDisplay = findWorldDisplay(root);
+        if (worldDisplay == null) {
+            Platform.runLater(() -> pinWorldDisplaySize(scene));
+            return;
+        }
+
+        Parent wrapper = worldDisplay.getParent();
+        if (!(wrapper instanceof Region)) {
+            Platform.runLater(() -> pinWorldDisplaySize(scene));
+            return;
+        }
+        Region wrapperRegion = (Region) wrapper;
+
+        worldDisplay.setMaxWidth(Region.USE_PREF_SIZE);
+        worldDisplay.setMaxHeight(Region.USE_PREF_SIZE);
+        Node bottom = root instanceof BorderPane ? ((BorderPane) root).getBottom() : null;
+
+        wrapperRegion.prefWidthProperty().bind(scene.widthProperty());
+        if (bottom != null) {
+            wrapperRegion.prefHeightProperty().bind(Bindings.createDoubleBinding(
+                    () -> scene.getHeight() - bottom.getBoundsInParent().getHeight(),
+                    scene.heightProperty(), bottom.boundsInParentProperty()));
+        } else {
+            wrapperRegion.prefHeightProperty().bind(scene.heightProperty());
+        }
+
+
+        pinned = true;
     }
+
+    private static WorldDisplay findWorldDisplay(Node node) {
+        if (node instanceof WorldDisplay) {
+            return (WorldDisplay) node;
+        }
+        if (node instanceof Parent) {
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                WorldDisplay found = findWorldDisplay(child);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+
+        return null;
+    }
+
 
     private static Stage findStage() {
         for (Window window : Window.getWindows()) {
@@ -80,6 +95,7 @@ public final class WindowSizeManager {
                 return (Stage) window;
             }
         }
+
         return null;
     }
 }

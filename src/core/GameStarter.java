@@ -36,7 +36,7 @@ public class GameStarter extends World {
         mainMenu();
     }
 
-    private void mainMenu(){
+    public void mainMenu(){
         Greenfoot.setWorld(new MainMenu(this));
     }
 
