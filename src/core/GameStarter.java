@@ -6,6 +6,7 @@ import entities.Player;
 import greenfoot.*;
 import items.util.ItemData;
 import ui.worlds.MainMenu;
+import util.WindowSizeManager;
 import world.DungeonLevel;
 
 import java.io.IOException;
@@ -28,13 +29,14 @@ public class GameStarter extends World {
 
     public GameStarter() {
         super(1, 1, 1); //nie sichtbar
+        WindowSizeManager.enforce();
         seedsseed = System.currentTimeMillis();
         seed = new Random(seedsseed);
         player = new Player();
         mainMenu();
     }
 
-    private void mainMenu(){
+    public void mainMenu(){
         Greenfoot.setWorld(new MainMenu(this));
     }
 

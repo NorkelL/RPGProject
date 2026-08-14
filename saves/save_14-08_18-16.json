@@ -1,0 +1,14 @@
+{
+  "playerX": 14,
+  "playerY": 28,
+  "health": 100,
+  "currentLevel": 1,
+  "seed": 1786724161718,
+  "inventorys": [
+    [],
+    [],
+    []
+  ],
+  "pastLevelLootedChests": [],
+  "currentLevelLootedChests": []
+}

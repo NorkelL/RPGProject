@@ -26,6 +26,7 @@ public class SaveGameButton extends PauseButtons{
         if (Greenfoot.mouseClicked(this)){
             save();
         }
+        if (getWorld() == null) return;
 
         if (textTimer > 0){
             textTimer--;
@@ -38,11 +39,12 @@ public class SaveGameButton extends PauseButtons{
     private void save(){
         try {
             gameStarter.saveGame();
-            getWorld().showText("Gespeichert!", getX(), getY() - 2);
         } catch (IOException e) {
             getWorld().showText("Speichern fehlgeschlagen", getX(), getY() - 2);
+            textTimer = 90;
+            return;
         }
-        textTimer = 90;
+        gameStarter.mainMenu();
     }
 
     private void mouseHover(){
