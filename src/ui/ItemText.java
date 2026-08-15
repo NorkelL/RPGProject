@@ -18,4 +18,5 @@ public class ItemText extends Actor {
     public void act() {
         if(parent.getWorld() == null){getWorld().removeObject(this);}
     }
+
 }
