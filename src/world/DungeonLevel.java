@@ -10,6 +10,8 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 import ui.buttons.*;
 import items.waffen.Arrow;
+import entities.enemies.Skeleton;
+import entities.enemies.Zombie;
 import items.waffen.BowSprite;
 import ui.DarkFilter;
 import ui.Healthbar;
@@ -29,6 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import items.util.ItemTyp;
 
 
 
@@ -65,6 +68,7 @@ public class DungeonLevel extends World {
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
                 XPBar.class,
+                ui.DamageNumber.class,
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,
                 Arrow.class,
@@ -97,6 +101,8 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+        spawnMonsters();
+        spawnItems();
         util.SoundManager.startMusic();
     }
 
@@ -124,6 +130,75 @@ public class DungeonLevel extends World {
                 addObject(new Wall(), centerCorridor[i] + 1, y);
             }
         }
+    }
+
+    // setzt ein paar monster in den ersten raum, den spawnRooms() platziert hat
+    private void spawnMonsters(){
+        if (placedRooms.isEmpty()) return;   // kein raum zustande gekommen -> keine monster
+
+        Room room = placedRooms.get(0);
+        int gewollt = 3;
+        int gesetzt = 0;
+        int versuche = 0;
+
+        while (gesetzt < gewollt && versuche < 100) {
+            versuche++;
+
+            // nur das innere des raums, der rand ist wand
+            int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+            int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+            if (!istFreiFuerMonster(x, y)) continue;
+
+            addObject(gesetzt % 2 == 0 ? new Skeleton(50) : new Zombie(50), x, y);
+            gesetzt++;
+        }
+    }
+
+    private boolean istFreiFuerMonster(int x, int y){
+        if (x < 1 || y < 1|| x >= getWidth() - 1 || y >= getHeight() - 1) return false;
+
+        // wie ueberall sonst: wandposition ueber getX/getY pruefen, nicht ueber getObjectsAt
+        // (das wandbild ist 40x80 gross und ragt in die nachbarzelle)
+        boolean wand = getObjects(Wall.class).stream().anyMatch(w -> w.getX() == x && w.getY() == y);
+        if (wand) return false;
+
+        if (!getObjectsAt(x, y, Player.class).isEmpty()) return false;
+        return getObjectsAt(x, y, entities.base.BaseMonster.class).isEmpty();
+    }
+
+    private void spawnItems(){
+        if (placedRooms.isEmpty()) return;   // kein raum zustande gekommen -> kein loot
+
+        for (Room room : placedRooms) {
+            int gewollt = rng.nextInt(3) + 2;   // 2 bis 4 items pro raum
+            int gesetzt = 0;
+            int versuche = 0;
+
+            while (gesetzt < gewollt && versuche < 50) {
+                versuche++;
+
+                int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+                int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+                if (!istFreiFuerItem(x, y)) continue;
+
+                Item item = ItemTyp.zufällig(rng).erstelleItem();
+                if (item == null) continue;   // typ ohne erstelleItem() -> ueberspringen
+
+                addObject(item, x, y);
+                gesetzt++;
+            }
+        }
+    }
+
+    private boolean istFreiFuerItem(int x, int y){
+        if (x < 1 || y < 1 ||x >= getWidth() - 1 || y >= getHeight() - 1) return false;
+
+        boolean wand = getObjects(Wall.class).stream().anyMatch(w -> w.getX() == x && w.getY() == y);
+        if (wand) return false;
+
+        if (!getObjectsAt(x, y, Player.class).isEmpty()) return false;
+        // nicht zwei items auf dasselbe feld, takeItem() nimmt sonst nur das obere
+        return getObjectsAt(x, y, Item.class).isEmpty();
     }
 
     private int[] calcCorridor(){
