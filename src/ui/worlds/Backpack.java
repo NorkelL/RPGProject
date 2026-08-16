@@ -10,6 +10,7 @@ import ui.InventorySlot;
 import ui.InventoryVisualizer;
 import ui.UpgradeButton;
 import ui.UpgradeSlot;
+import ui.Settings;
 
 public class Backpack extends World {
     // Wir merken uns das Rucksack-Array, um es wie beim Visualizer upzudaten
@@ -97,7 +98,7 @@ public class Backpack extends World {
         updateBackpackSlots();
         updateArmorSlots();
 
-        if(openCooldownE > 0 && !Greenfoot.isKeyDown("E")){
+        if(openCooldownE > 0 && !Greenfoot.isKeyDown(Settings.inventoryToggle)){
             openCooldownE = 0;
         } else if (openCooldownE > 0) {
             openCooldownE--;
@@ -110,7 +111,7 @@ public class Backpack extends World {
         }
 
         // Backpack schließen
-        if (Greenfoot.isKeyDown("escape") && openCooldownEsc == 0 || Greenfoot.isKeyDown("e") && openCooldownE ==0) {
+        if (Greenfoot.isKeyDown("escape") && openCooldownEsc == 0 || Greenfoot.isKeyDown(Settings.inventoryToggle) && openCooldownE ==0) {
             openCooldownE = openCooldownEsc = 1000;
             Greenfoot.setWorld(previousWorld);
         }

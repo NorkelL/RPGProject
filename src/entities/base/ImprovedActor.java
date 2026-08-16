@@ -14,6 +14,9 @@ public class ImprovedActor extends Actor {
     }
 
     public void draw(String text) {
+        // noch kein bild gesetzt (z.b. aus dem konstruktor heraus) -> nichts zu zeichnen
+        if (currentImage == null) return;
+
         ImprovedGreenfootImage image = new ImprovedGreenfootImage(currentImage);
         image.drawString(text, 0, 10);
         super.setImage(image);

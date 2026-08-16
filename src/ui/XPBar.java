@@ -1,13 +1,18 @@
 package ui;
 
 import entities.Player;
-import greenfoot.Color;
 import greenfoot.GreenfootImage;
+import util.FontManager;
+
+import java.awt.Color;
 
 public class XPBar extends UI {
     private final Player player;
     private static final int WIDTH = 420;
-    private static final int HEIGHT = 36;
+    private static final int HEIGHT = 39;
+
+    private int lastStep = -1;  // bild nur neu laden wenn sich die stufe wirklich aendert
+    private int lastLevel = -1;
 
     public XPBar(Player player) {
         this.player = player;
@@ -20,35 +25,26 @@ public class XPBar extends UI {
     }
 
     private void update() {
-        GreenfootImage img = new GreenfootImage(WIDTH, HEIGHT);
+        int prozent = 100 * player.getCurrentXP() / player.getXpToNextLevel();
+        if(prozent<0){prozent=0;}
+        if(prozent>100){prozent=100;}
 
-        String lvlText = "LVL " + player.getCurrentLevel();
-        GreenfootImage lvl = new GreenfootImage(lvlText, 13, new Color(255, 210, 0), new Color(0, 0, 0, 0));
-        img.drawImage(lvl, 4, 2);
-
-        int barX = 60;
-        int barY = 6;
-        int barW = WIDTH - barX - 6;
-        int barH = HEIGHT - 14;
-
-        img.setColor(new Color(140, 100, 20));
-        img.fillRect(barX - 2, barY - 2, barW + 4, barH + 4);
-
-        img.setColor(new Color(10, 30, 25));
-        img.fillRect(barX, barY, barW, barH);
-
-        double ratio = (double) player.getCurrentXP() / player.getXpToNextLevel();
-        int fillW = (int)(ratio * (barW - 2));
-        if (fillW > 0) {
-            img.setColor(new Color(0, 195, 170));
-            img.fillRect(barX + 1, barY + 1, fillW, barH - 2);
-            img.setColor(new Color(140, 255, 240));
-            img.fillRect(barX + 1, barY + 1, fillW, 3);
+        int step = prozent / 5 * 5; // die bilder gibt es nur in 5er-schritten
+        if (step == lastStep && player.getCurrentLevel() == lastLevel) {
+            return;
         }
+        lastStep = step;
+        lastLevel = player.getCurrentLevel();
 
-        String xpText = player.getCurrentXP() + " / " + player.getXpToNextLevel();
-        GreenfootImage xp = new GreenfootImage(xpText, 11, Color.WHITE, new Color(0, 0, 0, 0));
-        img.drawImage(xp, barX + (barW - xp.getWidth()) / 2, barY + (barH - xp.getHeight()) / 2);
+        String name = "xp" + step;
+        if(step<10){name = "xp0" + step;}
+
+        GreenfootImage img = new GreenfootImage("UI/xpBar/" + name + ".png");
+        img.scale(WIDTH, HEIGHT);
+
+        // gleiche schrift wie die item-infos beim hovern, blau wie die floor tiles
+        GreenfootImage lvl = FontManager.renderText("LVL : " + lastLevel, FontManager.getMinecraft(14f), new Color(74, 83, 112));
+        img.drawImage(lvl, (WIDTH - lvl.getWidth()) / 2, (HEIGHT - lvl.getHeight()) / 2);
 
         setImage(img);
     }

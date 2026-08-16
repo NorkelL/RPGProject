@@ -6,17 +6,28 @@ import blocks.Exit;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
-import entities.enemies.Skeleton;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.armor.LeatherArmor;
+import ui.buttons.*;
 import items.waffen.Arrow;
-import items.waffen.Bow;
+import entities.base.BaseMonster;
+import entities.enemies.Gnome;
+import entities.enemies.Orc;
+import entities.enemies.Skeleton;
+import entities.enemies.Zombie;
 import items.waffen.BowSprite;
 import ui.DarkFilter;
+import ui.Healthbar;
 import ui.InventoryOverlay;
 import ui.InventorySlot;
-import ui.ItemText;
+import ui.PauseScreen;
+import ui.buttons.restartButton;
+import ui.buttons.SaveGameButton;
+import ui.buttons.settingPauseButton;
+import greenfoot.Greenfoot;
+import ui.Settings;
+import ui.XPBar;
 import items.*;
 import ui.DarkFilter;
 import ui.InventoryOverlay;
@@ -38,6 +49,12 @@ public class DungeonLevel extends World {
     private int centerEntrance;
     private int[] centerCorridor;
     private List<Room> placedRooms = new ArrayList<>();
+    private boolean paused = false;
+    private SaveGameButton saveGameButton;
+    private settingPauseButton settingPauseButton;
+    private restartButton restartButton;
+    private PauseScreen pauseScreen;
+    private final GameStarter gameStarter;
     public final Player player;
 
     private static class Room {
@@ -45,13 +62,20 @@ public class DungeonLevel extends World {
         Room(int width, int height, int x, int y) { this.width = width; this.height = height; this.x = x; this.y = y; }
     }
 
-    public DungeonLevel(long seed,GameStarter gameStarter) {
+    public DungeonLevel(long seed,GameStarter gameStarter,Player p) {
         super(30, 30, 40);
+        this.gameStarter = gameStarter;
         rng = new Random(seed);
         generateRandomFloor();
         setPaintOrder(
+                ui.buttons.PauseButtons.class,
+                PauseScreen.class,
+                DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
+                Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
+                XPBar.class,
+                ui.DamageNumber.class,
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,
                 Arrow.class,
@@ -77,13 +101,15 @@ public class DungeonLevel extends World {
         savePlaceWall(centerExit - 3,0);
         savePlaceWall(centerExit + 1,0);
 
-        player = new Player();
+        player = p;
         addObject(player,centerEntrance - 1,this.getHeight()-2);
 
 
 
         spawnCorridor();
         spawnRooms();
+        spawnMonsters();
+        util.SoundManager.startMusic();
     }
 
     private static int calcHeight(long rn) {return calcWidth(rn)+3;}
@@ -110,6 +136,48 @@ public class DungeonLevel extends World {
                 addObject(new Wall(), centerCorridor[i] + 1, y);
             }
         }
+    }
+
+    private void spawnMonsters(){
+        if (placedRooms.isEmpty()) return;
+
+        for (Room room : placedRooms) {
+            int gewollt = rng.nextInt(3) + 1;
+            int gesetzt = 0;
+            int versuche = 0;
+
+            while (gesetzt < gewollt && versuche < 100) {
+                versuche++;
+
+                int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+                int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+                if (!istFreiFuerMonster(x, y)) continue;
+
+                addObject(zufaelligesMonster(), x, y);
+                gesetzt++;
+            }
+        }
+    }
+
+    // hier neue monster eintragen und die obergrenze mit hochzaehlen:
+    private BaseMonster zufaelligesMonster(){
+        int typ = rng.nextInt(2);
+        if      (typ == 0) return new Skeleton(50);
+        else               return new Zombie(50);
+        //else if (typ == 2) return new Gnome(50);      kein bild vorhanden
+        //else               return new Orc(50);        komisch gescaled
+    }
+
+    private boolean istFreiFuerMonster(int x, int y){
+        if (x < 1 || y < 1|| x >= getWidth() - 1 || y >= getHeight() - 1) return false;
+
+        // wie ueberall sonst: wandposition ueber getX/getY pruefen, nicht ueber getObjectsAt
+        // (das wandbild ist 40x80 gross und ragt in die nachbarzelle)
+        boolean wand = getObjects(Wall.class).stream().anyMatch(w -> w.getX() == x && w.getY() == y);
+        if (wand) return false;
+
+        if (!getObjectsAt(x, y, Player.class).isEmpty()) return false;
+        return getObjectsAt(x, y, entities.base.BaseMonster.class).isEmpty();
     }
 
     private int[] calcCorridor(){
@@ -242,6 +310,46 @@ public class DungeonLevel extends World {
         }
         setBackground(bg);
     }
+    @Override public void act(){
+        String key = Greenfoot.getKey();
+
+        if (Settings.pauseKey.equals(key)) {
+            togglePause();
+        }
+    }
+    public void togglePause(){
+        paused = !paused;
+        if (paused){
+            showPause();
+        }else{
+            hidePause();
+        }
+    }
+    public void showPause(){
+        int cx = getWidth() / 2;
+        int cy = getHeight() / 2;
+
+        pauseScreen = new PauseScreen(getWidth() * getCellSize(), getHeight() * getCellSize());
+        addObject(pauseScreen, cx, cy);
+
+        restartButton = new restartButton(gameStarter);
+        addObject(restartButton, cx, cy - 3);
+
+        settingPauseButton = new settingPauseButton();
+        addObject(settingPauseButton, cx, cy);
+
+        saveGameButton = new SaveGameButton(gameStarter);
+        addObject(saveGameButton, cx, cy + 3);
+    }
+
+    public void hidePause(){
+        showText(null, saveGameButton.getX(), saveGameButton.getY() - 2);   // speicher-meldung weg
+        removeObject(pauseScreen);
+        removeObject(restartButton);
+        removeObject(settingPauseButton);
+        removeObject(saveGameButton);
+    }
+
 
     public List<int[]> getOpenedChests() {
         List<int[]> opened = new ArrayList<>();
@@ -256,3 +364,5 @@ public class DungeonLevel extends World {
         addObject(player, x, y);
     }
 }
+
+

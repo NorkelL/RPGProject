@@ -13,9 +13,12 @@ public class Settings  {
     public static String putItem ="p";
     public static String inventoryToggle ="e";
     public static String useItem ="f";
+    public static String pauseKey = "escape";
+    public static String attack ="MOUSE1";
 
 
     public static boolean soundOn = true;
+    public static boolean musicOn = true;
     public static int volume = 50;
 
 

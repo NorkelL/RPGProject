@@ -12,6 +12,7 @@ public class SettingsWorld extends World {
     public static boolean waitingForKey = false;
     public static String switchKey = "";
     public boolean blinkActivated = false;
+    private World lastWorld;   // null heisst: kam aus dem hauptmenue
 
 
 
@@ -26,7 +27,12 @@ public class SettingsWorld extends World {
 
 
     public SettingsWorld() {
+        this(null);
+    }
+
+    public SettingsWorld(World lastWorld) {
         super(1376, 1300, 1);
+        this.lastWorld = lastWorld;
         showText("Press ESC to go back", 150, 50);
         GreenfootImage bg = new GreenfootImage("UI/Inventory/BackgroundFullInventory.png");
         bg.scale(getWidth() * getCellSize(), getHeight() * getCellSize());
@@ -40,7 +46,8 @@ public class SettingsWorld extends World {
         addObject(new StandardButton("Put Item"),220,900);
         addObject(new StandardButton("Inventory"), 220, 1020);
         addObject(new StandardButton("Sound"), 220, 1140);
-        addObject(new StandardButton("use Item"), 220, 1260);
+        addObject(new StandardButton("Music"), 220, 1260);
+        addObject(new StandardButton("use Item"), 220, 1380);
 
 
         addObject(new KeyButton("W","up"), 700, 180);
@@ -52,7 +59,8 @@ public class SettingsWorld extends World {
         addObject(new KeyButton("p","putItem"), 700, 900);
         addObject(new KeyButton("e","toggleInventory"), 700, 1020);
         addObject(new KeyButton("on/off","Sound"), 700, 1140);
-        addObject(new KeyButton("f","useItem"), 700, 1260);
+        addObject(new KeyButton("on/off","Music"), 700, 1260);
+        addObject(new KeyButton("f","useItem"), 700, 1380);
 
 
     }
@@ -61,7 +69,11 @@ public class SettingsWorld extends World {
 
 
         if (Greenfoot.isKeyDown("escape")) {
-            Greenfoot.setWorld(new MainMenu(new GameStarter()));
+            if(lastWorld != null){
+                Greenfoot.setWorld(lastWorld);
+            }else{
+                Greenfoot.setWorld(new MainMenu(new GameStarter()));
+            }
         }
 
     }

@@ -7,6 +7,7 @@ import items.Item;
 import items.Waffen;
 import items.util.Useable;
 import ui.worlds.Backpack;
+import entities.base.MovingActor;
 
 
 
@@ -25,6 +26,8 @@ public class Bow  extends Waffen implements Useable {
         loadedImage.scale(60,60);
         setImage(normalImage);
     }
+
+    public Bow(){this(5,3);}
 
 
 
@@ -56,8 +59,13 @@ public class Bow  extends Waffen implements Useable {
             return;
         }
 
-        player.getWorld().addObject(new Arrow(rotation,1), player.getX(), player.getY());
+        player.getWorld().addObject(new Arrow(rotation, getDamage()), player.getX(), player.getY());
 
+    }
+
+    @Override
+    public boolean hit(MovingActor angreifer) {
+        return false;
     }
 
 

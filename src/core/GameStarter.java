@@ -2,9 +2,11 @@ package core;
 
 import blocks.Chest;
 import com.google.gson.*;
+import entities.Player;
 import greenfoot.*;
 import items.util.ItemData;
 import ui.worlds.MainMenu;
+import util.WindowSizeManager;
 import world.DungeonLevel;
 
 import java.io.IOException;
@@ -22,28 +24,40 @@ public class GameStarter extends World {
     public List<DungeonLevel> pastLevels = new ArrayList<>();
     public DungeonLevel currentLevel;
     public static final Path SAVE_DIR = Path.of("saves");
+    private Player player;
 
 
     public GameStarter() {
         super(1, 1, 1); //nie sichtbar
+        WindowSizeManager.enforce();
         seedsseed = System.currentTimeMillis();
         seed = new Random(seedsseed);
+        player = new Player();
         mainMenu();
     }
 
-    private void mainMenu(){
+    public void mainMenu(){
         Greenfoot.setWorld(new MainMenu(this));
     }
 
     public void start() {
-        currentLevel = new DungeonLevel(seed.nextLong(),this);
+        currentLevel = new DungeonLevel(seed.nextLong(),this,player);
         Greenfoot.setWorld(currentLevel);
 
     }
 
+    // komplett neues spiel: neuer seed, neuer spieler, keine alten level
+    public void restart(){
+        seedsseed = System.currentTimeMillis();
+        seed = new Random(seedsseed);
+        pastLevels = new ArrayList<>();
+        player = new Player();
+        start();
+    }
+
     public void RenderNextWorld(){
         pastLevels.add(currentLevel);
-        currentLevel = new DungeonLevel(seed.nextLong(),this);
+        currentLevel = new DungeonLevel(seed.nextLong(),this,player);
         Greenfoot.setWorld(currentLevel);
 
     }
@@ -51,6 +65,9 @@ public class GameStarter extends World {
     public void resumeSave(Path p) throws IOException {
         String json = Files.readString(p);
         SaveData save = new Gson().fromJson(json, SaveData.class);
+        if (save == null) { // leere oder kaputte datei
+            return;
+        }
 
         seedsseed = save.seed;
         seed = new Random(seedsseed);
@@ -58,9 +75,9 @@ public class GameStarter extends World {
         pastLevels = new ArrayList<>();
 
         for (int i = 0; i < save.currentLevel -1; i++) {
-            world.DungeonLevel pl = new DungeonLevel(seed.nextLong(),this);
+            world.DungeonLevel pl = new DungeonLevel(seed.nextLong(),this,player);
             pastLevels.add(pl);
-            if(save.pastLevelLootedChests.get(i) != null){
+            if(save.pastLevelLootedChests != null && i < save.pastLevelLootedChests.size() && save.pastLevelLootedChests.get(i) != null){
                 for (int[] pos : save.pastLevelLootedChests.get(i)) {
                     List<Chest> chests = pl.getObjectsAt(pos[0], pos[1], Chest.class);
                     if (!chests.isEmpty()) {
@@ -70,7 +87,7 @@ public class GameStarter extends World {
             }
         }
 
-        currentLevel = new DungeonLevel(seed.nextLong(),this);
+        currentLevel = new DungeonLevel(seed.nextLong(),this,player);
         if (save.currentLevelLootedChests != null) {
             for (int[] pos : save.currentLevelLootedChests) {
                 List<Chest> chests = currentLevel.getObjectsAt(pos[0], pos[1], Chest.class);
@@ -99,6 +116,8 @@ public class GameStarter extends World {
         }
         save.currentLevelLootedChests = currentLevel.getOpenedChests();
         save.inventorys = currentLevel.player.getInventorys();
+
+        Files.createDirectories(SAVE_DIR);   // ordner gibt es beim ersten start noch nicht
 
         String filename = "save_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm")) + ".json";
         Files.writeString(SAVE_DIR.resolve(filename), new GsonBuilder().setPrettyPrinting().create().toJson(save));

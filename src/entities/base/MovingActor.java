@@ -18,6 +18,9 @@ public class MovingActor extends ImprovedActor {
     private  GreenfootImage[][] movingActorImages = new ImprovedGreenfootImage[4][4];
     private int animationStep = 0;
     private boolean invisible = false;
+    private int sayTimer = 0; // laeuft in act() runter, statt delay()
+    private int sayX;
+    private int sayY;
 
     public MovingActor() {
         loadImages(this.getClass().getSimpleName(), "Walking");
@@ -85,15 +88,22 @@ public class MovingActor extends ImprovedActor {
     @Override
     public void act() {
         super.act();
+
+        if (sayTimer > 0) {
+            sayTimer--;
+            if (sayTimer == 0 && getWorld() != null) {
+                getWorld().showText("", sayX, sayY);
+            }
+        }
     }
 
     public void say(String text) {
         int y = getY() - 1;
         if (y < 0) y = 1;
-        getWorld().showText(text, getX(), y);
-        System.out.println("a " + this.getClass().getName() + " says: " + text);
-        Greenfoot.delay(4);
-        getWorld().showText("", getX(), y);
+        sayX = getX();
+        sayY = y;
+        getWorld().showText(text, sayX, sayY);
+        sayTimer = 4;
     }
 
     public void say(boolean text) { say(String.valueOf(text)); }
@@ -102,7 +112,6 @@ public class MovingActor extends ImprovedActor {
 
     @Override
     public void move(int steps) {
-        loadImages(this.getClass().getSimpleName(), "Walking");
         animationStep = (animationStep + 1) % 4;
 
         setImage(movingActorImages[Direction.getDirectionByRotation(getRotation()).getValue()][animationStep]);

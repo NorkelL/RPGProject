@@ -8,6 +8,7 @@ public class Entrance extends Block {
 
     public Entrance(GameStarter gameStarter){
         this.gameStarter = gameStarter;
-        //setImage("Blocks/Entrance.png");
+        setImage("Map/StairsEntrance.png");
+
     }
 }

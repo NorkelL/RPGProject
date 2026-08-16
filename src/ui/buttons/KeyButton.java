@@ -3,6 +3,7 @@ package ui.buttons;
 import greenfoot.*;
 import ui.Settings;
 import ui.worlds.SettingsWorld;
+import util.SoundManager;
 
 public class KeyButton extends StandardButton
 {
@@ -10,6 +11,8 @@ public class KeyButton extends StandardButton
     private boolean waitingForInput = false;
     private int blinkTimer = 0;
     private String action;
+    private GreenfootImage keyImage; // einmal von der platte laden, nicht jeden frame
+    private String lastText;
 
 
 
@@ -18,13 +21,23 @@ public class KeyButton extends StandardButton
         super(text);
         this.action = action;
         this.currentKey = text;
+        this.keyImage = new GreenfootImage("UI/MainMenu/KeyButton.png");
     }
 
     public void act()
     {
         checkClick();
         checkInput();
-        updateImage(new GreenfootImage("UI/MainMenu/KeyButton.png"));
+
+        String textToShow;
+        if (waitingForInput) { textToShow = (blinkTimer < 15) ? "|" : ""; }
+        else                 { textToShow = (currentKey != null) ? currentKey : ""; }
+
+        // nur neu zeichnen wenn sich der text geaendert hat
+        if (!textToShow.equals(lastText)) {
+            lastText = textToShow;
+            updateImage(new GreenfootImage(keyImage));
+        }
     }
 
     private void checkClick()
@@ -83,6 +96,19 @@ public class KeyButton extends StandardButton
         if(action.equals("putItem")) Settings.putItem = currentKey;
         if(action.equals("takeItem")) Settings.takeItem = currentKey;
         if(action.equals("toggleInventory")) Settings.inventoryToggle = currentKey;
+        if(action.equals("useItem")) Settings.useItem = currentKey;
+        if(action.equals("attack")) Settings.attack = currentKey;
+
+        // "Sound" ist kein key sondern ein schalter
+        if(action.equals("Sound")){
+            Settings.soundOn = !Settings.soundOn;
+            currentKey = Settings.soundOn ? "on" : "off";
+        }
+
+        if(action.equals("Music")){
+            SoundManager.toggleMusic();
+            currentKey = Settings.musicOn ? "on" : "off";
+        }
 
         waitingForInput = false;
 
@@ -96,6 +122,8 @@ public class KeyButton extends StandardButton
     @Override
     public void updateImage(GreenfootImage image)
     {
+        if(!(getWorld() instanceof SettingsWorld)) return;
+
         image.scale(200, 110);
 
         int w = image.getWidth();
@@ -104,29 +132,15 @@ public class KeyButton extends StandardButton
         image.setFont(new Font("Arial", 40));
         image.setColor(Color.WHITE);
 
-        String textToShow;
+        String textToShow = (lastText != null) ? lastText : "";
 
-        if(getWorld() instanceof SettingsWorld){
-            Boolean activateBlink = ((SettingsWorld) getWorld()).isBlinkActivated();
-            if (waitingForInput)
-            {
-                textToShow = (blinkTimer < 15) ? "|" : "";
-            }
-            else
-            {
-                textToShow = (currentKey != null) ? currentKey : "";
-            }
+        int textWidth = textToShow.length() * 18;
 
-            int textWidth = textToShow.length() * 18;
+        int x = (w - textWidth) / 2;
+        int y = h / 2 + 15;
 
-            int x = (w - textWidth) / 2;
-            int y = h / 2 + 15;
+        image.drawString(textToShow, x, y);
 
-            image.drawString(textToShow, x, y);
-
-            setImage(image);
-        }
-
-
+        setImage(image);
     }
 }

@@ -124,8 +124,9 @@ public class InventorySlot extends Actor {
             }
         }
 
-        // 2. MAUS LOSGELASSEN: Drag endet
-        if (Greenfoot.mouseDragEnded(null)) {
+        // 2. MAUS LOSGELASSEN: Drag endet. mouseClicked deckt den Klick ohne Ziehen ab,
+        // sonst klebt der Geist am Cursor und blockiert alle weiteren Drags
+        if (Greenfoot.mouseDragEnded(null) || Greenfoot.mouseClicked(null)) {
             if (draggedSlot == this) {
 
                 // --- GEIST LÖSCHEN ---
@@ -164,6 +165,19 @@ public class InventorySlot extends Actor {
     }
 
 
+    // in die Rüstungsslots darf nur passende Rüstung, sonst crasht updateAppearance()
+    private boolean passtInSlot(ui.worlds.Backpack backpack, InventorySlot slot, Item item) {
+        if (item == null) return true;
+
+        if (slot == backpack.getHeadSlot()) {
+            return item instanceof items.armor.Armor armor && armor.getSlotType().equals("head");
+        }
+        if (slot == backpack.getChestSlot()) {
+            return item instanceof items.armor.Armor armor && armor.getSlotType().equals("chest");
+        }
+        return true;
+    }
+
     private void swapItems(InventorySlot slotA, InventorySlot slotB) {
         if (slotA == slotB) return;
 
@@ -177,6 +191,15 @@ public class InventorySlot extends Actor {
         // Tausch ausführen
         slotA.setItem(itemB);
         slotB.setItem(itemA);
+        if (getWorld() instanceof ui.worlds.Backpack bp) {
+            if (!passtInSlot(bp, slotA, slotB.getItem())) return;
+            if (!passtInSlot(bp, slotB, slotA.getItem())) return;
+        }
+
+        // Items tauschen
+        Item tempItem = slotA.getItem();
+        slotA.setItem(slotB.getItem());
+        slotB.setItem(tempItem);
 
         if (getWorld() != null) {
 
