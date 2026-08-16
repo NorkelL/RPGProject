@@ -7,7 +7,7 @@ import util.SoundManager;
 public class Orc extends BaseMonster implements Hitting {
 
     public Orc(int life) {
-        super(100,5,7);
+        super(life,5,7);
     }
 
     @Override

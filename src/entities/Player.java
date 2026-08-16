@@ -10,6 +10,7 @@ import items.Item;
 import items.util.ItemData;
 import items.util.Rarity;
 import items.util.Useable;
+import items.Waffen;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
@@ -52,6 +53,9 @@ public class Player extends DamageableActor {
     private Item chestArmor = null;// z.B. "iron", "leather"
     private BowSprite activeBowSprite;
 
+    private static final long ANGRIFF_PAUSE_MS = 400;
+    private long naechsterAngriff = 0;
+
     private static List<String> itemPackages; //für item erstellen
 
 
@@ -73,6 +77,10 @@ public class Player extends DamageableActor {
     @Override
     public void act() {
         super.act();
+
+        if (Settings.isPressed(Settings.attack)) {
+            angreifen();
+        }
 
         if(moveCounter>0){
             moveCounter--;
@@ -204,6 +212,20 @@ public class Player extends DamageableActor {
             }
             Greenfoot.setWorld(BackpackWorld);
         }
+    }
+
+    public void angreifen() {
+        if (System.currentTimeMillis() < naechsterAngriff) return;   // noch in der Abklingzeit
+
+        Item aktiv = (activeSlot >= 0 && activeSlot < items.length) ? items[activeSlot] : null;
+        if (!(aktiv instanceof Waffen)) return;                      // blosse Faeuste machen keinen Schaden
+
+        naechsterAngriff = System.currentTimeMillis() + ANGRIFF_PAUSE_MS;
+
+        // Sound immer, auch beim Schlag ins Leere - sonst fuehlt es sich an,
+        // als haette die Taste nicht reagiert
+        SoundManager.play("attack.mp3");
+        ((Waffen) aktiv).hit(this);
     }
 
 

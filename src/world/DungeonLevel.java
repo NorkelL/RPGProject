@@ -10,6 +10,11 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 import ui.buttons.*;
 import items.waffen.Arrow;
+import entities.base.BaseMonster;
+import entities.enemies.Gnome;
+import entities.enemies.Orc;
+import entities.enemies.Skeleton;
+import entities.enemies.Zombie;
 import items.waffen.BowSprite;
 import ui.DarkFilter;
 import ui.Healthbar;
@@ -65,6 +70,7 @@ public class DungeonLevel extends World {
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
                 XPBar.class,
+                ui.DamageNumber.class,
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,
                 Arrow.class,
@@ -97,6 +103,7 @@ public class DungeonLevel extends World {
 
         spawnCorridor();
         spawnRooms();
+        spawnMonsters();
         util.SoundManager.startMusic();
     }
 
@@ -124,6 +131,48 @@ public class DungeonLevel extends World {
                 addObject(new Wall(), centerCorridor[i] + 1, y);
             }
         }
+    }
+
+    private void spawnMonsters(){
+        if (placedRooms.isEmpty()) return;
+
+        for (Room room : placedRooms) {
+            int gewollt = rng.nextInt(3) + 1;
+            int gesetzt = 0;
+            int versuche = 0;
+
+            while (gesetzt < gewollt && versuche < 100) {
+                versuche++;
+
+                int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+                int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+                if (!istFreiFuerMonster(x, y)) continue;
+
+                addObject(zufaelligesMonster(), x, y);
+                gesetzt++;
+            }
+        }
+    }
+
+    // hier neue monster eintragen und die obergrenze mit hochzaehlen:
+    private BaseMonster zufaelligesMonster(){
+        int typ = rng.nextInt(2);
+        if      (typ == 0) return new Skeleton(50);
+        else               return new Zombie(50);
+        //else if (typ == 2) return new Gnome(50);      kein bild vorhanden
+        //else               return new Orc(50);        komisch gescaled
+    }
+
+    private boolean istFreiFuerMonster(int x, int y){
+        if (x < 1 || y < 1|| x >= getWidth() - 1 || y >= getHeight() - 1) return false;
+
+        // wie ueberall sonst: wandposition ueber getX/getY pruefen, nicht ueber getObjectsAt
+        // (das wandbild ist 40x80 gross und ragt in die nachbarzelle)
+        boolean wand = getObjects(Wall.class).stream().anyMatch(w -> w.getX() == x && w.getY() == y);
+        if (wand) return false;
+
+        if (!getObjectsAt(x, y, Player.class).isEmpty()) return false;
+        return getObjectsAt(x, y, entities.base.BaseMonster.class).isEmpty();
     }
 
     private int[] calcCorridor(){
