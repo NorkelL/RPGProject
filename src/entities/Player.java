@@ -10,6 +10,7 @@ import items.Item;
 import items.util.ItemData;
 import items.util.Rarity;
 import items.util.Useable;
+import items.Waffen;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
 import ui.InventoryVisualizer;
@@ -51,6 +52,9 @@ public class Player extends DamageableActor {
     private Item chestArmor = null;// z.B. "iron", "leather"
     private BowSprite activeBowSprite;
 
+    private static final long ANGRIFF_PAUSE_MS = 400;
+    private long naechsterAngriff = 0;
+
     private static List<String> itemPackages; //für item erstellen
 
 
@@ -73,6 +77,12 @@ public class Player extends DamageableActor {
     public void act() {
         super.act();
 
+        if (Settings.isPressed(Settings.attack)) {
+            angreifen();
+        }
+
+        // das inventar haengt an der tastenflanke und steht vor dem moveCounter -
+        // sonst laesst es sich waehrend der laufpause nicht oeffnen
         boolean eIsDown = Settings.isPressed(Settings.inventoryToggle);
         if (eIsDown && !eWasDown) {
             eWasDown = true;
@@ -196,8 +206,23 @@ public class Player extends DamageableActor {
         }
     }
 
+    // aufruf vom UpgradeTable: gleiches inventar, aber mit offenen upgrade slots
     public void openInventoryFromTable(World previousWorld) {
         Greenfoot.setWorld(new Backpack(this, this.items, this.backpack, previousWorld, true));
+    }
+
+    public void angreifen() {
+        if (System.currentTimeMillis() < naechsterAngriff) return;   // noch in der Abklingzeit
+
+        Item aktiv = (activeSlot >= 0 && activeSlot < items.length) ? items[activeSlot] : null;
+        if (!(aktiv instanceof Waffen)) return;                      // blosse Faeuste machen keinen Schaden
+
+        naechsterAngriff = System.currentTimeMillis() + ANGRIFF_PAUSE_MS;
+
+        // Sound immer, auch beim Schlag ins Leere - sonst fuehlt es sich an,
+        // als haette die Taste nicht reagiert
+        SoundManager.play("attack.mp3");
+        ((Waffen) aktiv).hit(this);
     }
 
 
@@ -238,8 +263,9 @@ public class Player extends DamageableActor {
         String folder = "Player";
 
 
-        if (hasChestArmor()) {
-            Armor chest = (Armor) getChestArmor();
+        // instanceof statt hartem cast: in den slot kann per drag and drop auch was
+        // anderes als ruestung landen, das darf hier nicht knallen
+        if (getChestArmor() instanceof Armor chest) {
             folder += "_" + chest.getMaterial();
         }
 
@@ -436,8 +462,9 @@ public class Player extends DamageableActor {
     public boolean hasHeadArmor() {return headArmor != null;}
     public void setHeadArmor(Item headArmor) {
         this.headArmor = headArmor;
+        updateAppearance();
     }
-    public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor;}
+    public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor; updateAppearance();}
     public void setInvisibleTimer(int invisibleTimer) {this.invisibleTimer = invisibleTimer;}
     public boolean isInvisible() {return invisible;}
 

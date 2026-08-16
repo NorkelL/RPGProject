@@ -2,15 +2,14 @@ package entities.util;
 
 import blocks.Rock;
 import blocks.Wall;
+import entities.base.BaseMonster;
+import greenfoot.Greenfoot;
 import greenfoot.World;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.WeakHashMap;
 
 public interface ASharpPathfinding {
-
-    WeakHashMap<ASharpPathfinding, int[]> RANDOM_TARGETS = new WeakHashMap<>();
 
     // falls keine Actor subclass
     int getX();
@@ -19,10 +18,11 @@ public interface ASharpPathfinding {
     void setRotation(int rotation);
     void move(int steps);
 
-    default void aSharpPathfindTakeStep(int targetX, int targetY) {
+    // false = kein weg frei (z.b. steht ein anderes monster im gang), dann wurde nicht gelaufen
+    default boolean aSharpPathfindTakeStep(int targetX, int targetY) {
         int startX = getX();
         int startY = getY();
-        if (startX == targetX && startY == targetY) return;
+        if (startX == targetX && startY == targetY) return false;
 
         World world = getWorld();
         int breite = world.getWidth();
@@ -56,7 +56,7 @@ public interface ASharpPathfinding {
             }
         }
 
-        if (dist[startX][startY] == -1) return; // kein weg
+        if (dist[startX][startY] == -1) return false; // kein weg
 
         // der nachbar mit dem kleinsten abstand ist der naechste schritt
         int bestX = -1;
@@ -72,35 +72,25 @@ public interface ASharpPathfinding {
             bestX = nx;
             bestY = ny;
         }
-        if (bestX == -1) return;
+        if (bestX == -1) return false;
 
         if      (bestX > startX) setRotation(0);
         else if (bestX < startX) setRotation(180);
         else if (bestY > startY) setRotation(90);
         else                     setRotation(270);
         move(1);
-    }
-
-    default void aSharpRandomStep() {
-        int[] target = RANDOM_TARGETS.get(this);
-        if (target == null || (getX() == target[0] && getY() == target[1])) {
-            target = pickRandomTarget();
-            RANDOM_TARGETS.put(this, target);
-        }
-        aSharpPathfindTakeStep(target[0], target[1]);
+        return true;
     }
 
     default int[] pickRandomTarget() {
         World world = getWorld();
-        int W = world.getWidth();
-        int H = world.getHeight();
-        int x, y;
-        int tries = 0;
-        do {
-            x = (int) (Math.random() * W);
-            y = (int) (Math.random() * H);
-            tries++;
-        } while (isBlocked(x, y) && tries < 50);
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < 50; i++) {
+            x = Greenfoot.getRandomNumber(world.getWidth());
+            y = Greenfoot.getRandomNumber(world.getHeight());
+            if (!isBlocked(x, y)) break;
+        }
         return new int[]{x, y};
     }
 
@@ -108,6 +98,13 @@ public interface ASharpPathfinding {
     default boolean isBlocked(int x, int y) {
         World world = getWorld();
         if (!world.getObjectsAt(x, y, Rock.class).isEmpty()) return true;
+
+        // andere monster sind auch hindernisse, sonst laufen alle uebereinander.
+        // sich selbst ueberspringen, sonst findet die suche das eigene feld nie
+        for (BaseMonster monster : world.getObjects(BaseMonster.class)) {
+            if (monster != this && monster.getX() == x && monster.getY() == y) return true;
+        }
+
         return world.getObjects(Wall.class).stream()
             .anyMatch(w -> w.getX() == x && w.getY() == y);
     }

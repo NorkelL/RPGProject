@@ -5,8 +5,11 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.Item;
+import items.util.SlotType;
 import ui.InventorySlot;
 import ui.InventoryVisualizer;
+import ui.UpgradeButton;
+import ui.UpgradeSlot;
 import ui.Settings;
 
 public class Backpack extends World {
@@ -18,9 +21,9 @@ public class Backpack extends World {
     private boolean rWasDown = true;
     private final InventorySlot headSlot;
     private final InventorySlot chestSlot;
-    private final InventorySlot upgradeSlot1;
-    private final InventorySlot upgradeSlot2;
-    private final InventorySlot upgradeSlot3;
+    private final UpgradeSlot upgradeSlot1;
+    private final UpgradeSlot upgradeSlot2;
+    private final UpgradeSlot upgradeSlot3;
     private final Player player;
     private final boolean tableMode;
 
@@ -47,7 +50,8 @@ public class Backpack extends World {
             for (int x = 0; x < 3; x++) {
                 if (slotCounter >= 15) break;
 
-                slots[slotCounter] = new InventorySlot(80, 80);
+                // Neuen Slot erstellen
+                slots[slotCounter] = new InventorySlot(80,80,SlotType.GENERIC);
                 slots[slotCounter].getImage().scale(80, 80);
 
                 if (slotCounter < backpackItems.length && backpackItems[slotCounter] != null) {
@@ -59,22 +63,29 @@ public class Backpack extends World {
             }
         }
 
-        headSlot = new InventorySlot(80, 80);
+        headSlot = new InventorySlot(80,80,SlotType.HELMET);
         headSlot.getImage().scale(80, 80);
         addObject(headSlot, 8, 1);
 
-        chestSlot = new InventorySlot(80, 80);
+        chestSlot = new InventorySlot(80,80, SlotType.CHESTPLATE);
         chestSlot.getImage().scale(80, 80);
-        addObject(chestSlot, 8, 3);
+        addObject(chestSlot, 8, 3); // Reihe 2 für die Brust
 
-        upgradeSlot1 = new InventorySlot(80, 80);
-        upgradeSlot2 = new InventorySlot(80, 80);
-        upgradeSlot3 = new InventorySlot(80, 80);
+
+        //Upgrade Slots
+        upgradeSlot1 = new UpgradeSlot("Armor");
+        upgradeSlot2 = new UpgradeSlot("Material");
+        upgradeSlot3 = new UpgradeSlot("Output");
+
         addObject(upgradeSlot1, 7, 5);
         addObject(upgradeSlot2, 8, 5);
         addObject(upgradeSlot3, 9, 5);
 
-        if (!tableMode) {
+        // der knopf haengt nur an der werkbank. im normalen inventar sieht man die
+        // drei slots zwar, sie sind aber abgeschlossen
+        if (tableMode) {
+            addObject(new UpgradeButton(upgradeSlot1, upgradeSlot2, upgradeSlot3), 11, 5);
+        } else {
             upgradeSlot1.setLocked(true);
             upgradeSlot2.setLocked(true);
             upgradeSlot3.setLocked(true);
@@ -92,6 +103,7 @@ public class Backpack extends World {
         boolean rIsDown  = tableMode && Greenfoot.isKeyDown("R");
 
         if ((eIsDown && !eWasDown) || (escIsDown && !escWasDown) || (rIsDown && !rWasDown)) {
+            raeumeUpgradeSlotsAus();
             Greenfoot.setWorld(previousWorld);
         }
 
@@ -109,6 +121,31 @@ public class Backpack extends World {
                 }
             }
         }
+    }
+
+    // die upgrade slots haengen an keinem array. beim schliessen wird die welt
+    // weggeworfen, also muss vorher raus was noch drin liegt
+    private void raeumeUpgradeSlotsAus(){
+        gibZurueck(upgradeSlot1);
+        gibZurueck(upgradeSlot2);
+        gibZurueck(upgradeSlot3);
+    }
+
+    private void gibZurueck(UpgradeSlot slot){
+        Item item = slot.getItem();
+        if (item == null) return;
+
+        for (int i = 0; i < backpackItems.length; i++) {
+            if (backpackItems[i] == null) {
+                backpackItems[i] = item;
+                slot.setItem(null);
+                return;
+            }
+        }
+
+        // rucksack voll -> lieber vor die fuesse legen als verschwinden lassen
+        previousWorld.addObject(item, player.getX(), player.getY());
+        slot.setItem(null);
     }
 
     private void updateArmorSlots() {

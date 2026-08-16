@@ -23,16 +23,16 @@ Integrations-, Merge-, Nach- und **Projektleitungsarbeit** ist mit eingerechnet
 (siehe Abschnitt 1.2 – ein erheblicher Teil davon erzeugt gar keine Codezeilen).
 
 | # | Contributor | Accounts | Anteil (Effort) | Blame-Anteil | Commits |
-|---|---|---|---|---|---|
-| 1 | **Nikolaj** | `NorkelL`, `Nikolaj Lazic` | **58 %** | 53,1 % | 109 (106 auf `master`: 69 + 37 Merges) |
-| 2 | **Tom** | `Vatar007`, `Tom` | **21 %** | 33,2 % | 23 |
-| 3 | **Len** | `Len`, `LDK221` | **6 %** | 7,7 %\*\* | 12 |
-| 4 | **Claude** (KI) | `Claude` | **4 %** | 0 %\* | 4 (nicht gemergt) + Pair-Arbeit |
-| 5 | **Jonas** | `Jonas45677L` | **3,5 %** | 0,8 %\*\* | 11 |
-| 6 | **Selma** | `mvogt` | **3 %** | 2,3 % | 7 |
-| 7 | **Lennox** | `FlyLennox` | **1,5 %** | 1,3 % | 5 |
-| 8 | **Luca** | `rollluca09`, `TuffLuca67` | **1,5 %** | 0,8 % | 3 |
-| 9 | **Noah** | `goldfishi08`, `bf5szfzkfg-commits` | **1,5 %** | 0,8 % | 4 |
+|---|---|---|-----------------|---|---|
+| 1 | **Nikolaj** | `NorkelL`, `Nikolaj Lazic` | **50 %**        | 53,1 % | 109 (106 auf `master`: 69 + 37 Merges) |
+| 2 | **Tom** | `Vatar007`, `Tom` | **21 %**        | 33,2 % | 23 |
+| 3 | **Len** | `Len`, `LDK221` | **7 %**         | 7,7 %\*\* | 12 |
+| 4 | **Claude** (KI) | `Claude` | **0 %**         | 0 %\* | 4 (nicht gemergt) + Pair-Arbeit |
+| 5 | **Jonas** | `Jonas45677L` | **5 %**         | 0,8 %\*\* | 11 |
+| 6 | **Selma** | `mvogt` | **5,5 %**       | 2,3 % | 7 |
+| 7 | **Lennox** | `FlyLennox` | **4 %**         | 1,3 % | 5 |
+| 8 | **Luca** | `rollluca09`, `TuffLuca67` | **3,5 %**       | 0,8 % | 3 |
+| 9 | **Noah** | `goldfishi08`, `bf5szfzkfg-commits` | **4 %**         | 0,8 % | 4 |
 
 \* Claudes Code steht unter Nikolajs Commit-Signatur im Repo (Pair-Programming), die eigenen
 Claude-Commits liegen auf einem nicht gemergten Branch. Siehe Abschnitt 5.
@@ -42,28 +42,30 @@ commited. Git schreibt die 53 Zeilen deshalb komplett Len zu; im Effort-Anteil s
 **je zur Hälfte** angerechnet. Siehe Abschnitt 4.6.
 
 ```
-Nikolaj  ██████████████████████████████████████████████████████████  58 %
-Tom      █████████████████████                                       21 %
-Len      ██████                                                       6 %
-Claude   ████                                                         4 %
-Jonas    ███▌                                                       3,5 %
-Selma    ███                                                          3 %
-Lennox   █▌                                                         1,5 %
-Luca     █▌                                                         1,5 %
-Noah     █▌                                                         1,5 %
+Nikolaj  ██████████████████████████████████████████████████  50 %
+Tom      █████████████████████                               21 %
+Len      ███████                                              7 %
+Selma    █████▌                                             5,5 %
+Jonas    █████                                                5 %
+Lennox   ████                                                 4 %
+Noah     ████                                                 4 %
+Luca     ███▌                                               3,5 %
+Claude   ·                                                    0 %
 ```
 
 ### 1.1 Warum die Effort-Gewichtung vom Blame-Anteil abweicht
 
 | Contributor | Korrektur | Begründung |
 |---|---|---|
-| Nikolaj | 53,1 % → **58 %** | Der Blame-Wert misst nur Code. Dazu kommen: die komplette Projektleitung und GitHub-Organisation (Abschnitt 1.2), 37 von 41 Merges inkl. Konfliktauflösung, und das Nachziehen fremder Beiträge auf die Projektkonventionen. Ein großer Teil dieser Arbeit erzeugt **null Codezeilen** und ist in `git blame` unsichtbar. |
+| Nikolaj | 53,1 % → **50 %** | Zwei gegenläufige Effekte. **Dafür:** Projektleitung und GitHub-Organisation (Abschnitt 1.2), 37 von 41 Merges inkl. Konfliktauflösung, Nachziehen fremder Beiträge auf die Projektkonventionen – Arbeit, die **null Codezeilen** erzeugt und in `git blame` unsichtbar ist; rein auf inhaltliche Zeilen gerechnet läge er sogar bei 57,3 % (siehe 4.7). **Dagegen:** ein Teil seiner Zeilen entstand durch das Umschreiben fremder Klassen (zählt bei ihm, nicht beim Ersteller), und das A\*-Pathfinding unter seiner Signatur stammt von Claude (5.1). Bewusst konservativ auf 50 % angesetzt. |
 | Tom | 33,2 % → **21 %** | Drei Gründe: (1) ein großer Teil der Zeilenmasse ist repetitiv – 7 fast identische Rüstungsklassen, 5 Button-Klassen nach demselben Muster; (2) mehrere seiner Beiträge entsprachen nicht den vereinbarten Projektprinzipien und mussten von Nikolaj umgebaut werden (Abschnitt 4.5); (3) sein Inventar-Branch war nicht mergebar und musste von Nikolaj rebased werden. Zeilen ≠ verwertbarer Aufwand. |
-| Claude | 0 % → **4 %** | Das komplette A\*-Pathfinding ist algorithmisch das schwierigste Einzelstück im Projekt, steht aber unter Nikolajs Signatur. |
-| Jonas | 0,8 % → **3,5 %** | Drei unsichtbare Posten: (1) seine Hälfte am `SoundManager` läuft unter Lens Account; (2) seine Healthbar (6 Commits) wurde nie gemergt; (3) seine Tile-Designs sind Assets und tauchen in der Zeilenzählung nicht auf. Der Aufwand war in allen drei Fällen da. |
-| Len | 7,7 % → **6 %** | Die 53 Zeilen `SoundManager` schreibt git komplett ihm zu, obwohl er sie mit Jonas zusammen geschrieben hat – hier zur Hälfte an Jonas abgegeben. |
-| Selma | 2,3 % → **3 %** | GameOverScreen und ihre Pause-Buttons wurden von Nikolaj umgeschrieben bzw. gar nicht übernommen – die Vorarbeit ist im Blame unsichtbar. |
-| Luca / Lennox | 0,8 / 1,3 % → je **1,5 %** | Die Waffen-Grundklassen kamen von ihnen; die aktuellen Zeilen sind aber größtenteils von Tom bei der Waffenlogik-Überarbeitung ersetzt worden. |
+| Len | 7,7 % → **7 %** | Die 53 Zeilen `SoundManager` schreibt git komplett ihm zu, obwohl er sie mit Jonas zusammen geschrieben hat – hier zur Hälfte an Jonas abgegeben. |
+| Selma | 2,3 % → **5,5 %** | GameOverScreen und ihre Pause-Buttons wurden von Nikolaj umgeschrieben bzw. gar nicht übernommen – die Vorarbeit ist im Blame unsichtbar. Dazu kommt Konzept- und Design-Arbeit am Pause- und GameOver-Screen, die keine Zeilen erzeugt. |
+| Jonas | 0,8 % → **5 %** | Drei unsichtbare Posten: (1) seine Hälfte am `SoundManager` läuft unter Lens Account; (2) seine Healthbar (6 Commits) wurde nie gemergt; (3) seine Tile-Designs sind Assets und tauchen in der Zeilenzählung nicht auf. Der Aufwand war in allen drei Fällen da. |
+| Lennox | 1,3 % → **4 %** | Die Waffen-Klassen kamen von ihm; die aktuellen Zeilen sind aber größtenteils von Tom bei der Waffenlogik-Überarbeitung ersetzt worden (4.3). |
+| Noah | 0,8 % → **4 %** | `BaseMonster` ist die Basisklasse **aller vier Monster** im Spiel – strukturell weit wichtiger, als die 35 verbliebenen Zeilen vermuten lassen. Dazu Gnome, Orc, Zombie und ein eigeninitiativer Refactor. |
+| Luca | 0,8 % → **3,5 %** | Legte das Waffen-Grundgerüst und die erste `Bow` an. Beides wurde später von Tom und Lennox überschrieben – von seinen 7 verbliebenen `Bow`-Zeilen ist keine einzige inhaltlich (4.7). |
+| Claude | 0 % → **0 %** | Als **Werkzeug** geführt, nicht als Teammitglied: Claude erhält keinen Anteil an der Aufteilung unter den Schüler:innen. Die Beiträge (A\*-Pathfinding komplett, `WindowSizeManager` als Hilfe) sind in Abschnitt 5 trotzdem vollständig offengelegt, damit nachvollziehbar bleibt, welche Teile nicht von Menschen im Team stammen. |
 
 ### 1.2 Projektleitung und Organisation (größtenteils Nikolaj)
 
@@ -118,7 +120,7 @@ Jeder dieser Merges bedeutete Review, Konfliktauflösung und oft Nacharbeit am f
 
 ## 3. Contributors im Detail
 
-### 3.1 Nikolaj — 58 % · *Projektleitung*
+### 3.1 Nikolaj — 50 % · *Projektleitung*
 
 **Accounts:** `NorkelL <n.l.lazic@outlook.com>` und `Nikolaj Lazic <lazicnikolaj@gmail.com>` (hier zusammengefasst)
 **Commits:** 106 auf `master` (69 inhaltliche + 37 Merge-Commits), 109 über alle Branches
@@ -141,7 +143,8 @@ Jeder dieser Merges bedeutete Review, Konfliktauflösung und oft Nacharbeit am f
 davon sind aber **3 reine Leerzeilen**, eine ein `import`-Statement und zwei Einzelzeilen
 innerhalb von Methoden, die Nikolaj geschrieben hat (`Greenfoot.setWorld(new MainMenu(this))`
 und eine Methodensignatur). An der Funktionsweise der Klasse ändert das nichts – ein gutes
-Beispiel dafür, warum `git blame` allein kein Maß für Beitrag ist.
+Beispiel dafür, warum `git blame` allein kein Maß für Beitrag ist. Das Phänomen betrifft das
+ganze Projekt und **jeden im Team**, siehe **Abschnitt 4.7**.
 Alle übrigen Dateien in dieser Tabelle enthalten **keine einzige fremde Zeile**.
 
 **Rolle:** Projektleitung. Neben dem Code lagen Organisation, Planung, Einarbeitung des Teams
@@ -242,7 +245,7 @@ Effort-Anteil bildet aber ab, wie viel davon **ohne Nacharbeit verwertbar** war.
 
 ---
 
-### 3.3 Len — 6 %
+### 3.3 Len — 7 %
 
 **Accounts:** `Len <lenkoehler22@gmail.com>`, `LDK221 <lenkoehler22@gmail.com>`
 **Commits:** 12 (inkl. 1 Merge) · **Blame:** 343 Zeilen (7,7 %) · 15 Asset-Dateien
@@ -268,16 +271,25 @@ auch wenn git die Datei zu 100 % Len zuschreibt (siehe 4.6).
 
 ---
 
-### 3.4 Claude (KI) — 4 %
+### 3.4 Selma — 5,5 %
 
-Siehe Abschnitt 5 für die vollständige Darstellung.
+**Account:** `mvogt <selma.v@gmx.de>` · **Commits:** 7 (2 davon auf `master`) · **Blame:** 102 Zeilen (2,3 %)
 
-Kurz: **A\*-Pathfinding komplett allein gebaut**, **Hilfestellung beim `WindowSizeManager`**,
-plus vier eigene Commits auf `claude/gridworld-dual-cellsize`, die **nie gemergt wurden**.
+**Hauptbeiträge:**
+
+- **`hit`-Methode im Player** (`2026-05-04`) – frühe Kampf-Grundlage.
+- **GameOverScreen** (`2026-05-29` / `2026-06-09`, Branch `KockBack`) – **nicht gemergt**,
+  existiert heute nicht in `master` (siehe 4.2).
+- **PauseScreen** (`2026-07-14` – `2026-07-17`, PR #70): `ui/PauseScreen.java` gehört ihr zu
+  **100 %** (22 von 22 Zeilen) – eine der wenigen Dateien, die unverändert von ihr stammt.
+  Dazu 58 Zeilen Integration in `DungeonLevel.java` (heute noch 48 davon = 15 % der Datei).
+- **Pause-Button-Klassen angelegt**: `PauseButtons`, `SaveGameButton`, `restartButton`,
+  `settingPauseButton` – als Stubs mit 8–14 Zeilen. Diese wurden anschließend von Nikolaj
+  ausimplementiert (siehe 4.1).
 
 ---
 
-### 3.5 Jonas — 3,5 %
+### 3.5 Jonas — 5 %
 
 **Account:** `Jonas45677L <Jonaslehndorff@gmail.com>` · **Commits:** 11 (inkl. 1 Merge) ·
 **Blame:** nur 34 Zeilen (0,8 %) · 8 Asset-Dateien
@@ -303,25 +315,7 @@ und seine Hälfte am `SoundManager` läuft unter Lens Account:
 
 ---
 
-### 3.6 Selma — 3 %
-
-**Account:** `mvogt <selma.v@gmx.de>` · **Commits:** 7 (2 davon auf `master`) · **Blame:** 102 Zeilen (2,3 %)
-
-**Hauptbeiträge:**
-
-- **`hit`-Methode im Player** (`2026-05-04`) – frühe Kampf-Grundlage.
-- **GameOverScreen** (`2026-05-29` / `2026-06-09`, Branch `KockBack`) – **nicht gemergt**,
-  existiert heute nicht in `master` (siehe 4.2).
-- **PauseScreen** (`2026-07-14` – `2026-07-17`, PR #70): `ui/PauseScreen.java` gehört ihr zu
-  **100 %** (22 von 22 Zeilen) – eine der wenigen Dateien, die unverändert von ihr stammt.
-  Dazu 58 Zeilen Integration in `DungeonLevel.java` (heute noch 48 davon = 15 % der Datei).
-- **Pause-Button-Klassen angelegt**: `PauseButtons`, `SaveGameButton`, `restartButton`,
-  `settingPauseButton` – als Stubs mit 8–14 Zeilen. Diese wurden anschließend von Nikolaj
-  ausimplementiert (siehe 4.1).
-
----
-
-### 3.7 Lennox — 1,5 %
+### 3.6 Lennox — 4 %
 
 **Account:** `FlyLennox <menlennox@gmail.com>` · **Commits:** 5 · **Blame:** 58 Zeilen (1,3 %)
 
@@ -332,20 +326,7 @@ und seine Hälfte am `SoundManager` läuft unter Lens Account:
 
 ---
 
-### 3.8 Luca — 1,5 %
-
-**Accounts:** `TuffLuca67 <luca@roll-consult.de>`, `rollluca09 <luca@…>` / `<Luca@…>` (Groß-/Kleinschreibung
-der Mail variiert, git zählt das als zwei Identitäten) · **Commits:** 3 · **Blame:** 35 Zeilen (0,8 %)
-
-- **Waffen-Grundgerüst** (`2026-05-04`): legte `Waffen.java`, `Messer.java` und `Stock.java` an –
-  die Basis, auf der Lennox und Tom später aufgebaut haben.
-- **New weapons** (`2026-06-01` / `2026-06-02`): erste `Bow.java`.
-  Von dieser Datei sind heute noch 7 von 66 Zeilen (11 %) von Luca – Tom hat den Bogen bei der
-  Pfeil-Animation im August weitgehend neu geschrieben (siehe 4.3).
-
----
-
-### 3.9 Noah — 1,5 %
+### 3.7 Noah — 4 %
 
 **Accounts:** `goldfishi08 <bf5szfzkfg@privaterelay.appleid.com>`,
 `bf5szfzkfg-commits <bf5szfzkfg@privatere-lay.appleid.com>` (Apple-Private-Relay, deshalb zwei
@@ -358,6 +339,35 @@ leicht unterschiedliche Adressen) · **Commits:** 4 · **Blame:** 35 Zeilen (0,8
 - **`receiveHit` von Gnome nach BaseMonster hochgezogen** – sauberer Refactor auf eigene Initiative.
 - Heute stehen von `BaseMonster.java` noch 20 von 127 Zeilen (16 %) von Noah; der Rest kam durch
   Nikolajs Pathfinding-Anbindung und Toms Animations-Umbau dazu.
+
+---
+
+### 3.8 Luca — 3,5 %
+
+**Accounts:** `TuffLuca67 <luca@roll-consult.de>`, `rollluca09 <luca@…>` / `<Luca@…>` (Groß-/Kleinschreibung
+der Mail variiert, git zählt das als zwei Identitäten) · **Commits:** 3 · **Blame:** 35 Zeilen (0,8 %)
+
+- **Waffen-Grundgerüst** (`2026-05-04`): legte `Waffen.java`, `Messer.java` und `Stock.java` an –
+  die Basis, auf der Lennox und Tom später aufgebaut haben.
+- **New weapons** (`2026-06-01` / `2026-06-02`): erste `Bow.java`.
+  Von dieser Datei sind heute noch 7 von 66 Zeilen (11 %) von Luca – Tom hat den Bogen bei der
+  Pfeil-Animation im August weitgehend neu geschrieben (siehe 4.3).
+
+---
+
+### 3.9 Claude (KI) — 0 %
+
+**Kein Anteil an der Aufteilung.** Claude wird hier als **Werkzeug** geführt, nicht als
+Teammitglied – die 100 % verteilen sich ausschließlich auf die Personen im Team.
+
+Aufgelistet wird es trotzdem, damit vollständig nachvollziehbar bleibt, welche Teile des
+Codes nicht von Menschen im Team stammen:
+
+- **A\*-Pathfinding komplett allein gebaut** (`ASharpPathfinding.java`, 114 Zeilen)
+- **Hilfestellung beim `WindowSizeManager`**
+- vier eigene Commits auf `claude/gridworld-dual-cellsize`, die **nie gemergt wurden**
+
+Vollständige Darstellung in **Abschnitt 5**.
 
 ---
 
@@ -402,6 +412,8 @@ Die Waffen sind der Bereich mit dem stärksten Autorenwechsel:
 - `Messer.java` / `Stock.java`: von **Luca** angelegt → heute gemischt Luca/Lennox/Nikolaj
 - `Bow.java`: von **Luca** angelegt (`2026-06-02`) → heute **54 von 66 Zeilen von Tom** (82 %),
   Luca nur noch 7 Zeilen. Tom hat den Bogen bei der Arrow-Animation (`2026-08-07`) neu aufgebaut.
+  **Inhaltlich war die Übernahme sogar vollständig:** Lucas verbliebene 7 Zeilen sind
+  5 Leerzeilen und 2 Klammern – keine einzige inhaltliche Zeile (siehe 4.7).
 
 ### 4.4 Weitere Umschreibungen
 
@@ -463,6 +475,88 @@ Das ist der einzige bekannte Fall dieser Art. Sollte es weitere Pair-Programming
 gegeben haben, die nur ein Beteiligter commited hat, sind sie hier nicht erfasst, weil sie
 sich aus dem Git-Verlauf nicht rekonstruieren lassen.
 
+### 4.7 Blame-Rauschen: triviale Zeilen ohne inhaltlichen Beitrag
+
+Der Fall `GameStarter.java` aus Abschnitt 3.1 (Tom hat dort 6 Zeilen, davon 3 Leerzeilen und
+einen Import) ist **kein Einzelfall**. Eine Auswertung aller 75 Dateien zeigt: **47 % aller
+4.443 Zeilen sind Leerzeilen, Imports, `package`-Zeilen, einzelne Klammern oder Kommentare** –
+Zeilen, die `git blame` jemandem zurechnet, ohne dass dahinter inhaltliche Arbeit steht.
+
+Das trifft **jeden** im Team, deshalb hier vollständig:
+
+#### Dateien, in denen jemand ausschließlich triviale Zeilen hat
+
+| Datei | Person | Zeilen | Was genau |
+|---|---|---|---|
+| `items/waffen/Bow.java` | Luca | 7 | 5 Leerzeilen + 2 Klammern – **0 inhaltliche Zeilen** |
+| `ui/GhostItem.java` | Nikolaj | 4 | 4 Imports |
+| `ui/DarkFilter.java` | Nikolaj | 4 | 3 Imports + 1 Leerzeile |
+| `items/waffen/Messer.java` | Lennox | 4 | 2 Leerzeilen + 2 Klammern |
+| `items/util/ItemTyp.java` | Tom | 4 | 4 Leerzeilen |
+| `items/TestItem.java` | Len | 3 | 1 Import, 1 Leerzeile, 1 Klammer |
+| `ui/Buttons/SaveGameButton.java` | Tom | 2 | 2 Imports |
+| `ui/Buttons/restartButton.java` | Tom | 2 | 2 Imports |
+| `ui/Buttons/settingPauseButton.java` | Tom | 2 | 2 Imports |
+| `items/misc/Apple.java` | Tom | 1 | 1 Leerzeile |
+| `items/misc/Cookie.java` | Tom | 1 | 1 Leerzeile |
+| `items/misc/HoneyBottle.java` | Tom | 1 | 1 Leerzeile |
+| `items/misc/HealthPotion.java` | Tom | 1 | 1 Leerzeile |
+| `items/Item.java` | Tom | 1 | 1 Import |
+| `entities/base/ImprovedActor.java` | Len | 1 | 1 Import |
+| `entities/base/MovingActor.java` | Len | 1 | 1 Import |
+| `util/ImprovedGreenfootImage.java` | Len | 1 | 1 Import |
+| `ui/worlds/Backpack.java` | Jonas | 1 | 1 Import |
+| `ui/buttons/StandardButton.java` | Nikolaj | 1 | 1 Import |
+| `ui/Buttons/PauseButtons.java` | Nikolaj | 1 | 1 Import |
+| `items/waffen/Arrow.java` | Nikolaj | 1 | 1 Import |
+| `items/waffen/BowSprite.java` | Nikolaj | 1 | 1 Import |
+
+**Bemerkenswert:**
+
+- **`Bow.java`**: Lucas verbliebene 7 Zeilen sind zu 100 % trivial. Toms Übernahme des Bogens
+  (Abschnitt 4.3) war also **inhaltlich vollständig**, nicht nur zu 82 %.
+- **Die vier `misc`-Items**: Toms Beteiligung besteht aus je genau **einer Leerzeile**.
+  In der Feature-Matrix taucht er dort trotzdem als Mitwirkender auf.
+- **Die drei Pause-Buttons**: Toms Anteil sind je 2 Imports – Ergebnis der Paketumbenennung,
+  nicht eigene Arbeit.
+- **Nikolaj ist genauso betroffen**: In `GhostItem`, `DarkFilter`, `StandardButton`,
+  `PauseButtons`, `Arrow` und `BowSprite` hat er **ausschließlich Imports**. Das sind
+  Nebeneffekte seiner Paket-Refactorings, kein inhaltlicher Beitrag zu diesen Klassen.
+- **Die 7 Rüstungsklassen**: Nikolaj hat in jeder genau 3 Zeilen – 1 Import, 1 Leerzeile,
+  1 inhaltliche. Sein Beitrag zu den Rüstungen ist also deutlich kleiner, als die
+  Feature-Matrix („Rüstungen: Tom, beteiligt Nikolaj") nahelegt.
+
+#### Was passiert, wenn man nur inhaltliche Zeilen zählt
+
+Rechnet man Leerzeilen, Imports, Klammern und Kommentare komplett heraus, bleiben
+**2.349 inhaltliche Zeilen**. Die Verteilung verschiebt sich so:
+
+| Person | alle Zeilen | nur inhaltliche | Verschiebung | Trivial-Anteil |
+|---|---|---|---|---|
+| Nikolaj | 53,1 % | **57,3 %** | +4,2 | 43 % |
+| Tom | 33,2 % | **30,9 %** | −2,3 | 51 % |
+| Len | 7,7 % | **7,1 %** | −0,6 | 51 % |
+| Selma | 2,3 % | **1,8 %** | −0,5 | 58 % |
+| Lennox | 1,3 % | **0,8 %** | −0,5 | 69 % |
+| Luca | 0,8 % | **0,8 %** | ±0 | 49 % |
+| Jonas | 0,8 % | **0,7 %** | −0,1 | 50 % |
+| Noah | 0,8 % | **0,6 %** | −0,2 | 60 % |
+
+**Einordnung:** Die reine Zeilenmessung *ohne jede inhaltliche Bewertung* liefert für Nikolaj
+**57,3 %**. Die Effort-Aufteilung in Abschnitt 1 setzt ihn bewusst darunter an (**50 %**),
+weil Zeilen allein seinen Anteil überzeichnen: ein Teil davon entstand durch das Umschreiben
+fremder Klassen, und die 114 A\*-Zeilen unter seiner Signatur stammen von Claude (5.1).
+Die 50 % sind also die **konservativere** von beiden Zahlen, nicht die großzügigere.
+
+**Einschränkung zu dieser Auswertung:** Der Trivial-Anteil hängt stark an der Dateigröße –
+Klassen unter 15 Zeilen bestehen zu 64 % aus Leerzeilen, Imports und Klammern, Klassen über
+100 Zeilen nur zu 43 %. Wer viele große, dichte Klassen schreibt, schneidet hier automatisch
+besser ab als jemand, der viele kleine Boilerplate-Klassen anlegt. Der Vorsprung misst also
+eher „hat die großen Logik-Brocken geschrieben" als „hat sauberer programmiert" – was in
+diesem Projekt zusammenfällt, aber nicht dasselbe ist.
+
+Alle Tabellen in Abschnitt 6 zeigen weiterhin die ungefilterten Rohwerte.
+
 ---
 
 ## 5. Claude (KI) im Detail
@@ -509,8 +603,9 @@ Vier Commits unter der Signatur `Claude <noreply@anthropic.com>` liegen auf
 stattdessen von Nikolaj direkt in `master` gelöst
 (`80f48af`, „fixed mainmenu clicking bugs + smoother player movement + fixed room-gen not enterable bug").
 
-Diese vier Commits sind **nicht** in Claudes 4 % eingerechnet – der Anteil ergibt sich aus
-A\*-Pathfinding (allein) und der WindowSizeManager-Hilfe.
+Claude erhält in Abschnitt 1 **keinen Prozentanteil** – es wird als Werkzeug geführt, nicht
+als Teammitglied. Die Beiträge sind hier trotzdem vollständig dokumentiert, damit
+nachvollziehbar bleibt, welche Teile des Codes nicht von Menschen im Team stammen.
 
 ---
 
