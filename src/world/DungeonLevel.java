@@ -29,9 +29,6 @@ import greenfoot.Greenfoot;
 import ui.Settings;
 import ui.XPBar;
 import items.*;
-import ui.DarkFilter;
-import ui.InventoryOverlay;
-import ui.InventorySlot;
 import Material.*;
 
 import java.util.ArrayList;
