@@ -266,8 +266,9 @@ public class Player extends DamageableActor {
         String folder = "Player";
 
 
-        if (hasChestArmor()) {
-            Armor chest = (Armor) getChestArmor();
+        // instanceof statt hartem cast: in den slot kann per drag and drop auch was
+        // anderes als ruestung landen, das darf hier nicht knallen
+        if (getChestArmor() instanceof Armor chest) {
             folder += "_" + chest.getMaterial();
         }
 
@@ -464,8 +465,9 @@ public class Player extends DamageableActor {
     public boolean hasHeadArmor() {return headArmor != null;}
     public void setHeadArmor(Item headArmor) {
         this.headArmor = headArmor;
+        updateAppearance();
     }
-    public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor;}
+    public void setChestArmor(Item chestArmor) {this.chestArmor = chestArmor; updateAppearance();}
     public void setInvisibleTimer(int invisibleTimer) {this.invisibleTimer = invisibleTimer;}
     public boolean isInvisible() {return invisible;}
 

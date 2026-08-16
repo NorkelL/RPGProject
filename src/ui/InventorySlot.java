@@ -165,7 +165,7 @@ public class InventorySlot extends Actor {
     }
 
 
-    // in die Rüstungsslots darf nur passende Rüstung, sonst crasht updateAppearance()
+    // in die Rüstungsslots darf nur passende Rüstung
     private boolean passtInSlot(ui.worlds.Backpack backpack, InventorySlot slot, Item item) {
         if (item == null) return true;
 
@@ -184,22 +184,20 @@ public class InventorySlot extends Actor {
         Item itemA = slotA.getItem();
         Item itemB = slotB.getItem();
 
+        // erst alle pruefungen, dann tauschen - vorher liegt sonst schon das
+        // falsche item im slot und passtInSlot prueft den bereits getauschten stand
         if (!slotB.canAcceptItem(itemA) || !slotA.canAcceptItem(itemB)) {
             return;
         }
 
-        // Tausch ausführen
-        slotA.setItem(itemB);
-        slotB.setItem(itemA);
         if (getWorld() instanceof ui.worlds.Backpack bp) {
-            if (!passtInSlot(bp, slotA, slotB.getItem())) return;
-            if (!passtInSlot(bp, slotB, slotA.getItem())) return;
+            if (!passtInSlot(bp, slotA, itemB)) return;
+            if (!passtInSlot(bp, slotB, itemA)) return;
         }
 
         // Items tauschen
-        Item tempItem = slotA.getItem();
-        slotA.setItem(slotB.getItem());
-        slotB.setItem(tempItem);
+        slotA.setItem(itemB);
+        slotB.setItem(itemA);
 
         if (getWorld() != null) {
 

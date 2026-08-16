@@ -12,8 +12,6 @@ import items.armor.LeatherArmor;
 import ui.buttons.*;
 import items.waffen.Arrow;
 import entities.base.BaseMonster;
-import entities.enemies.Gnome;
-import entities.enemies.Orc;
 import entities.enemies.Skeleton;
 import entities.enemies.Zombie;
 import items.waffen.BowSprite;
