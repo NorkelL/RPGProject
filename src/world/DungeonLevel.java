@@ -75,6 +75,7 @@ public class DungeonLevel extends World {
                 InventorySlot.class,    // Die Slots auf dem Inventar
                 Healthbar.class,        // hud muss ueber den schleier, sonst ist es abgedunkelt
                 XPBar.class,
+                ui.LevelUpMessage.class,
                 ui.DamageNumber.class,
                 DarkFilter.class,   // Der dunkle Schleier
                 Wall.class,

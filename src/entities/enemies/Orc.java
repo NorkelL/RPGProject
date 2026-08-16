@@ -8,6 +8,7 @@ public class Orc extends BaseMonster implements Hitting {
 
     public Orc(int life) {
         super(life,5,7);
+        setXpDrop(90);
     }
 
     @Override

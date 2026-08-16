@@ -1,6 +1,7 @@
 package items;
 
 import blocks.Wall;
+import entities.Player;
 import entities.base.BaseMonster;
 import entities.base.MovingActor;
 import greenfoot.Greenfoot;
@@ -69,6 +70,8 @@ public abstract class Waffen extends Item {
             if (!getroffen.isEmpty()) {
                 boolean kritisch = Greenfoot.getRandomNumber(100) < kritChance;
                 int schaden = kritisch ? damage * KRIT_FAKTOR : damage;
+
+                if (angreifer instanceof Player spieler) { schaden += spieler.getBonusDamage(); }
 
                 getroffen.get(0).takeDamage(schaden, kritisch);
                 return true;   // nur das erste Monster in der Reihe wird getroffen

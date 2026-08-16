@@ -9,6 +9,7 @@ public class Zombie extends BaseMonster implements Hitting {
 
     public Zombie(int life) {
         super(life, 2, 4);
+        setXpDrop(40);
     }
 
     @Override

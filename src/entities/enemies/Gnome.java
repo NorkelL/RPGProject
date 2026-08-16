@@ -8,6 +8,7 @@ public class Gnome extends BaseMonster implements Hitting {
 
     public Gnome(int life) {
         super(life,3,5);
+        setXpDrop(30);
     }
 
     @Override

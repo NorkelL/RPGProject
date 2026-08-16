@@ -59,7 +59,7 @@ public class Bow  extends Waffen implements Useable {
             return;
         }
 
-        player.getWorld().addObject(new Arrow(rotation, getDamage()), player.getX(), player.getY());
+        player.getWorld().addObject(new Arrow(rotation, getDamage() + player.getBonusDamage()), player.getX(), player.getY());
 
     }
 

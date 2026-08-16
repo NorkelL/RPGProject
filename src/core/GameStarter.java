@@ -99,6 +99,7 @@ public class GameStarter extends World {
         }
         currentLevel.movePlayer(save.playerX,save.playerY);
         currentLevel.player.setLife(save.health);
+        currentLevel.player.ladeFortschritt(save.level, save.xp, save.maxLife, save.bonusDamage);
         currentLevel.player.setInventorys(save.inventorys);
 
         Greenfoot.setWorld(currentLevel);
@@ -109,6 +110,10 @@ public class GameStarter extends World {
         save.playerX = currentLevel.player.getX();
         save.playerY = currentLevel.player.getY();
         save.health = currentLevel.player.getLife();
+        save.level = currentLevel.player.getCurrentLevel();
+        save.xp = currentLevel.player.getCurrentXP();
+        save.maxLife = currentLevel.player.getMaxLife();
+        save.bonusDamage = currentLevel.player.getBonusDamage();
         save.currentLevel = pastLevels.size()+1;
         save.seed = seedsseed;
         save.pastLevelLootedChests = new  ArrayList<>();
@@ -130,6 +135,10 @@ class SaveData{
     int health;
     int currentLevel;
     long seed;
+    int level;
+    int xp;
+    int maxLife;
+    int bonusDamage;
     List<List<ItemData>> inventorys;
     List<List<int[]>> pastLevelLootedChests;
     List<int[]> currentLevelLootedChests;

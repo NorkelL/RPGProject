@@ -21,6 +21,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     private long animationBis = 0;
 
     private int attackDamage;
+    private int xpDrop = 50;
 
     private static final long ANGRIFF_PAUSE_MS = 1000;
     private long naechsterAngriff = 0;
@@ -174,9 +175,18 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
 
     protected void setAttackDamage(int attackDamage) { this.attackDamage = attackDamage; }
 
+    public int getXpDrop() { return xpDrop; }
+
+    protected void setXpDrop(int xpDrop) { this.xpDrop = xpDrop; }
+
     @Override
     protected void onDeath() {
         SoundManager.play("death_monster.wav");
+
+        for (Player player : getWorld().getObjects(Player.class)) {
+            player.gainXP(xpDrop);
+        }
+
         getWorld().removeObject(this);
     }
 

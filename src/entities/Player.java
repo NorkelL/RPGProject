@@ -15,6 +15,7 @@ import items.waffen.Bow;
 import items.waffen.BowSprite;
 import items.waffen.Stock;
 import ui.InventoryVisualizer;
+import ui.LevelUpMessage;
 import ui.Settings;
 import util.SoundManager;
 import ui.Healthbar;
@@ -42,14 +43,14 @@ public class Player extends DamageableActor {
     private int multiplierTimer = 0;
 
 
-    private final int maxLife;
+    private int maxLife;
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
     private int currentXP = 0;
     private int currentLevel = 1;
     private int xpToNextLevel = 100;
-    private int debugXPCooldown = 0; // nur zum testen der xp-bar, kann spaeter wieder raus
+    private int bonusDamage = 0;
     private Item headArmor = null; // z.B. "iron", "leather"
     private Item chestArmor = null;// z.B. "iron", "leather"
     private BowSprite activeBowSprite;
@@ -459,14 +460,43 @@ public class Player extends DamageableActor {
             currentXP -= xpToNextLevel;
             currentLevel++;
             xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
+
+            int bonusLeben = 10;
+            int bonusSchaden = 0;
+            maxLife += bonusLeben;
+            if (currentLevel % 2 == 0) { bonusDamage++; bonusSchaden = 1; }
+            setLife(Math.min(getLife() + 20, maxLife));
+
             SoundManager.play("levelup.mp3", 20);
-            say("LEVEL UP!");
+            zeigeLevelUp(bonusLeben, bonusSchaden);
         }
+    }
+
+    private void zeigeLevelUp(int bonusLeben, int bonusSchaden) {
+        World welt = getWorld();
+        if (welt == null) return;
+
+        int y = getY() - 2;
+        if(y<0){y=0;}
+
+        welt.addObject(new LevelUpMessage(bonusLeben, bonusSchaden), getX(), y);
+    }
+
+    public void ladeFortschritt(int level, int xp, int maxLife, int bonusDamage) {
+        if (level < 1) {
+            return;
+        }
+        currentLevel = level;
+        currentXP = xp;
+        xpToNextLevel = (int)(100 * Math.pow(currentLevel, 1.5));
+        this.maxLife = maxLife;
+        this.bonusDamage = bonusDamage;
     }
 
     public int getCurrentXP()     { return currentXP; }
     public int getCurrentLevel()   { return currentLevel; }
     public int getXpToNextLevel()  { return xpToNextLevel; }
+    public int getBonusDamage()    { return bonusDamage; }
 
     public int getMaxLife()  { return maxLife; }
     public int getMaxItems() { return maxItems; }
