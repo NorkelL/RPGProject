@@ -32,13 +32,13 @@ Integrations-, Merge-, Nach- und **Projektleitungsarbeit** ist mit eingerechnet
 
 | # | Contributor | Accounts                            | Anteil (Effort) | Blame-Anteil | Commits                               |
 | - | ----------- | ----------------------------------- | --------------- | ------------ | ------------------------------------- |
-| 1 | **Nikolaj** | `NorkelL`, `Nikolaj Lazic`          | **50 %**        | 50,1 %       | 122 (119 auf`master`: 76 + 43 Merges) |
+| 1 | **Nikolaj** | `NorkelL`, `Nikolaj Lazic`          | **49,5 %**      | 50,1 %       | 122 (119 auf`master`: 76 + 43 Merges) |
 | 2 | **Tom**     | `Vatar007`, `Tom`                   | **21 %**        | 31,4 %       | 24 (21 auf`master`)                   |
 | 3 | **Len**     | `Len`, `LDK221`                     | **7 %**         | 8,5 %\*      | 13                                    |
 | 4 | **Jonas**   | `Jonas45677L`                       | **5 %**         | 0,7 %\*      | 12 (6 auf`master`)                    |
 | 5 | **Selma**   | `mvogt`                             | **5,5 %**       | 7,8 %        | 10 (4 auf`master`)                    |
 | 6 | **Lennox**  | `FlyLennox`                         | **4 %**         | 0,6 %        | 5                                     |
-| 7 | **Luca**    | `rollluca09`, `TuffLuca67`          | **3,5 %**       | 0,4 %        | 3                                     |
+| 7 | **Luca**    | `rollluca09`, `TuffLuca67`          | **4 %**         | 0,4 %        | 3                                     |
 | 8 | **Noah**    | `goldfishi08`, `bf5szfzkfg-commits` | **4 %**         | 0,5 %        | 4                                     |
 
 \* Der `SoundManager` wurde von **Len und Jonas gemeinsam** geschrieben, aber nur von Len
@@ -46,14 +46,14 @@ commited. Git schreibt die 53 Zeilen deshalb komplett Len zu; im Effort-Anteil s
 **je zur Hälfte** angerechnet. Siehe Abschnitt 4.6.
 
 ```
-Nikolaj  ██████████████████████████████████████████████████  50 %
-Tom      █████████████████████                               21 %
-Len      ███████                                              7 %
-Selma    █████▌                                             5,5 %
-Jonas    █████                                                5 %
-Lennox   ████                                                 4 %
-Noah     ████                                                 4 %
-Luca     ███▌                                               3,5 %
+Nikolaj  █████████████████████████████████████████████████▌  49,5 %
+Tom      █████████████████████                                 21 %
+Len      ███████                                                7 %
+Selma    █████▌                                               5,5 %
+Jonas    █████                                                  5 %
+Lennox   ████                                                   4 %
+Noah     ████                                                   4 %
+Luca     ████                                                   4 %
 ```
 
 **Die Prozentspalte ist mit dem Team abgestimmt und bleibt so stehen**, auch wo die neuen
@@ -64,14 +64,14 @@ Rohdaten inzwischen in eine andere Richtung zeigen (siehe 1.1, insbesondere Selm
 
 | Contributor | Korrektur         | Begründung                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ----------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Nikolaj     | 50,1 % →**50 %** | Sein Blame-Anteil ist seit der ersten Fassung von 53,1 % auf 50,1 % gefallen, weil Selmas Kampfsystem und Toms Upgrade-Mechanik viel neue Zeilenmasse gebracht haben. Die Effort-Zahl bleibt trotzdem bei 50 %, weil dieselben zwei Effekte weiter gelten.**Dafür:** Projektleitung und GitHub-Organisation (Abschnitt 1.2), 43 von 47 Merges inkl. Konfliktauflösung, Lauffähigmachen fremder Branches, also Arbeit, die **null Codezeilen** erzeugt und in `git blame` unsichtbar ist; rein auf inhaltliche Zeilen gerechnet läge er bei 53,7 % (siehe 4.7). **Dagegen:** ein Teil seiner Zeilen entstand durch das Umschreiben fremder Klassen (zählt bei ihm, nicht beim Ersteller). |
+| Nikolaj     | 50,1 % →**49,5 %** | Sein Blame-Anteil ist seit der ersten Fassung von 53,1 % auf 50,1 % gefallen, weil Selmas Kampfsystem und Toms Upgrade-Mechanik viel neue Zeilenmasse gebracht haben. Die Effort-Zahl liegt trotzdem in derselben Größenordnung, weil dieselben zwei Effekte weiter gelten; 0,5 % hat er zusätzlich freiwillig an Luca abgegeben.**Dafür:** Projektleitung und GitHub-Organisation (Abschnitt 1.2), 43 von 47 Merges inkl. Konfliktauflösung, Lauffähigmachen fremder Branches, also Arbeit, die **null Codezeilen** erzeugt und in `git blame` unsichtbar ist; rein auf inhaltliche Zeilen gerechnet läge er bei 53,7 % (siehe 4.7). **Dagegen:** ein Teil seiner Zeilen entstand durch das Umschreiben fremder Klassen (zählt bei ihm, nicht beim Ersteller). |
 | Tom         | 31,4 % →**21 %** | Drei Gründe: (1) ein großer Teil der Zeilenmasse ist repetitiv: 7 fast identische Rüstungsklassen, 5 Button-Klassen nach demselben Muster, zuletzt`Gold`/`Iron` als Material-Klassen nach gleichem Schema; (2) mehrere seiner Beiträge entsprachen nicht den vereinbarten Projektprinzipien und mussten von Nikolaj umgebaut werden (Abschnitt 4.5); (3) sein Inventar-Branch war nicht mergebar und musste von Nikolaj rebased werden. Zeilen ≠ verwertbarer Aufwand.                                                                                                                                                                                                              |
 | Len         | 8,5 % →**7 %**   | Die 53 Zeilen`SoundManager` schreibt git komplett ihm zu, obwohl er sie mit Jonas zusammen geschrieben hat; hier zur Hälfte an Jonas abgegeben.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | Selma       | 7,8 % →**5,5 %** | **Hier zeigen die Rohdaten inzwischen nach oben, nicht nach unten.** Ihr Kampfsystem (`DamageNumber`, `DamageableActor`, `Waffen`-Umbau, Monster-Angriffe) hat ihren Blame-Anteil von 2,3 % auf 7,8 % gehoben; gemessen liegt sie damit über den vereinbarten 5,5 %. Dagegen steht, dass der Branch nicht lauffähig gemergt werden konnte: Nikolaj musste Spawning, `BaseMonster` und Pathfinding nachziehen (`d6f0cae`, 140 geänderte Zeilen), bevor PR #76 gemergt werden konnte. Die 5,5 % sind der **mit dem Team abgesprochene** Wert und bleiben unverändert; die gemessene Zahl steht hier zur Transparenz daneben.                                                           |
 | Jonas       | 0,7 % →**5 %**   | Drei unsichtbare Posten: (1) seine Hälfte am`SoundManager` läuft unter Lens Account; (2) seine Healthbar (6 Commits) wurde nie gemergt; (3) seine Tile- und Treppen-Designs sind Assets und tauchen in der Zeilenzählung nicht auf. Der Aufwand war in allen drei Fällen da.                                                                                                                                                                                                                                                                                                                                                                                                           |
 | Lennox      | 0,6 % →**4 %**   | Die Waffen-Klassen kamen von ihm; die aktuellen Zeilen sind aber größtenteils erst von Tom (Waffenlogik) und dann von Selma (Kampfsystem) ersetzt worden (4.3).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | Noah        | 0,5 % →**4 %**   | `BaseMonster` ist die Basisklasse **aller vier Monster** im Spiel und strukturell weit wichtiger, als die 17 verbliebenen Zeilen vermuten lassen. Dazu Gnome, Orc, Zombie und ein eigeninitiativer Refactor.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Luca        | 0,4 % →**3,5 %** | Legte das Waffen-Grundgerüst und die erste`Bow` an. Beides wurde später von Tom, Lennox und Selma überschrieben; von seinen 7 verbliebenen `Bow`-Zeilen ist keine einzige inhaltlich (4.7).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Luca        | 0,4 % →**4 %**   | Legte das Waffen-Grundgerüst und die erste`Bow` an. Beides wurde später von Tom, Lennox und Selma überschrieben; von seinen 7 verbliebenen `Bow`-Zeilen ist keine einzige inhaltlich (4.7). Die Waffen sind trotzdem eine tragende Säule des Spiels, deshalb hat Nikolaj 0,5 % von seinem Anteil an Luca abgegeben (3,5 % → 4 %).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ### 1.2 Projektleitung und Organisation (größtenteils Nikolaj)
 
@@ -135,7 +135,7 @@ Jeder dieser Merges bedeutete Review, Konfliktauflösung und oft Nacharbeit am f
 
 ## 3. Contributors im Detail
 
-### 3.1 Nikolaj (50 %) · *Projektleitung*
+### 3.1 Nikolaj (49,5 %) · *Projektleitung*
 
 **Accounts:** `NorkelL <n.l.lazic@outlook.com>` und `Nikolaj Lazic <lazicnikolaj@gmail.com>` (hier zusammengefasst)
 **Commits:** 119 auf `master` (76 inhaltliche + 43 Merge-Commits), 122 über alle Branches
@@ -401,7 +401,7 @@ leicht unterschiedliche Adressen) · **Commits:** 4 · **Blame:** 29 Zeilen (0,5
 
 ---
 
-### 3.8 Luca (3,5 %)
+### 3.8 Luca (4 %)
 
 **Accounts:** `TuffLuca67 <luca@roll-consult.de>`, `rollluca09 <luca@…>` / `<Luca@…>` (Groß-/Kleinschreibung
 der Mail variiert, git zählt das als zwei Identitäten) · **Commits:** 3 · **Blame:** 19 Zeilen (0,4 %)
@@ -533,7 +533,7 @@ Rechnet man Leerzeilen, Imports, Klammern und Kommentare komplett heraus, bleibe
 | Luca    | 0,4 %       | **0,1 %**       | −0,3        | 89 %           |
 
 **Einordnung:** Die reine Zeilenmessung *ohne jede inhaltliche Bewertung* liefert für Nikolaj
-**53,7 %**. Die Effort-Aufteilung in Abschnitt 1 setzt ihn knapp darunter an (**50 %**),
+**53,7 %**. Die Effort-Aufteilung in Abschnitt 1 setzt ihn knapp darunter an (**49,5 %**),
 weil Zeilen allein seinen Anteil überzeichnen: ein Teil davon entstand durch das Umschreiben
 fremder Klassen.
 
