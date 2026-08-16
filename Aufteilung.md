@@ -15,7 +15,7 @@ Datengrundlage:
 > **was inzwischen überschrieben oder gar nicht erst gemergt wurde**.
 
 > **Hinweis zu KI-Code:** Zwei Stellen im Projekt stammen nicht von einem Teammitglied:
-> `ASharpPathfinding.java` (111 Zeilen) wurde vollständig von KI geschrieben, beim
+> `AStarPathfinding.java` (111 Zeilen) wurde vollständig von KI geschrieben, beim
 > `WindowSizeManager.java` (104 Zeilen) kam der Swing/AWT-Teil von KI. Beides steht in `git blame`
 > unter Nikolajs Namen, weil die Commits über seinen Account liefen; in den Tabellen unten ist
 > das an den betroffenen Stellen vermerkt. Der vollständige Umgang des Teams mit KI-Werkzeugen
