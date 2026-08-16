@@ -384,6 +384,8 @@ public class DungeonLevel extends World {
         removeObject(player);
         addObject(player, x, y);
     }
+
+    public GameStarter getGameStarter() { return gameStarter; }
 }
 
 

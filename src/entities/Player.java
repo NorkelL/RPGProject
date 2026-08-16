@@ -20,6 +20,7 @@ import util.SoundManager;
 import ui.Healthbar;
 import ui.XPBar;
 import ui.worlds.Backpack;
+import ui.worlds.GameOverScreen;
 import world.DungeonLevel;
 
 import java.io.File;
@@ -239,8 +240,15 @@ public class Player extends DamageableActor {
     protected void onDeath()
     {
         SoundManager.play("death_player.mp3");
-        getWorld().removeObject(this);
-        Greenfoot.stop();
+
+        World welt = getWorld();
+        welt.removeObject(this);
+
+        if (welt instanceof DungeonLevel) {
+            Greenfoot.setWorld(new GameOverScreen(((DungeonLevel) welt).getGameStarter()));
+        } else {
+            Greenfoot.stop();
+        }
     }
 
     @Override
