@@ -29,8 +29,7 @@ public class Player extends DamageableActor {
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
     private final int maxItems;       // Größe der Hotbar
     private final int maxBackpack;    // Größe des Rucksacks
-    private Backpack BackpackWorld; // die backpack welt
-    private int openCooldownE = 0;
+    private boolean eWasDown = false;
 
 
     //Item Variablen für Effekte
@@ -74,15 +73,17 @@ public class Player extends DamageableActor {
     public void act() {
         super.act();
 
+        boolean eIsDown = Settings.isPressed(Settings.inventoryToggle);
+        if (eIsDown && !eWasDown) {
+            eWasDown = true;
+            toggleInventory();
+            return;
+        }
+        eWasDown = eIsDown;
+
         if(moveCounter>0){
             moveCounter--;
             return;
-        }
-
-        if(openCooldownE > 0 && !Greenfoot.isKeyDown(Settings.inventoryToggle)){
-            openCooldownE = 0;
-        } else if (openCooldownE > 0) {
-            openCooldownE--;
         }
 
         if      (Settings.isPressed(Settings.upKey)) { turn(Direction.NORTH); move(); moveCounter=150; }
@@ -100,13 +101,6 @@ public class Player extends DamageableActor {
         else if (Greenfoot.isKeyDown("6")){activeSlot=5;}
         else if (Greenfoot.isKeyDown("7")){activeSlot=6;}
         else if (Greenfoot.isKeyDown("8")){activeSlot=7;}
-
-
-        else if (Settings.isPressed(Settings.inventoryToggle) && openCooldownE == 0)
-        {
-            openCooldownE = 1000;
-            toggleInventory();
-        }
 
         if (stepSoundCooldown > 0) stepSoundCooldown--;
 
@@ -197,13 +191,13 @@ public class Player extends DamageableActor {
     }
 
     private void toggleInventory() {
-        if(getWorld()instanceof DungeonLevel) {
-            if (BackpackWorld == null) {
-                BackpackWorld = new Backpack(this, this.items, this.backpack, getWorld());
-
-            }
-            Greenfoot.setWorld(BackpackWorld);
+        if (getWorld() instanceof DungeonLevel) {
+            Greenfoot.setWorld(new Backpack(this, this.items, this.backpack, getWorld(), false));
         }
+    }
+
+    public void openInventoryFromTable(World previousWorld) {
+        Greenfoot.setWorld(new Backpack(this, this.items, this.backpack, previousWorld, true));
     }
 
 
