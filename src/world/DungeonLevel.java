@@ -1,5 +1,6 @@
 package world;
 
+import blocks.Block;
 import blocks.Chest;
 import blocks.Entrance;
 import blocks.Exit;
@@ -108,7 +109,7 @@ public class DungeonLevel extends World {
         spawnCorridor();
         spawnRooms();
         spawnMonsters();
-        spawnUpgradeTable();
+        spawnBloecke();
         util.SoundManager.startMusic();
     }
 
@@ -168,18 +169,23 @@ public class DungeonLevel extends World {
         //else               return new Orc(50);        komisch gescaled
     }
 
-    // eine werkbank pro level, sonst kommt man an die upgrade slots nie ran
-    private void spawnUpgradeTable(){
-        if (placedRooms.isEmpty()) return;
+    // pro raum genau ein block, hier die wahrscheinlichkeiten anpassen:
+    private void spawnBloecke(){
+        for (Room room : placedRooms) {
+            int chance = rng.nextInt(100);
+            Block block;
+            if      (chance < 70) block = new Chest();
+            else if (chance < 90) block = new UpgradeTable();
+            else                  continue;   // die restlichen 10% bleiben leer
 
-        Room room = placedRooms.get(rng.nextInt(placedRooms.size()));
-        for (int versuche = 0; versuche < 100; versuche++) {
-            int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
-            int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
-            if (!istFreiFuerMonster(x, y)) continue;
+            for (int versuche = 0; versuche < 100; versuche++) {
+                int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+                int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+                if (!istFreiFuerMonster(x, y)) continue;
 
-            addObject(new UpgradeTable(), x, y);
-            return;
+                addObject(block, x, y);
+                break;
+            }
         }
     }
 

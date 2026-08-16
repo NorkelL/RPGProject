@@ -13,6 +13,7 @@ import items.util.Useable;
 import items.Waffen;
 import items.waffen.Bow;
 import items.waffen.BowSprite;
+import items.waffen.Stock;
 import ui.InventoryVisualizer;
 import ui.Settings;
 import util.SoundManager;
@@ -192,6 +193,14 @@ public class Player extends DamageableActor {
             }
         }
     }
+    // startwaffe fuer ein neues spiel. beim laden nicht aufrufen, da holt
+    // setInventorys() sowieso alles aus dem save
+    public void gibStartwaffe() {
+        if (items[0] == null) {
+            items[0] = new Stock();
+        }
+    }
+
     public void useItem() {
         int useSlot = getActiveSlot();
 

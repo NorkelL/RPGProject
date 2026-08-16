@@ -41,6 +41,7 @@ public class GameStarter extends World {
     }
 
     public void start() {
+        player.gibStartwaffe();   // nur hier, resumeSave() laedt die waffen aus dem save
         currentLevel = new DungeonLevel(seed.nextLong(),this,player);
         Greenfoot.setWorld(currentLevel);
 
