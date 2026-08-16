@@ -10,7 +10,7 @@ public class Exit extends Block {
 
     public Exit(GameStarter gameStarter){
         this.gameStarter = gameStarter;
-        //setImage("Blocks/Exit.png");
+        setImage("Map/StairsExit.png");
     }
 
     @Override
