@@ -10,8 +10,6 @@ import items.waffen.Messer;
 import items.waffen.Stock;
 import items.waffen.Sword;
 
-import java.util.Random;
-
 
 public enum ItemTyp {
 
@@ -40,23 +38,10 @@ public enum ItemTyp {
     }
 
     public static ItemTyp zufällig() {
-        return waehle(Greenfoot.getRandomNumber(gesamtGewicht()));
-    }
-
-    // gleiche auswahl, aber aus einem gesetzten zufallsgenerator - damit ein level
-    // mit demselben seed auch wieder dieselben items enthaelt
-    public static ItemTyp zufällig(Random rng) {
-        if (rng == null) return zufällig();
-        return waehle(rng.nextInt(gesamtGewicht()));
-    }
-
-    private static int gesamtGewicht() {
         int gesamt = 0;
         for (ItemTyp typ : values()) gesamt += typ.gewicht;
-        return gesamt;
-    }
 
-    private static ItemTyp waehle(int zufall) {
+        int zufall = Greenfoot.getRandomNumber(gesamt);
         for (ItemTyp typ : values()) {
             zufall -= typ.gewicht;
             if (zufall < 0) return typ;

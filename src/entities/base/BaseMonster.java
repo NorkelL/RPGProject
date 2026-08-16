@@ -15,6 +15,8 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     private boolean isFollowingPlayer = false;
     private int moveCooldown = 0;
     private int moveDelay = 360; // Anzahl der act()-Aufrufe zwischen Bewegungen
+    private int zielX = -1;      // eigenes ziel fuers rumlaufen, jedes monster hat sein eigenes
+    private int zielY = -1;
     private static final long ANGRIFF_ANIMATION_MS = 300;
     private long animationBis = 0;
 
@@ -68,46 +70,52 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
     }
 
     protected void move(){
-        if(isFollowingPlayer && checkFollowRadius()){
-            moveToPlayer();
-        } else if (checkAgro()) {
+        if (isFollowingPlayer) {
+            if (checkFollowRadius()) {
+                moveToPlayer();
+                return;
+            }
+            isFollowingPlayer = false;   // spieler ist aus der leash range raus -> wieder rumlaufen
+        }
+
+        if (checkAgro()) {
             isFollowingPlayer = true;
             moveToPlayer();
         } else {
-            aSharpRandomStep();
+            laufeZufaellig();
         }
     }
 
+    // jedes monster haelt sein ziel, bis es da ist. sonst laufen alle im pulk in dieselbe ecke
+    private void laufeZufaellig(){
+        if (zielX < 0 || (getX() == zielX && getY() == zielY)) {
+            neuesZiel();
+        }
+        if (!aSharpPathfindTakeStep(zielX, zielY)) {
+            neuesZiel();   // ziel nicht erreichbar oder ein monster steht davor
+        }
+    }
 
+    private void neuesZiel(){
+        int[] ziel = pickRandomTarget();
+        zielX = ziel[0];
+        zielY = ziel[1];
+    }
 
     private boolean checkAgro(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-agroRadius; i < x+agroRadius+1; i++) {
-            for (int j = y-agroRadius; j < y+agroRadius+1; j++) {
-                List<Player> players = getWorld().getObjectsAt(i, j, Player.class);
-                for (Player player : players) {
-                    if (!player.isInvisible()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return spielerImUmkreis(agroRadius);
     }
 
     private boolean checkFollowRadius(){
-        int x = getX();
-        int y = getY();
-        for (int i = x-leashRadius; i < x+leashRadius+1; i++) {
-            for (int j = y-leashRadius; j < y+leashRadius+1; j++) {
-                List<Player> players = getWorld().getObjectsAt(i, j, Player.class);
+        return spielerImUmkreis(leashRadius);
+    }
 
-                for (Player player : players) {
-                    if (!player.isInvisible()) {
-                        return true;
-                    }
-                }
+    private boolean spielerImUmkreis(int radius){
+        for (Player player : getWorld().getObjects(Player.class)) {
+            if (player.isInvisible()) continue;
+
+            if (Math.abs(player.getX() - getX()) <= radius && Math.abs(player.getY() - getY()) <= radius) {
+                return true;
             }
         }
         return false;
