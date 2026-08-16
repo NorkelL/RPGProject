@@ -3,6 +3,7 @@ package world;
 import blocks.Chest;
 import blocks.Entrance;
 import blocks.Exit;
+import blocks.UpgradeTable;
 import blocks.Wall;
 import core.GameStarter;
 import entities.Player;
@@ -12,8 +13,6 @@ import items.armor.LeatherArmor;
 import ui.buttons.*;
 import items.waffen.Arrow;
 import entities.base.BaseMonster;
-import entities.enemies.Gnome;
-import entities.enemies.Orc;
 import entities.enemies.Skeleton;
 import entities.enemies.Zombie;
 import items.waffen.BowSprite;
@@ -109,6 +108,7 @@ public class DungeonLevel extends World {
         spawnCorridor();
         spawnRooms();
         spawnMonsters();
+        spawnUpgradeTable();
         util.SoundManager.startMusic();
     }
 
@@ -166,6 +166,21 @@ public class DungeonLevel extends World {
         else               return new Zombie(50);
         //else if (typ == 2) return new Gnome(50);      kein bild vorhanden
         //else               return new Orc(50);        komisch gescaled
+    }
+
+    // eine werkbank pro level, sonst kommt man an die upgrade slots nie ran
+    private void spawnUpgradeTable(){
+        if (placedRooms.isEmpty()) return;
+
+        Room room = placedRooms.get(rng.nextInt(placedRooms.size()));
+        for (int versuche = 0; versuche < 100; versuche++) {
+            int x = room.x + 1 + rng.nextInt(Math.max(1, room.width - 1));
+            int y = room.y + 1 + rng.nextInt(Math.max(1, room.height - 1));
+            if (!istFreiFuerMonster(x, y)) continue;
+
+            addObject(new UpgradeTable(), x, y);
+            return;
+        }
     }
 
     private boolean istFreiFuerMonster(int x, int y){

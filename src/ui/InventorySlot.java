@@ -1,6 +1,7 @@
 package ui;
 
 import greenfoot.Actor;
+import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
@@ -21,6 +22,7 @@ public class InventorySlot extends Actor {
     private static InventorySlot draggedSlot= null;
     private static ui.GhostItem ghost = null;
     private boolean isItemHidden = false;
+    private boolean locked = false;
 
     private ItemText currentHoverer;
 
@@ -94,10 +96,57 @@ public class InventorySlot extends Actor {
             }
         }
 
+        if (locked) {
+            drawLockIcon(currentBackground);
+        }
+
         setImage(currentBackground);
     }
 
+    private void drawLockIcon(GreenfootImage img) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int cx = w / 2;
+        int cy = h / 2;
+
+        img.setColor(new Color(0, 0, 0, 160));
+        img.fillRect(0, 0, w, h);
+
+        Color gold = new Color(210, 170, 50);
+        img.setColor(gold);
+
+        // Bügel als rechteckiges U (kein drawArc nötig)
+        int buegelW = w / 3;
+        int buegelH = h / 5;
+        int thick = Math.max(2, w / 12);
+        int bx = cx - buegelW / 2;
+        int by = cy - buegelH - h / 8;
+        img.fillRect(bx, by, thick, buegelH + thick);               // linkes Bein
+        img.fillRect(bx + buegelW - thick, by, thick, buegelH + thick); // rechtes Bein
+        img.fillRect(bx, by, buegelW, thick);                        // oberer Balken
+
+        // Schloss-Körper
+        int bodyW = w * 2 / 5;
+        int bodyH = h / 4;
+        int bodyX = cx - bodyW / 2;
+        int bodyY = cy - h / 12;
+        img.fillRect(bodyX, bodyY, bodyW, bodyH);
+
+        // Schlüsselloch
+        img.setColor(new Color(60, 45, 10));
+        img.fillOval(cx - 2, bodyY + 4, 5, 5);
+        img.fillRect(cx - 1, bodyY + 8, 3, 5);
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+        updateImage();
+    }
+
+    public boolean isLocked() { return locked; }
+
     private void handleDragAndDrop() {
+        if (locked) return;
         // 1. MAUS GEDRÜCKT: Drag startet
         if (Greenfoot.mousePressed(this)) {
             if (this.item != null && draggedSlot == null) {
@@ -143,9 +192,8 @@ public class InventorySlot extends Actor {
                     java.util.List<InventorySlot> targets = getWorld().getObjectsAt(mouseX, mouseY, InventorySlot.class);
                     if (!targets.isEmpty()) {
                         InventorySlot targetSlot = targets.get(0);
-                        if (targetSlot != this) {
+                        if (targetSlot != this && !targetSlot.isLocked()) {
                             swapItems(this, targetSlot);
-
                         }
                     }
                 }
@@ -165,7 +213,7 @@ public class InventorySlot extends Actor {
     }
 
 
-    // in die Rüstungsslots darf nur passende Rüstung, sonst crasht updateAppearance()
+    // in die Rüstungsslots darf nur passende Rüstung
     private boolean passtInSlot(ui.worlds.Backpack backpack, InventorySlot slot, Item item) {
         if (item == null) return true;
 
@@ -184,22 +232,20 @@ public class InventorySlot extends Actor {
         Item itemA = slotA.getItem();
         Item itemB = slotB.getItem();
 
+        // erst alle pruefungen, dann tauschen - vorher liegt sonst schon das
+        // falsche item im slot und passtInSlot prueft den bereits getauschten stand
         if (!slotB.canAcceptItem(itemA) || !slotA.canAcceptItem(itemB)) {
             return;
         }
 
-        // Tausch ausführen
-        slotA.setItem(itemB);
-        slotB.setItem(itemA);
         if (getWorld() instanceof ui.worlds.Backpack bp) {
-            if (!passtInSlot(bp, slotA, slotB.getItem())) return;
-            if (!passtInSlot(bp, slotB, slotA.getItem())) return;
+            if (!passtInSlot(bp, slotA, itemB)) return;
+            if (!passtInSlot(bp, slotB, itemA)) return;
         }
 
         // Items tauschen
-        Item tempItem = slotA.getItem();
-        slotA.setItem(slotB.getItem());
-        slotB.setItem(tempItem);
+        slotA.setItem(itemB);
+        slotB.setItem(itemA);
 
         if (getWorld() != null) {
 
