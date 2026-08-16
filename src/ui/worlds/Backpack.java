@@ -5,8 +5,11 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 import items.Item;
+import items.util.SlotType;
 import ui.InventorySlot;
 import ui.InventoryVisualizer;
+import ui.UpgradeButton;
+import ui.UpgradeSlot;
 import ui.Settings;
 
 public class Backpack extends World {
@@ -48,7 +51,7 @@ public class Backpack extends World {
                 if (slotCounter >= 15) break;
 
                 // Neuen Slot erstellen
-                slots[slotCounter] = new InventorySlot(80,80);
+                slots[slotCounter] = new InventorySlot(80,80,SlotType.GENERIC);
 
 
                 slots[slotCounter].getImage().scale(80, 80);
@@ -66,13 +69,27 @@ public class Backpack extends World {
         }
         // --- 2. RÜSTUNGS-SLOTS INSTANZIIEREN & PLATZIEREN ---
 
-        headSlot = new InventorySlot(80,80);
+        headSlot = new InventorySlot(80,80,SlotType.HELMET);
         headSlot.getImage().scale(80, 80);
         addObject(headSlot, 8, 1); // Reihe 1 für den Helm
 
-        chestSlot = new InventorySlot(80,80);
+        chestSlot = new InventorySlot(80,80, SlotType.CHESTPLATE);
         chestSlot.getImage().scale(80, 80);
         addObject(chestSlot, 8, 3); // Reihe 2 für die Brust
+
+
+        //Upgrade Slots
+        UpgradeSlot slot1 = new UpgradeSlot("Armor");
+        UpgradeSlot slot2 = new UpgradeSlot("Material");
+        UpgradeSlot slot3 = new UpgradeSlot("Output");
+
+        addObject(slot1, 7, 5);
+        addObject(slot2, 8, 5);
+        addObject(slot3, 9, 5);
+
+
+        UpgradeButton button = new UpgradeButton(slot1, slot2, slot3);
+        addObject(button, 11, 5);
     }
 
     @Override

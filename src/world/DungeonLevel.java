@@ -8,6 +8,7 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import items.armor.LeatherArmor;
 import ui.buttons.*;
 import items.waffen.Arrow;
 import entities.base.BaseMonster;
@@ -28,6 +29,10 @@ import greenfoot.Greenfoot;
 import ui.Settings;
 import ui.XPBar;
 import items.*;
+import ui.DarkFilter;
+import ui.InventoryOverlay;
+import ui.InventorySlot;
+import Material.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;

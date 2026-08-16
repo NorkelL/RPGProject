@@ -4,6 +4,7 @@ import entities.Player;
 import greenfoot.Actor;
 import greenfoot.World;
 import items.Item;
+import items.util.SlotType;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class InventoryVisualizer extends Actor {
         int slotY = world.getHeight() - (slotHeightInCells / 2);
 
         for (int i = 0; i < numSlots; i++) {
-            slots[i] = new InventorySlot(getWorld().getCellSize(), getWorld().getCellSize());
+            slots[i] = new InventorySlot(getWorld().getCellSize(), getWorld().getCellSize(), SlotType.GENERIC);
             world.addObject(slots[i], startX + i * slotWidthInCells, slotY);
         }
     }
