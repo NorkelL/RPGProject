@@ -14,6 +14,7 @@ mit rund 5.350 Zeilen Code.
 - [Steuerung](#steuerung)
 - [Installation und Start](#installation-und-start)
 - [Projektstruktur](#projektstruktur)
+- [UML-Klassendokumentation](#uml-klassendokumentation)
 - [Aufteilung der Arbeit](#aufteilung-der-arbeit)
 - [KI-Einsatz](#ki-einsatz)
 
@@ -192,6 +193,27 @@ RPGProject/
 ├── lib/               gson (im Repository enthalten)
 └── .idea/runConfigurations/   Run Scenario (Windows), Linux_Scenario
 ```
+
+---
+
+## UML-Klassendokumentation
+
+Klassendiagramme aller 90 Klassen und Interfaces, jeweils mit **Feldern, Methoden,
+Sichtbarkeiten und Vererbung**. Weil ein einzelnes Diagramm über das ganze Projekt unlesbar
+wäre, ist die Dokumentation in acht thematische Diagramme aufgeteilt: Kern und Spielwelt,
+Spieler und Gegner, Items und Waffen, Rüstung und Materialien, Inventar, HUD, Buttons sowie
+Worlds und Hilfsklassen.
+
+Die Diagramme sind in **Mermaid** geschrieben und werden von GitHub direkt im Browser
+gerendert, zum Anschauen wird also kein zusätzliches Programm gebraucht.
+
+Die Diagramme sind **nicht von Hand geschrieben**, sondern von einem Skript erzeugt, das die
+Java-Quellen in `src/` einliest und daraus Klassen, Vererbung, Felder und Methodensignaturen
+ausliest. Das hat zwei Gründe: bei 90 Klassen wäre Handarbeit weder in vertretbarer Zeit zu
+schaffen noch fehlerfrei, und so lässt sich die Dokumentation nach Codeänderungen jederzeit
+neu erzeugen, statt zu veralten.
+
+→ [**UML.md**](UML.md)
 
 ---
 
