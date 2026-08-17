@@ -3,12 +3,14 @@ package util;
 import greenfoot.guifx.WorldDisplay;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -71,8 +73,17 @@ public final class WindowSizeManager {
             wrapperRegion.prefHeightProperty().bind(scene.heightProperty());
         }
 
+        scaleWorldDisplay(worldDisplay);
 
         pinned = true;
+    }
+
+    private static void scaleWorldDisplay(WorldDisplay worldDisplay) {
+        Rectangle2D screen = Screen.getPrimary().getBounds();
+        double faktor = Math.min(screen.getWidth() / 2560.0, screen.getHeight() / 1440.0);
+
+        worldDisplay.setScaleX(faktor);
+        worldDisplay.setScaleY(faktor);
     }
 
     private static WorldDisplay findWorldDisplay(Node node) {

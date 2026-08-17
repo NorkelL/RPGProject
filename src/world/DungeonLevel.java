@@ -126,7 +126,7 @@ public class DungeonLevel extends World {
     private void spawnCorridor(){
         do {
             centerCorridor = calcCorridor();
-        } while (centerCorridor[centerCorridor.length - 1] != centerExit && centerCorridor[centerCorridor.length - 1] != centerExit - 1 && centerCorridor[centerCorridor.length - 1] != centerExit + 1);
+        } while (Math.abs(centerCorridor[centerCorridor.length - 1] - (centerExit - 1)) > 1);
         for (int i = centerCorridor.length - 1; i >= 0; i--) {
             int y = getHeight()-3 - i;
             int cx = centerCorridor[i];
@@ -207,20 +207,21 @@ public class DungeonLevel extends World {
 
     private int[] calcCorridor(){
         int[] centerCorridor = new int[getHeight()-3];
-        int pos = centerEntrance;
+        int pos = centerEntrance - 1;
+        int ziel = centerExit - 1;
         int delta = 0;
         int runLeft = 0;
         int length = getHeight() - 3;
 
         for (int i = 0; i < length; i++) {
             int stepsLeft = length - i;
-            int distToExit = Math.abs(centerExit - pos);
+            int distToExit = Math.abs(ziel - pos);
 
             if (distToExit >= stepsLeft) {
-                delta = Integer.compare(centerExit, pos);
+                delta = Integer.compare(ziel, pos);
                 runLeft = 1;
             } else if (runLeft == 0) {
-                int toward = Integer.compare(centerExit, pos);
+                int toward = Integer.compare(ziel, pos);
                 int r = rng.nextInt(10);
                 delta = (r < 4) ? toward : (r < 7) ? 0 : -toward;
                 runLeft = rng.nextInt(3) + 3;
