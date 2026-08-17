@@ -30,6 +30,7 @@ import ui.Settings;
 import ui.XPBar;
 import items.*;
 import Material.*;
+import ui.LevelCounter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -67,6 +68,7 @@ public class DungeonLevel extends World {
         setPaintOrder(
                 ui.buttons.PauseButtons.class,
                 PauseScreen.class,
+                ui.LevelCounter.class,
                 DarkFilter.class,// Der dunkle Schleier
                 InventoryOverlay.class, // Ganz oben
                 InventorySlot.class,    // Die Slots auf dem Inventar
@@ -101,6 +103,10 @@ public class DungeonLevel extends World {
 
         player = p;
         addObject(player,centerEntrance - 1,this.getHeight()-2);
+
+        LevelCounter levelCounter= new LevelCounter(gameStarter.pastLevels.size()+1);
+        int counterCells = levelCounter.getImage().getWidth() / getCellSize();
+        addObject(levelCounter, getWidth() - counterCells / 2 - 1, 0);
 
 
 
