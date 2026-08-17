@@ -78,6 +78,8 @@ public class Player extends DamageableActor {
 
     @Override
     public void act() {
+        if (pausiert()) return;
+
         super.act();
 
         if (Settings.isPressed(Settings.attack)) {

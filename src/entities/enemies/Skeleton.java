@@ -9,7 +9,7 @@ import util.SoundManager;
 public class Skeleton extends BaseMonster implements Hitting {
 
     public Skeleton(int life) {
-        super(life, 4, 6);   // leash muss groesser als agro sein, sonst laesst es nie wieder los
+        super(life, 3, 5);   // leash muss groesser als agro sein, sonst laesst es nie wieder los
         setXpDrop(60);
     }
 

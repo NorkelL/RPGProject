@@ -4,6 +4,8 @@ import greenfoot.Greenfoot;
 import items.misc.HealthPotion;
 import items.Item;
 import items.armor.LeatherArmor;
+import items.material.Gold;
+import items.material.Iron;
 import items.waffen.Arrow;
 import items.waffen.Bow;
 import items.waffen.Messer;
@@ -25,7 +27,10 @@ public enum ItemTyp {
     BOW(20)    { public Item erstelleItem() { return new Bow();    }},
     ARROW(60)  { public Item erstelleItem() { return new Arrow();  }},
 
-    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); }};
+    HEALTH_POTION(70) { public Item erstelleItem() { return new HealthPotion(); }},
+
+    IRON(50) { public Item erstelleItem() { return new Iron(); }},
+    GOLD(25) { public Item erstelleItem() { return new Gold(); }};
 
     public final int gewicht;
 

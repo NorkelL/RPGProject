@@ -8,7 +8,7 @@ import util.SoundManager;
 public class Zombie extends BaseMonster implements Hitting {
 
     public Zombie(int life) {
-        super(life, 2, 4);
+        super(life, 2, 6);
         setXpDrop(40);
     }
 

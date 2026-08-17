@@ -507,9 +507,9 @@ classDiagram
         -renderLoadFrame() void
         -readSaves() List~File~
     }
-    class Material {
+    class items.material {
         -String name
-        +Material(String)
+        +items.material(String)
         +getName() String
     }
     class Messer {
@@ -915,7 +915,7 @@ classDiagram
     Item <|-- GhostItem
     BaseMonster <|-- Gnome
     Hitting <|.. Gnome
-    Material <|-- Gold
+    items.material <|-- Gold
     Armor <|-- GoldArmor
     Armor <|-- GoldHelmet
     Item <|-- HealthPotion
@@ -926,7 +926,7 @@ classDiagram
     UI <|-- InventoryOverlay
     Actor <|-- InventorySlot
     Actor <|-- InventoryVisualizer
-    Material <|-- Iron
+    items.material <|-- Iron
     Armor <|-- IronArmor
     Armor <|-- IronHelmet
     ImprovedActor <|-- Item
@@ -940,7 +940,7 @@ classDiagram
     UI <|-- LoadFrame
     UI <|-- LoadGameButton
     World <|-- MainMenu
-    Item <|-- Material
+    Item <|-- items.material
     Waffen <|-- Messer
     ImprovedActor <|-- MovingActor
     BaseMonster <|-- Orc

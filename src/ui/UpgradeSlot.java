@@ -1,8 +1,6 @@
 package ui;
 
-import greenfoot.Actor;
 import greenfoot.GreenfootImage;
-import items.Item;
 
 
 public class UpgradeSlot extends InventorySlot {
@@ -23,7 +21,7 @@ public class UpgradeSlot extends InventorySlot {
         if ("Armor".equals(getSlotType())) {
             imagePath = "UI/Inventory/ChestUpgradeSlot.png";
         }
-        else if ("Material".equals(getSlotType())) {
+        else if ("material".equals(getSlotType())) {
             imagePath = "UI/Inventory/MaterialUpgradeSlot.png";
         }
         else {

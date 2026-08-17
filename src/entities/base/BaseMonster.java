@@ -39,6 +39,8 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
 
     @Override
     public void act(){
+        if (pausiert()) return;
+
         super.act();
 
         if(animationBis > 0 && System.currentTimeMillis() >= animationBis){

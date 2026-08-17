@@ -15,6 +15,8 @@ public class Exit extends Block {
 
     @Override
     public void act(){
+        if (pausiert()) return;
+
         if(isTouching(Player.class)){
             gameStarter.RenderNextWorld();
         }

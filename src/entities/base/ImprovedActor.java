@@ -3,9 +3,14 @@ package entities.base;
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 import util.ImprovedGreenfootImage;
+import world.DungeonLevel;
 
 public class ImprovedActor extends Actor {
     private GreenfootImage currentImage;
+
+    public boolean pausiert() {
+        return getWorld() instanceof DungeonLevel && ((DungeonLevel) getWorld()).isPaused();
+    }
 
     @Override
     public void setImage(GreenfootImage image) {

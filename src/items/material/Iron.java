@@ -1,4 +1,4 @@
-package Material;
+package items.material;
 
 import greenfoot.GreenfootImage;
 import items.Material;

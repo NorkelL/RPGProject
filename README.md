@@ -176,12 +176,12 @@ RPGProject/
 │   │   ├── enemies/   Gnome, Orc, Zombie, Skeleton
 │   │   └── util/      ASharpPathfinding, Direction, Hitting
 │   ├── blocks/        Wall, Rock, Chest, UpgradeTable, Entrance, Exit
-│   ├── items/         Item, Waffen, Material
+│   ├── items/         Item, Waffen, items.material
 │   │   ├── waffen/    Sword, Messer, Stock, Bow, Arrow, BowSprite
 │   │   ├── armor/     Armor + 6 Rüstungsteile
 │   │   ├── misc/      HealthPotion, Apple, Cookie, HoneyBottle, UnstablePotion
 │   │   └── util/      ItemTyp, Rarity, SlotType, OnHover, ItemData, Pickable, Useable
-│   ├── Material/      Gold, Iron
+│   ├── items.material/      Gold, Iron
 │   ├── ui/            Inventar, Healthbar, XPBar, DamageNumber, LevelUpMessage, Tooltips
 │   │   ├── buttons/   Menü-Buttons
 │   │   ├── Buttons/   Pause- und Save-Buttons

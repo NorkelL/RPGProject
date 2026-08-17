@@ -1,8 +1,7 @@
-package Material;
+package items.material;
 
 import greenfoot.GreenfootImage;
 import items.Material;
-import items.util.Rarity;
 
 public class Gold extends Material {
 

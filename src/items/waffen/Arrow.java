@@ -33,6 +33,7 @@ public class Arrow extends Item {
 
     @Override
     public void act() {
+        if (pausiert()) return;
         if (!isFlying) return;
 
 

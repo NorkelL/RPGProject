@@ -10,8 +10,6 @@ import core.GameStarter;
 import entities.Player;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
-import items.armor.LeatherArmor;
-import ui.buttons.*;
 import items.waffen.Arrow;
 import entities.base.BaseMonster;
 import entities.enemies.Skeleton;
@@ -28,8 +26,6 @@ import ui.buttons.settingPauseButton;
 import greenfoot.Greenfoot;
 import ui.Settings;
 import ui.XPBar;
-import items.*;
-import Material.*;
 import ui.LevelCounter;
 
 import java.util.ArrayList;
@@ -355,7 +351,7 @@ public class DungeonLevel extends World {
         int cx = getWidth() / 2;
         int cy = getHeight() / 2;
 
-        pauseScreen = new PauseScreen(getWidth() * getCellSize(), getHeight() * getCellSize());
+        pauseScreen = new PauseScreen((getWidth() + 1) * getCellSize(), (getHeight() + 1) * getCellSize());
         addObject(pauseScreen, cx, cy);
 
         restartButton = new restartButton(gameStarter);
@@ -391,6 +387,7 @@ public class DungeonLevel extends World {
     }
 
     public GameStarter getGameStarter() { return gameStarter; }
+    public boolean isPaused() { return paused; }
 }
 
 

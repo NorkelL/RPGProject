@@ -1,11 +1,10 @@
 package ui;
 
-import Material.Gold;
-import Material.Iron;
+import items.material.Gold;
+import items.material.Iron;
 import items.Item;
 import items.armor.*;
 import greenfoot.*;
-import ui.buttons.LoadGameButton;
 
 import java.util.List;
 

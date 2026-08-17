@@ -466,9 +466,9 @@ classDiagram
         +erstelleItem() Item
         +zufällig() ItemTyp$
     }
-    class Material {
+    class items.material {
         -String name
-        +Material(String)
+        +items.material(String)
         +getName() String
     }
     class Messer {
@@ -554,7 +554,7 @@ classDiagram
     ImprovedActor <|-- Item
     Useable <|.. Item
     OnHover <|.. Item
-    Item <|-- Material
+    Item <|-- items.material
     Waffen <|-- Messer
     Waffen <|-- Stock
     Waffen <|-- Sword
@@ -656,12 +656,12 @@ classDiagram
     Item <|-- Apple
     Item <|-- Armor
     Item <|-- Cookie
-    Material <|-- Gold
+    items.material <|-- Gold
     Armor <|-- GoldArmor
     Armor <|-- GoldHelmet
     Item <|-- HealthPotion
     Item <|-- HoneyBottle
-    Material <|-- Iron
+    items.material <|-- Iron
     Armor <|-- IronArmor
     Armor <|-- IronHelmet
     Armor <|-- LeatherArmor

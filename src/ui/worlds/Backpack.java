@@ -74,7 +74,7 @@ public class Backpack extends World {
 
         //Upgrade Slots
         upgradeSlot1 = new UpgradeSlot("Armor");
-        upgradeSlot2 = new UpgradeSlot("Material");
+        upgradeSlot2 = new UpgradeSlot("material");
         upgradeSlot3 = new UpgradeSlot("Output");
 
         addObject(upgradeSlot1, 7, 5);

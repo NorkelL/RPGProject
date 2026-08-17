@@ -28,6 +28,8 @@ public class UpgradeTable extends Block {
 
     @Override
     public void act() {
+        if (pausiert()) return;
+
         boolean rIsDown = Greenfoot.isKeyDown("R");
         if (isTouching(Player.class) && rIsDown && !rWasDown) {
             rWasDown = true;
