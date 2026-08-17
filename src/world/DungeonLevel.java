@@ -106,7 +106,7 @@ public class DungeonLevel extends World {
 
         LevelCounter levelCounter= new LevelCounter(gameStarter.pastLevels.size()+1);
         int counterCells = levelCounter.getImage().getWidth() / getCellSize();
-        addObject(levelCounter, getWidth() - counterCells / 2 - 1, 0);
+        addObject(levelCounter, 28, 0);
 
 
 
