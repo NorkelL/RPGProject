@@ -4,7 +4,7 @@ Klassendiagramme aller **90 Klassen und Interfaces** des Projekts, direkt aus de
 
 Die Diagramme sind in **Mermaid** geschrieben und werden von GitHub direkt gerendert, zum Anschauen wird also kein zusätzliches Programm gebraucht.
 
-Wegen der Größe des Projekts ist die Dokumentation in acht thematische Diagramme aufgeteilt. Erbt eine Klasse von etwas, das in einem anderen Diagramm steht, wird die Oberklasse dort als leerer Kasten mit eingezeichnet.
+Weil das Projekt zu groß für ein einzelnes Bild ist, haben wir die Dokumentation in acht thematische Diagramme aufgeteilt.  Wenn eine Klasse von einer Klasse aus einem anderen Diagramm erbt, steht die Oberklasse trotzdem als leerer Kasten mit drin.
 
 **So sind die Diagramme zu lesen:**
 
@@ -13,10 +13,20 @@ Wegen der Größe des Projekts ist die Dokumentation in acht thematische Diagram
 - Durchgezogener Pfeil `<|--` bedeutet *erbt von*, gestrichelter Pfeil `<|..` bedeutet
   *implementiert*
 - Klassen mit dem Vermerk `<<Greenfoot>>` stammen aus der Greenfoot-Bibliothek und sind
-  nur als Aufhängepunkt der Vererbung eingezeichnet
+  nur als Aufhängepunkt der Vererbung eingezeichnet.
 - Bei Methoden stehen die **Parametertypen**, nicht die Parameternamen
 
 ## Inhalt
+
+
+- [Kern und Spielwelt](#kern-und-spielwelt) (11 Klassen) `core, world, blocks`
+- [Spieler und Gegner](#spieler-und-gegner) (12 Klassen) `entities`
+- [Items und Waffen](#items-und-waffen) (17 Klassen) `items, items.waffen, items.util`
+- [Rüstung, Verbrauchsgegenstände und Materialien](#rüstung-verbrauchsgegenstände-und-materialien) (14 Klassen) `items.armor, items.misc, Material`
+- [Inventar und Upgrade-UI](#inventar-und-upgrade-ui) (6 Klassen) `ui (Inventar)`
+- [HUD und Anzeigen](#hud-und-anzeigen) (11 Klassen) `ui (HUD)`
+- [Buttons](#buttons) (10 Klassen) `ui.buttons, ui.Buttons`
+- [Worlds und Hilfsklassen](#worlds-und-hilfsklassen) (9 Klassen) `ui.worlds, util`
 
 ---
 
@@ -159,7 +169,7 @@ classDiagram
 
 *Pakete: `entities` · 12 Klassen*
 
-Die Vererbungskette vom Greenfoot-`Actor` bis zu Spieler und Monstern. `MovingActor` bringt die kollisionsgeprüfte Bewegung mit, `DamageableActor` Leben und Schaden, `BaseMonster` das Verfolgen des Spielers per A\*-Pathfinding.
+Die Vererbungskette vom Greenfoot-`Actor` bis zu Spieler und Monstern. In `MovingActor` steckt die kollisionsgeprüfte Bewegung, in `DamageableActor` Leben und Schaden, und `BaseMonster` verfolgt den Spieler per A\*-Pathfinding.
 
 ```mermaid
 classDiagram
@@ -559,7 +569,7 @@ classDiagram
 
 *Pakete: `items.armor, items.misc, Material` · 14 Klassen*
 
-Die sieben Rüstungsklassen, die essbaren beziehungsweise trinkbaren Gegenstände und die Materialien zum Aufwerten an der Werkbank.
+Die sieben Rüstungsklassen, die essbaren bzw. trinkbaren Gegenstände und die Materialien zum Aufwerten an der Werkbank.
 
 ```mermaid
 classDiagram
@@ -663,9 +673,9 @@ classDiagram
 
 ## Inventar und Upgrade-UI
 
-*Pakete: `ui (Inventar)` · 6 Klassen*
+*Paket: `ui (Inventar)` · 6 Klassen*
 
-Slots, Rucksack-Darstellung, Drag & Drop sowie die Upgrade-Oberfläche der Werkbank.
+Slots, Rucksack-Darstellung, Drag & Drop und die Upgrade-Oberfläche der Werkbank.
 
 ```mermaid
 classDiagram
@@ -1108,3 +1118,5 @@ classDiagram
 ```
 
 ---
+
+[Alle 90 Klassen in einem einzigen Diagramm](UML-full.md)

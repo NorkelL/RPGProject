@@ -4,10 +4,10 @@
 
 ### Grundregeln
 
-- `main` ist der stabile Branch – **nie direkt in `main` pushen**.
-- Jedes Feature, jeder Bugfix, jede größere Änderung bekommt einen eigenen Branch.
+- `main` ist der stabile Branch, da wird **nie direkt reingepusht**.
+- Jedes Feature, jeder Bugfix, jede größere Änderung bekommt einen eigenen Branch
 - Änderungen kommen nur über Pull Requests (PR) in `main`.
-- Mindestens **eine andere Person** reviewed jeden PR, bevor er gemergt wird.
+- Mindestens **eine andere Person** schaut sich jeden PR an, bevor er gemerged wird.
 
 ### Branch erstellen
 
@@ -33,11 +33,11 @@ docs/setup-anleitung
 git push -u origin feature/mein-feature
 ```
 
-Dann auf GitHub/GitLab einen Pull Request öffnen:
+Dann auf GitHub einen Pull Request öffnen:
 - Titel: kurz und beschreibend
-- Beschreibung: Was wurde geändert? Warum? Gibt es etwas, worauf der Reviewer besonders
-  achten soll?
-- Bei Unsicherheit: als Draft-PR öffnen und um Feedback bitten
+- Beschreibung: Was wurde geändert? Warum? Muss der Reviewer irgendwo besonders
+  hinschauen?
+- Wenn du unsicher bist: als Draft-PR öffnen und um Feedback bitten
 
 ### Merge-Konflikte lösen
 
@@ -97,6 +97,6 @@ Pathfinding recalculates every 10 ticks to avoid performance issues.
 
 ## Kommunikation
 
-- Blocker und Probleme sofort ansprechen – nicht bis zum nächsten Meeting warten
+- Blocker und Probleme sofort ansprechen und nicht bis zum nächsten Meeting warten
 - Schnittstellen-Änderungen **immer** erst mit den betroffenen Teammitgliedern abstimmen,
-  bevor der Code geändert wird – andere bauen darauf auf
+  bevor der Code geändert wird.  Andere bauen darauf auf

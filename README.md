@@ -23,13 +23,13 @@ mit rund 5.350 Zeilen Code.
 ## Grundidee
 
 *The Dungeon: Sign of the Moon* ist ein **Top-Down Action-RPG** im Stil eines Dungeon-Crawlers.
-Man bewegt sich durch **prozedural generierte** Räume und Korridore, bekämpft Monster im Nah-
-und Fernkampf, sammelt Loot aus Truhen, verwaltet sein Inventar und steigt über Treppen immer
-tiefer in den Dungeon hinab.
+Man läuft durch **prozedural generierte** Räume und Korridore, kämpft im Nah- und Fernkampf
+gegen Monster und sammelt Loot aus Truhen. Über die Treppen geht es dann jeweils eine Ebene
+tiefer.
 
-Jedes Stockwerk wird aus einem Seed neu erzeugt, es gibt also kein festes Level-Design und
-keine feste Länge: Ziel ist es, **so tief wie möglich zu kommen**, bevor man stirbt.
-Mit jedem besiegten Monster gibt es Erfahrung, mit jedem Level-Up mehr Leben und Schaden.
+Jedes Stockwerk wird aus einem Seed neu erzeugt. Es gibt also kein festes Level-Design und auch
+kein Ende, man spielt so lange, bis man stirbt, und versucht dabei **so tief wie möglich zu
+kommen**. Für jedes besiegte Monster gibt es Erfahrung, pro Level-Up mehr Leben und Schaden.
 
 ---
 
@@ -51,7 +51,7 @@ Mit jedem besiegten Monster gibt es Erfahrung, mit jedem Level-Up mehr Leben und
 
 - Prozedurale Dungeon-Generierung aus einem Seed: Räume, Korridore, Wände, Eingangs- und
   Ausgangstreppe pro Stockwerk
-- Vier Monsterarten: **Gnome, Ork, Zombie, Skelett**, mit eigenen Sprites und Lauf-/Angriffs-Animationen
+- Vier Monsterarten: **Gnome, Ork, Zombie, Skelett**, mit eigenen Sprites und Lauf-/Angriffs-Animationen.
 - Gegner verfolgen den Spieler per **A\*-Pathfinding** durch Räume und Korridore, inklusive
   Agro- und Leash-Radius
 
@@ -72,7 +72,7 @@ Mit jedem besiegten Monster gibt es Erfahrung, mit jedem Level-Up mehr Leben und
 
 **Fortschritt**
 
-- Erfahrungspunkte und Level-Ups mit Bonus auf Leben und Schaden, dazu eine Level-Up-Einblendung
+- Erfahrungspunkte und Level Ups mit Bonus auf Leben und Schaden, dazu eine Level-Up-Einblendung
 - **Werkbank (`UpgradeTable`)**: Ausrüstung lässt sich mit Materialien (Eisen, Gold) aufwerten,
   das Upgraden funktioniert ausschließlich an der Werkbank
 - **Speichern und Laden**: Spielstände liegen als JSON in `saves/` und enthalten Seed,
@@ -80,7 +80,7 @@ Mit jedem besiegten Monster gibt es Erfahrung, mit jedem Level-Up mehr Leben und
 
 **Drumherum**
 
-- Hauptmenü, Einstellungsmenü, Pause-Screen (ESC), Game-Over-Screen
+- Hauptmenü, Einstellungsmenü, Pause-Screen (ESC), Game-Over Screen
 - Sound-Effekte und Hintergrundmusik, im Menü einzeln abschaltbar
 - Fenster-, Maximieren- und Vollbild-Handling über einen eigenen `WindowSizeManager`
 
@@ -207,11 +207,10 @@ Worlds und Hilfsklassen.
 Die Diagramme sind in **Mermaid** geschrieben und werden von GitHub direkt im Browser
 gerendert, zum Anschauen wird also kein zusätzliches Programm gebraucht.
 
-Die Diagramme sind **nicht von Hand geschrieben**, sondern von einem Skript erzeugt, das die
-Java-Quellen in `src/` einliest und daraus Klassen, Vererbung, Felder und Methodensignaturen
-ausliest. Das hat zwei Gründe: bei 90 Klassen wäre Handarbeit weder in vertretbarer Zeit zu
-schaffen noch fehlerfrei, und so lässt sich die Dokumentation nach Codeänderungen jederzeit
-neu erzeugen, statt zu veralten.
+Gezeichnet haben wir die Diagramme nicht selbst, sie werden von einem Skript erzeugt, das die
+Java-Dateien in `src/` einliest und daraus Klassen, Vererbung, Felder und Methodensignaturen
+zieht. Bei 90 Klassen hätten wir das von Hand weder in vernünftiger Zeit noch fehlerfrei
+hinbekommen, und so kann man die Diagramme nach Codeänderungen einfach neu erzeugen lassen.
 
 → [**UML.md**](UML.md)
 
@@ -219,10 +218,10 @@ neu erzeugen, statt zu veralten.
 
 ## Aufteilung der Arbeit
 
-Wer im Team welchen Teil des Spiels gebaut hat, ist vollständig aus dem Git-Verlauf ausgewertet:
-Aufteilung nach Feature-Bereichen, die Beiträge jeder Person im Detail, überschriebene und nie
-gemergte Arbeit sowie die Rohdaten (Blame, geschriebene Zeilen, Merges, Assets). Die prozentuale
-Aufteilung am Ende ist im Team abgesprochen.
+Wer welchen Teil des Spiels gebaut hat, haben wir aus dem Git-Verlauf ausgewertet. Das Dokument
+geht erst die Feature-Bereiche durch, dann jede Person einzeln, danach die Arbeit, die
+überschrieben oder nie gemergt wurde, und am Ende stehen die Rohdaten (Blame, geschriebene
+Zeilen, Merges, Assets).  Die Prozentzahlen haben wir im Team abgesprochen.
 
 → [**Aufteilung.md**](Aufteilung.md)
 
@@ -230,9 +229,9 @@ Aufteilung am Ende ist im Team abgesprochen.
 
 ## KI-Einsatz
 
-Womit wir KI im Projekt gearbeitet haben und womit nicht: hauptsächlich als Ersatz für die
-Java- und Greenfoot-Dokumentation und als Hilfe beim Einstieg in Git und GitHub. Offengelegt
-sind dort auch die zwei Stellen, an denen KI eigenständig Code geschrieben hat, sowie der
-Umgang mit Grafiken und Assets.
+Wofür wir im Projekt KI benutzt haben und wofür nicht. Hauptsächlich war sie ein Ersatz für die
+Java- und Greenfoot-Doku und eine Hilfe beim Einstieg in Git und GitHub. Dort stehen auch die
+zwei Stellen, an denen KI selbst Code geschrieben hat, und wie wir mit den Grafiken und Assets
+umgegangen sind.
 
 → [**KI.md**](KI.md)

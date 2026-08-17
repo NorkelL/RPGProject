@@ -28,9 +28,9 @@ cd RPGProject
 ### 2. Projekt in IntelliJ IDEA öffnen
 
 1. **File → Open** → den Projektordner `RPGProject` auswählen.
-2. IntelliJ erkennt kein Build-Tool – das ist gewollt. Als **plain Java project** öffnen.
+2. IntelliJ erkennt kein Build-Tool, das ist so gewollt. Als **plain Java project** öffnen
 
-### 3. Greenfoot-Bibliothek einbinden
+### 3. Greenfoot Bibliothek einbinden
 
 Das Projekt braucht `greenfoot.jar` aus der lokalen Greenfoot-Installation als Library.
 
@@ -129,8 +129,8 @@ RPGProject/
 
 ### Spielablauf
 
-`GameStarter` (minimale, nie sichtbare Greenfoot-World) ist der Einstiegspunkt.
-Er hält einen `Random`-Seed, eine Liste vergangener Level und das aktuelle Level.
+`GameStarter` ist der Einstiegspunkt, eine winzige Greenfoot-World, die man nie zu sehen
+bekommt.  Darin liegen der `Random`-Seed, eine Liste der vergangenen Level und das aktuelle Level.
 
 ```
 GameStarter
@@ -161,8 +161,8 @@ ImprovedActor
 
 ### Dungeon-Generierung (DungeonLevel)
 
-Jedes Level wird seed-basiert prozedural generiert:
+Jedes Level wird aus dem Seed heraus prozedural generiert:
 1. Eingang (unten) und Ausgang (oben) werden platziert.
 2. Ein zentraler Korridor verbindet Eingang und Ausgang.
-3. Zufällige Räume (variable Größe) werden im verfügbaren Raum platziert.
+3. Zufällige Räume (variable Größe) werden auf den freien Platz verteilt.
 4. Wände umranden alle freien Flächen.

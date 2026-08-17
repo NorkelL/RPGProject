@@ -2,9 +2,8 @@
 
 *The Dungeon: Sign of the Moon*
 
-Dieses Dokument beschreibt **wofür** wir KI im Projekt eingesetzt haben, **wofür bewusst nicht**,
-und **welche Teile des Codes nicht von uns selbst geschrieben wurden**. Es ergänzt
-`Aufteilung.md`, in dem die Aufteilung der Arbeit unter den Teammitgliedern steht.
+Hier steht, wofür wir im Projekt KI benutzt haben und wofür nicht, und welche Teile des Codes
+nicht von uns selbst kommen. Wie die Arbeit im Team verteilt war, steht in `Aufteilung.md`.
 
 ---
 
@@ -24,22 +23,20 @@ und **welche Teile des Codes nicht von uns selbst geschrieben wurden**. Es ergä
 
 ## 2. Hauptnutzung: KI als Ersatz für die Dokumentation
 
-Der mit Abstand größte Nutzen der KI lag **nicht** im Schreiben von Code, sondern im **Erklären**.
-Wir haben sie im Alltag da eingesetzt, wo man sonst die Java- oder Greenfoot-Dokumentation
-aufgeschlagen hätte.
+Am meisten gebracht hat uns die KI beim **Erklären**, nicht beim Schreiben von Code. Wir haben
+sie überall da benutzt, wo man sonst die Java- oder Greenfoot-Dokumentation aufgeschlagen hätte.
 
 **Warum wir das so gemacht haben:**
 
-- Die offizielle Greenfoot-API-Doku ist eine reine Referenz: sie sagt, *dass* es
-  `getObjectsAt(int x, int y, Class cls)` gibt, aber nicht, *wann* man das braucht und wie es sich
-  zu `getOneIntersectingObject()` verhält. Genau diese Einordnung fehlt einem als Anfänger.
-- Die Java-Doku (Oracle/JavaDoc) ist für unser Niveau streckenweise zu abstrakt formuliert.
-  Themen wie Vererbung, abstrakte Klassen, Interfaces, Enums oder Generics stehen dort korrekt,
+- Die offizielle Greenfoot-API-Doku ist eine reine Referenz. Da steht, *dass* es
+  `getObjectsAt(int x, int y, Class cls)` gibt, aber nicht, *wann* man das braucht und was der
+  Unterschied zu `getOneIntersectingObject()` ist. Als Anfänger fehlt einem genau das.
+- Die Java-Doku (Oracle/JavaDoc) ist für unser Niveau an vielen Stellen zu abstrakt geschrieben.
+  Vererbung, abstrakte Klassen, Interfaces, Enums oder Generics stehen dort zwar korrekt drin,
   aber nicht so, dass man sie beim ersten Lesen versteht.
 - Eine KI kann dieselbe Erklärung auf **unserem Kenntnisstand** liefern, mit einem Beispiel aus
-  *unserem* Projekt statt einem abstrakten `Foo`/`Bar`-Beispiel, und man kann so lange nachfragen,
-  bis es wirklich sitzt. Das ist der eigentliche Lerneffekt: Rückfragen stellen zu können, ohne
-  jemanden aufzuhalten.
+  *unserem* Projekt statt einem abstrakten `Foo`/`Bar`-Beispiel. Und man kann so lange nachfragen,
+  bis es sitzt, ohne dass man dabei jemanden aufhält.
 
 **Typische Fragen, die so beantwortet wurden:**
 
@@ -47,16 +44,16 @@ aufgeschlagen hätte.
 - Wie skaliert man `GreenfootImage`-Objekte, ohne dass die Pixelgrafik verwaschen wird?
 - Was bedeutet diese `NullPointerException` in der Konsole, und wo muss man suchen?
 
-Das Ergebnis dieser Gespräche waren **Erklärungen, keine fertigen Klassen**. Den Code haben wir
-danach selbst geschrieben; deshalb steht er auch unter unseren Namen im Git-Verlauf.
+Rausgekommen sind bei diesen Gesprächen immer nur Erklärungen und keine fertigen Klassen. Den
+Code haben wir danach selbst geschrieben, deshalb steht er auch unter unseren Namen im Git-Verlauf.
 
 ---
 
 ## 3. Git und GitHub
 
-Für die meisten im Team war Versionsverwaltung komplett neu. Vor diesem Projekt hatte kaum
-jemand mit Branches, Pull Requests oder Merge-Konflikten gearbeitet. Hier war die KI der zweite
-große Einsatzbereich.
+Für die meisten im Team war Versionsverwaltung komplett neu, vor diesem Projekt hatte kaum
+jemand mit Branches, Pull Requests oder Merge-Konflikten gearbeitet. Das war der zweite große
+Einsatzbereich für die KI.
 
 **Womit sie geholfen hat:**
 
@@ -67,22 +64,22 @@ große Einsatzbereich.
   weil man den Namen der Lösung noch gar nicht kennt.
 - **Merge-Konflikte lesen:** Was die `<<<<<<<`/`=======`/`>>>>>>>`-Markierungen bedeuten und wie
   man sie auflöst, ohne die Arbeit der anderen zu zerstören.
-- **Der GitHub-Workflow:** Issues anlegen und zuweisen, Branch pro Feature, Pull Request,
+- **Der Github-Workflow:** Issues anlegen und zuweisen, Branch pro Feature, Pull Request,
   Review, Merge. Und warum diese Reihenfolge sinnvoll ist, wenn acht Leute an einem Repo arbeiten.
 
 Aus diesen Erklärungen ist auch der Git-Leitfaden `GITHUB-HELP.md` entstanden, den Nikolaj für
 das Team geschrieben hat: eine auf unser Projekt zugeschnittene Kurzanleitung, damit nicht jede
 Person dieselben Fragen einzeln stellen muss.
 
-**Wichtig:** Die KI hat hier **beraten, nicht ausgeführt**. Alle Commits, Branches, Pull Requests
-und Merges wurden von uns selbst gemacht.
+**Wichtig:** Die KI hat hier nur beraten. Alle Commits, Branches, Pull Requests und Merges
+haben wir selbst gemacht.
 
 ---
 
 ## 4. Von KI geschriebener Code
 
-Es gibt genau **zwei** Stellen im Projekt, an denen KI eigenständig Code produziert hat.
-Beide werden hier vollständig offengelegt.
+Es gibt genau **zwei** Stellen im Projekt, an denen KI selbst Code produziert hat. Beide legen
+wir hier offen.
 
 
 | Datei                                      | Zeilen | Rolle der KI                                                          |
@@ -106,8 +103,8 @@ zu streichen, und den Einsatz direkt in der Commit-Message vermerkt:
 ```
 
 Weil dieser Commit über Nikolajs Account lief, schreibt `git blame` alle 111 Zeilen ihm zu.
-**Inhaltlich stammen sie nicht von ihm.** Was er selbst gemacht hat, ist die Integration ins
-Spiel und die anschließende Integration.
+**Inhaltlich stammen sie nicht von ihm.** Von ihm sind die Einbindung ins Spiel und die
+spätere Überarbeitung im August.
 
 ### 4.2 Fenster- und Fullscreen-Handling (`WindowSizeManager.java`)
 
@@ -131,37 +128,37 @@ existiert in `master` nicht.
 
 ## 5. Auswertung der Beitragsverteilung (`Aufteilung.md`)
 
-Die Frage, wer wie viel zum Projekt beigetragen hat, ist die einzige im Projekt, bei der niemand
-im Team eine neutrale Position hat: jede Selbsteinschätzung ist automatisch parteiisch. Deshalb
-haben wir diese Auswertung bewusst von der KI machen lassen.
+Bei der Frage, wer wie viel zum Projekt beigetragen hat, ist niemand im Team neutral, jede
+Selbsteinschätzung ist automatisch parteiisch. Deshalb haben wir diese Auswertung von der KI
+machen lassen.
 
-**Was die KI gemacht hat:** Sie hat den kompletten Git-Verlauf ausgewertet: alle Commits auf
-`master` und auf den Feature-Branches, `git blame` über sämtliche Java-Dateien in `src/`,
+**Was die KI gemacht hat:** Sie hat den kompletten Git-Verlauf ausgewertet, also alle Commits auf
+`master` und auf den Feature-Branches, `git blame` über alle Java-Dateien in `src/`,
 `git log --numstat` für hinzugefügte und gelöschte Zeilen, dazu die Merge- und Asset-Statistik.
 Daraus ist `Aufteilung.md` entstanden: wer welche Klassen angelegt hat, wessen Code heute noch im
 Projekt steht, was überschrieben wurde und welche Branches nie gemergt wurden.
 
 **Warum das eine faire Grundlage ist:**
 
-- Die Auswertung kennt niemanden im Team persönlich und hat kein Interesse am Ergebnis.
+- Die Auswertung kennt niemanden von uns und hat nichts davon, wie das Ergebnis aussieht
 - **Jede Zahl ist im GitHub-Log nachprüfbar.** Commit-Hashes, Pull-Request-Nummern und
-  Branch-Namen stehen im Dokument, sodass sich jede Aussage einzeln kontrollieren lässt.
-- Genau das haben wir anschließend gemacht: Die Angaben wurden am tatsächlichen Repository-Verlauf
-  gegengeprüft und bestätigt. Wo die Messung falsch lag, steht die Korrektur im Dokument,
-  zum Beispiel beim `SoundManager`, den Len und Jonas gemeinsam geschrieben haben, der in git aber
-  komplett unter Lens Namen läuft.
+  Branch-Namen stehen im Dokument, man kann also jede Aussage einzeln kontrollieren.
+- Genau das haben wir danach auch gemacht und die Angaben am echten Repository-Verlauf
+  gegengeprüft. Wo die Messung falsch lag, steht die Korrektur im Dokument, zum Beispiel beim
+  `SoundManager`, den Len und Jonas zusammen geschrieben haben, der in git aber komplett unter
+  Lens Namen läuft.
 
-**Was wir selbst gemacht haben:** die **Prozentaufteilung**. Reine Zeilenzahlen messen keinen
-Aufwand: repetitiver Code erzeugt viele Zeilen, Grafikarbeit und Organisation dagegen keine
-einzige, und nie gemergte Arbeit taucht überhaupt nicht auf. Die Messwerte waren deshalb nur der
-Ausgangspunkt; die endgültigen Prozentzahlen pro Person haben wir im Team besprochen und
-festgelegt. Sie sind eine Teamentscheidung, kein KI-Ergebnis.
+**Was wir selbst gemacht haben:** die **Prozentaufteilung**. Reine Zeilenzahlen sagen nichts über
+den Aufwand aus. Repetitiver Code erzeugt viele Zeilen, Grafikarbeit und Organisation dagegen
+keine einzige, und nie gemergte Arbeit taucht gar nicht erst auf. Die Messwerte waren deshalb nur
+der Ausgangspunkt, die endgültigen Prozentzahlen pro Person haben wir im Team besprochen und
+festgelegt.
 
 ---
 
 ## 6. Grafiken und Assets
 
-Ein großer Teil der Sprites, Hintergründe und Animationsframes wurde mit generativen
-Bild-Werkzeugen erstellt und anschließend im Pixel-Editor **Piskel** nachbearbeitet
-(Zuschnitt, Farben, Animationsphasen). Einzelne Item-Icons orientieren sich an
-Minecraft-Item-Grafiken und stammen von der Online-Ressource `mc.nerothe.com`.
+Einen großen Teil der Sprites, Hintergründe und Animationsframes haben wir mit generativen
+Bild-Werkzeugen erzeugt und danach im Pixel-Editor **Piskel** nachbearbeitet (Zuschnitt, Farben,
+Animationsphasen).  Ein paar Item-Icons sind an die Minecraft-Item-Grafiken angelehnt und
+kommen von `mc.nerothe.com`.

@@ -30,16 +30,18 @@ Integrations-, Merge-, Nach- und **Projektleitungsarbeit** ist mit eingerechnet
 (siehe Abschnitt 1.2; ein erheblicher Teil davon erzeugt gar keine Codezeilen).
 
 
-| # | Contributor | Accounts                            | Anteil (Effort) | Blame-Anteil | Commits                               |
-| - | ----------- | ----------------------------------- | --------------- | ------------ | ------------------------------------- |
-| 1 | **Nikolaj** | `NorkelL`, `Nikolaj Lazic`          | **49,5 %**      | 50,1 %       | 122 (119 auf`master`: 76 + 43 Merges) |
-| 2 | **Tom**     | `Vatar007`, `Tom`                   | **21 %**        | 31,4 %       | 24 (21 auf`master`)                   |
-| 3 | **Len**     | `Len`, `LDK221`                     | **7 %**         | 8,5 %\*      | 13                                    |
-| 4 | **Jonas**   | `Jonas45677L`                       | **5 %**         | 0,7 %\*      | 12 (6 auf`master`)                    |
-| 5 | **Selma**   | `mvogt`                             | **5,5 %**       | 7,8 %        | 10 (4 auf`master`)                    |
-| 6 | **Lennox**  | `FlyLennox`                         | **4 %**         | 0,6 %        | 5                                     |
-| 7 | **Luca**    | `rollluca09`, `TuffLuca67`          | **4 %**         | 0,4 %        | 3                                     |
-| 8 | **Noah**    | `goldfishi08`, `bf5szfzkfg-commits` | **4 %**         | 0,5 %        | 4                                     |
+| # | **Anteil (Effort)** | Contributor | Git-Accounts                        | Commits                               | Blame-Anteil |
+| - | ------------------- | ----------- | ----------------------------------- | ------------------------------------- | ------------ |
+| 1 | **49,5 %**          | **Nikolaj** | `NorkelL`, `Nikolaj Lazic`          | 122 (119 auf`master`: 76 + 43 Merges) | 50,1 %       |
+| 2 | **21 %**            | **Tom**     | `Vatar007`, `Tom`                   | 24 (21 auf`master`)                   | 31,4 %       |
+| 3 | **7 %**             | **Len**     | `Len`, `LDK221`                     | 13                                    | 8,5 %\*      |
+| 4 | **5 %**             | **Jonas**   | `Jonas45677L`                       | 12 (6 auf`master`)                    | 0,7 %\*      |
+| 5 | **5,5 %**           | **Selma**   | `mvogt`                             | 10 (4 auf`master`)                    | 7,8 %        |
+| 6 | **4 %**             | **Lennox**  | `FlyLennox`                         | 5                                     | 0,6 %        |
+| 7 | **4 %**             | **Luca**    | `rollluca09`, `TuffLuca67`          | 3                                     | 0,4 %        |
+| 8 | **4 %**             | **Noah**    | `goldfishi08`, `bf5szfzkfg-commits` | 4                                     | 0,5 %        |
+
+Wer zwei Accounts hat, hat unter beiden committet; die Zahlen sind hier jeweils zusammengezogen.
 
 \* Der `SoundManager` wurde von **Len und Jonas gemeinsam** geschrieben, aber nur von Len
 commited. Git schreibt die 53 Zeilen deshalb komplett Len zu; im Effort-Anteil sind sie
@@ -137,7 +139,7 @@ Jeder dieser Merges bedeutete Review, Konfliktauflösung und oft Nacharbeit am f
 
 ### 3.1 Nikolaj (49,5 %) · *Projektleitung*
 
-**Accounts:** `NorkelL <n.l.lazic@outlook.com>` und `Nikolaj Lazic <lazicnikolaj@gmail.com>` (hier zusammengefasst)
+**Git-Accounts:** 2 (hier zusammengefasst)
 **Commits:** 119 auf `master` (76 inhaltliche + 43 Merge-Commits), 122 über alle Branches
 **Blame:** 2.684 von 5.353 Zeilen (50,1 %)
 
@@ -220,7 +222,7 @@ und die gesamte Integration bei ihm, ausführlich in **Abschnitt 1.2**.
 
 ### 3.2 Tom (21 %)
 
-**Accounts:** `Vatar007 <tom.lenny.ruppert@gmail.com>`, `Tom <tom.lenny.ruppert@gmail.com>`
+**Git-Accounts:** 2 (dieselbe Person, zwei Anzeigenamen)
 **Commits:** 21 auf `master` (inkl. 3 Merges), 24 über alle Branches
 **Blame:** 1.680 Zeilen (31,4 %) · **256 Asset-Dateien** angefasst (mit Abstand am meisten)
 
@@ -285,7 +287,7 @@ Effort-Anteil bildet aber ab, wie viel davon **ohne Nacharbeit verwertbar** war.
 
 ### 3.3 Len (7 %)
 
-**Accounts:** `Len <lenkoehler22@gmail.com>`, `LDK221 <lenkoehler22@gmail.com>`
+**Git-Accounts:** 2 (dieselbe Person, zwei Anzeigenamen)
 **Commits:** 13 (inkl. 1 Merge) · **Blame:** 454 Zeilen (8,5 %) · 16 Asset-Dateien
 
 **Gemeinsam mit Jonas:** `util/SoundManager.java` (53 Zeilen), zu **je 50 %** von beiden,
@@ -316,7 +318,7 @@ auch wenn git die Datei zu 100 % Len zuschreibt (siehe 4.6).
 
 ### 3.4 Selma (5,5 %)
 
-**Account:** `mvogt <selma.v@gmx.de>` · **Commits:** 10 über alle Branches (4 auf `master`) ·
+**Git-Accounts:** 1 · **Commits:** 10 über alle Branches (4 auf `master`) ·
 **Blame:** 415 Zeilen (7,8 %)
 
 Selma ist der Contributor mit der größten Veränderung in den letzten zwei Tagen: durch das
@@ -347,7 +349,7 @@ Kampfsystem ist ihr Blame-Anteil von 2,3 % auf 7,8 % gestiegen.
 
 ### 3.5 Jonas (5 %)
 
-**Account:** `Jonas45677L <Jonaslehndorff@gmail.com>` · **Commits:** 12 über alle Branches
+**Git-Accounts:** 1 · **Commits:** 12 über alle Branches
 (6 auf `master`) · **Blame:** nur 39 Zeilen (0,7 %) · 10 Asset-Dateien
 
 Jonas ist der klarste Fall, bei dem der Blame-Wert den tatsächlichen Aufwand **stark unterschätzt**, gleich dreifach: Grafik-Assets zählen nicht als Zeilen, sein Healthbar-Branch wurde nie gemergt,
@@ -375,7 +377,7 @@ und seine Hälfte am `SoundManager` läuft unter Lens Account:
 
 ### 3.6 Lennox (4 %)
 
-**Account:** `FlyLennox <menlennox@gmail.com>` · **Commits:** 5 · **Blame:** 33 Zeilen (0,6 %)
+**Git-Accounts:** 1 · **Commits:** 5 · **Blame:** 33 Zeilen (0,6 %)
 
 - **Waffen-Klassen** (alle am `2026-05-11`, vier davon mit der Commit-Message „yooo"):
   `Sword.java` neu angelegt, Ausbau von `Waffen.java` (heute noch 21 von 108 Zeilen; bis August
@@ -387,9 +389,8 @@ und seine Hälfte am `SoundManager` läuft unter Lens Account:
 
 ### 3.7 Noah (4 %)
 
-**Accounts:** `goldfishi08 <bf5szfzkfg@privaterelay.appleid.com>`,
-`bf5szfzkfg-commits <bf5szfzkfg@privatere-lay.appleid.com>` (Apple-Private-Relay, deshalb zwei
-leicht unterschiedliche Adressen) · **Commits:** 4 · **Blame:** 29 Zeilen (0,5 %)
+**Git-Accounts:** 2 (Apple-Private-Relay hat zwei leicht unterschiedliche Adressen erzeugt,
+git zählt das als zwei Identitäten) · **Commits:** 4 · **Blame:** 29 Zeilen (0,5 %)
 
 - **`BaseMonster.java` angelegt** (PR #35, `2026-04-28`) inklusive verbesserter Death-Methode im Player.
   Das ist die Basisklasse, von der **alle vier Monster** im Spiel erben und damit strukturell wichtiger,
@@ -403,8 +404,8 @@ leicht unterschiedliche Adressen) · **Commits:** 4 · **Blame:** 29 Zeilen (0,5
 
 ### 3.8 Luca (4 %)
 
-**Accounts:** `TuffLuca67 <luca@roll-consult.de>`, `rollluca09 <luca@…>` / `<Luca@…>` (Groß-/Kleinschreibung
-der Mail variiert, git zählt das als zwei Identitäten) · **Commits:** 3 · **Blame:** 19 Zeilen (0,4 %)
+**Git-Accounts:** 2 (die Mailadresse ist einmal groß und einmal klein geschrieben, git zählt
+das als zwei Identitäten) · **Commits:** 3 · **Blame:** 19 Zeilen (0,4 %)
 
 - **Waffen-Grundgerüst** (`2026-05-04`): legte `Waffen.java`, `Messer.java` und `Stock.java` an: die Basis, auf der Lennox, Tom und Selma später aufgebaut haben.
 - **New weapons** (`2026-06-01` / `2026-06-02`): erste `Bow.java`.
@@ -494,7 +495,7 @@ Weil die Commits über Lens Account liefen, weist git die Datei zu **100 % Len**
             PR #71   feature/sounds → master
 ```
 
-`git blame src/util/SoundManager.java` → 53 von 53 Zeilen `lenkoehler22@gmail.com`,
+`git blame src/util/SoundManager.java` → 53 von 53 Zeilen unter Lens Account,
 0 Zeilen Jonas. Es gibt im gesamten Repository **keinen technischen Hinweis** auf seine
 Beteiligung: kein `Co-authored-by`-Trailer, kein eigener Commit, kein Branch.
 
@@ -582,7 +583,7 @@ inhaltlich Selmas Arbeit und steht heute mit 415 Blame-Zeilen im Code.
 | Noah                     | 29     | 0,5 %  |
 | Luca                     | 19     | 0,4 %  |
 
-Aufteilung Nikolaj: `NorkelL` 2.095 Zeilen, `Nikolaj Lazic` 589 Zeilen.
+Aufteilung Nikolaj: Hauptaccount 2.095 Zeilen, Zweitaccount 589 Zeilen.
 
 **Unkorrigierte Rohwerte.** Ein bekannter Zuordnungsfehler ist hier bewusst *nicht* bereinigt:
 Jonas' Hälfte der 53 `SoundManager`-Zeilen steht bei Len (4.6). Korrigiert ist das nur in den
@@ -593,9 +594,9 @@ Effort-Prozenten in Abschnitt 1.
 
 | Contributor               | hinzugefügt | gelöscht | netto  |
 | ------------------------- | ------------ | --------- | ------ |
-| Nikolaj (`NorkelL`)       | 2.867        | 1.134     | +1.733 |
+| Nikolaj (Hauptaccount)    | 2.867        | 1.134     | +1.733 |
 | Tom                       | 2.386        | 288       | +2.098 |
-| Nikolaj (`Nikolaj Lazic`) | 1.327        | 540       | +787   |
+| Nikolaj (Zweitaccount)    | 1.327        | 540       | +787   |
 | Len                       | 641          | 208       | +433   |
 | Selma                     | 514          | 72        | +442   |
 | Jonas                     | 233          | 162       | +71    |
@@ -612,8 +613,8 @@ Refactoring- und Integrationsarbeit aus Abschnitt 4 wider.
 | Contributor               | Dateien |
 | ------------------------- | ------- |
 | Tom                       | 256     |
-| Nikolaj (`NorkelL`)       | 71      |
-| Nikolaj (`Nikolaj Lazic`) | 66      |
+| Nikolaj (Hauptaccount)    | 71      |
+| Nikolaj (Zweitaccount)    | 66      |
 | Len                       | 16      |
 | Jonas                     | 10      |
 | Luca                      | 6       |
