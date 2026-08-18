@@ -7,6 +7,7 @@ import greenfoot.MouseInfo;
 import items.util.ItemTyp;
 import util.SoundManager;
 
+//truhe, gibt beim oeffnen mit R ein zufaelliges item aus
 public class Chest extends Block {
     private boolean isOpen;
 
@@ -43,6 +44,7 @@ public class Chest extends Block {
         dropRandomItem();
     }
 
+    //beim laden eines saves: truhe steht offen da, der loot kam ja schon beim ersten mal
     public void openChestWithoutDrops() {
         isOpen = true;
         GreenfootImage img = new GreenfootImage("Blocks/Chest/ChestOpen.png");

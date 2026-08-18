@@ -4,6 +4,7 @@ import items.util.OnHover;
 import items.util.Pickable;
 import items.util.Rarity;
 
+//nur zum ausprobieren, kommt im fertigen spiel nicht vor
 public class TestItem extends Item implements Pickable {
 
     @OnHover.ShowOnHover

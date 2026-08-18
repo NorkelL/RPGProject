@@ -6,6 +6,8 @@ import greenfoot.MouseInfo;
 import ui.UI;
 import util.SoundManager;
 
+//basis fuer die knoepfe im pausemenue, regelt klick und klickgeraeusch
+// was der knopf macht steht in onPauseClick() der unterklasse
 public abstract class PauseButtons extends UI{
 
     public PauseButtons (String imagePath){

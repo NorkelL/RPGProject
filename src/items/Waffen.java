@@ -11,14 +11,18 @@ import items.util.Rarity;
 
 import java.util.List;
 
+//basis fuer alle waffen, regelt schaden, krit und reichweite
+// die einzelnen waffen (Sword, Bow usw.) geben nur noch ihre werte an den konstruktor
 public abstract class Waffen extends Item {
 
+    //die annotation sorgt dafuer dass der wert im tooltip beim druebergehen auftaucht
     @OnHover.ShowOnHover
     private int damage;
 
     @OnHover.ShowOnHover
     private int kritChance;      // in Prozent, 0-100
 
+    //reichweite in feldern, ab hier wird beim schlagen nicht weiter gesucht
     private int maxDistance;
 
     private static final int KRIT_FAKTOR = 2;
@@ -80,6 +84,7 @@ public abstract class Waffen extends Item {
         return false;
     }
 
+    //gleiche rechnung wie im MovingActor, die waffe braucht sie fuer ihre reichweite
     public int getNextX(int distance) {
         double radians = Math.toRadians(getRotation());
         int dx = (int) Math.round(Math.cos(radians) * distance);

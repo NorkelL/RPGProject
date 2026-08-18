@@ -20,6 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//der startbildschirm, haelt die drei knoepfe und die auswahl der spielstaende
 public class MainMenu extends World {
 
     private GameStarter gameStarter;
@@ -52,6 +53,7 @@ public class MainMenu extends World {
         addObject(settingsButton, cx, cy+3);
     }
 
+    //knoepfe raus, auswahlrahmen rein - die welt bleibt dieselbe
     public void showLoadSelect(){
         removeObject(startButton);
         removeObject(loadGameButton);
@@ -77,6 +79,7 @@ public class MainMenu extends World {
         addObject(settingsButton, cx, cy+3);
     }
 
+    //modulo damit man am ende der liste wieder vorne rauskommt
     private void cycleSave(int dir){
         if (saves.isEmpty()) return;
         saveIndex = (saveIndex + dir + saves.size()) % saves.size();
@@ -92,6 +95,7 @@ public class MainMenu extends World {
         }
     }
 
+    //schreibt den dateinamen vom aktuellen save mittig auf den rahmen
     private void renderLoadFrame(){
         GreenfootImage img = new GreenfootImage("UI/MainMenu/Bar_Blank.png");
         img.scale(310, 110);
@@ -103,6 +107,7 @@ public class MainMenu extends World {
         loadFrame.setImage(img);
     }
 
+    //alle dateien im saves ordner, neueste zuerst
     private List<File> readSaves(){
         File[] files = GameStarter.SAVE_DIR.toFile().listFiles();
         if (files == null) return new ArrayList<>();
@@ -112,6 +117,8 @@ public class MainMenu extends World {
                 .collect(Collectors.toList());
     }
 
+    //innere klasse damit sie direkt an saves und saveIndex kommt
+    // die WasDown flags verhindern dass gedrueckthalten durch die ganze liste rast
     private class LoadFrame extends UI {
         private boolean upWasDown, downWasDown, enterWasDown, escWasDown;
 

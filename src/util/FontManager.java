@@ -9,6 +9,7 @@ import java.util.Map;
 
 import greenfoot.GreenfootImage;
 
+//greenfoot kann keine eigene schriftart direkt zeichnen, deshalb wird der text ueber awt in ein bild gerendert
 public class FontManager {
 
     private static final String FONT_DIR = "fonts/";

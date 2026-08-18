@@ -14,16 +14,21 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+//sorgt dafuer dass das fenster maximiert ist und die welt auf jede aufloesung passt
+// greift dafuer direkt in die javafx oberflaeche von greenfoot rein, greenfoot selbst bietet dafuer nichts an
 public final class WindowSizeManager {
 
+    //die spielflaeche darf nur einmal angebunden werden, sonst haengen mehrere bindings drauf
     private static boolean pinned = false;
 
     private WindowSizeManager() {}
 
+    //einstieg, muss im javafx thread laufen deshalb runLater
     public static void enforce() {
         Platform.runLater(WindowSizeManager::tryEnforce);
     }
 
+    //beim start gibt es das fenster noch nicht, deshalb ruft sich die methode selbst nochmal auf bis es da ist
     private static void tryEnforce() {
         Stage stage = findStage();
         if (stage == null || stage.getScene() == null) {
@@ -40,6 +45,7 @@ public final class WindowSizeManager {
         pinWorldDisplaySize(stage.getScene());
     }
 
+    //haengt die spielflaeche an die fenstergroesse damit unten keine graue leiste stehen bleibt
     private static void pinWorldDisplaySize(Scene scene) {
         if (pinned) {
             return;
@@ -78,6 +84,7 @@ public final class WindowSizeManager {
         pinned = true;
     }
 
+    //alles ist fuer 2560x1440 gebaut, kleinere bildschirme bekommen den passenden faktor
     private static void scaleWorldDisplay(WorldDisplay worldDisplay) {
         Rectangle2D screen = Screen.getPrimary().getBounds();
         double faktor = Math.min(screen.getWidth() / 2560.0, screen.getHeight() / 1440.0);
@@ -86,6 +93,7 @@ public final class WindowSizeManager {
         worldDisplay.setScaleY(faktor);
     }
 
+    //sucht die spielflaeche rekursiv im javafx baum, die position darin ist nicht garantiert
     private static WorldDisplay findWorldDisplay(Node node) {
         if (node instanceof WorldDisplay) {
             return (WorldDisplay) node;

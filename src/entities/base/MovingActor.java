@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+//basis fuer alles was sich bewegt und dabei animiert wird, also spieler und monster
 public class MovingActor extends ImprovedActor {
+    //[richtung][animationsschritt], deshalb das 2d array
     private  GreenfootImage[][] movingActorImages = new ImprovedGreenfootImage[4][4];
     private int animationStep = 0;
     private boolean invisible = false;
@@ -26,6 +28,7 @@ public class MovingActor extends ImprovedActor {
         loadImages(this.getClass().getSimpleName(), "Walking");
     }
 
+    //prueft ob das naechste feld frei ist (keine wand, kein stein, kein slot)
     public boolean canMove() {
         return canMove(1);
     }
@@ -41,6 +44,7 @@ public class MovingActor extends ImprovedActor {
         return rocks.isEmpty() && !hasWall && slots.isEmpty();
     }
 
+    //rechnet aus der aktuellen drehung das naechste feld aus
     public int getNextX(int distance) {
         double radians = Math.toRadians(getRotation());
         int dx = (int) Math.round(Math.cos(radians) * distance);
@@ -97,6 +101,7 @@ public class MovingActor extends ImprovedActor {
         }
     }
 
+    //text ueber dem kopf, laeuft ueber sayTimer aus statt ueber delay()
     public void say(String text) {
         int y = getY() - 1;
         if (y < 0) y = 1;
@@ -110,6 +115,7 @@ public class MovingActor extends ImprovedActor {
     public void say(int text)     { say(String.valueOf(text)); }
     public void say(double text)  { say(String.valueOf(text)); }
 
+    //jeder schritt schaltet ein bild weiter, daraus entsteht die laufanimation
     @Override
     public void move(int steps) {
         animationStep = (animationStep + 1) % 4;
@@ -119,6 +125,8 @@ public class MovingActor extends ImprovedActor {
             super.move(steps);
         }
     }
+    //laedt alle bilder aus images/<klassenname>/ nach richtung sortiert
+    // fehlt ein bild wird das vorherige genommen, dann steht die figur nur still statt zu crashen
     public void loadImages(String folderName, String subFolder ) {
 
         String projectPath = "." + File.separator + "images" + File.separator + folderName + File.separator;
@@ -162,6 +170,7 @@ public class MovingActor extends ImprovedActor {
         setImage(movingActorImages[currentDir.getValue()][animationStep]);
     }
 
+    //macht alle bilder halbtransparent, wird vom unsichtbarkeitstrank benutzt
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
 

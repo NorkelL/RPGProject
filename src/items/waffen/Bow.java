@@ -11,6 +11,8 @@ import entities.base.MovingActor;
 
 
 
+//der bogen schlaegt nicht zu, hit() gibt absichtlich false zurueck
+// geschossen wird ueber den BowSprite, der pfeile aus der hotbar verbraucht
 public class Bow  extends Waffen implements Useable {
 
     private GreenfootImage normalImage;

@@ -5,9 +5,11 @@ import ui.Settings;
 import ui.worlds.SettingsWorld;
 import util.SoundManager;
 
+//knopf zum umbelegen einer taste, nach dem klick wartet er auf den naechsten tastendruck
 public class KeyButton extends StandardButton
 {
     private String currentKey;
+    //true solange der knopf auf eine eingabe wartet, dann blinkt der strich statt der taste
     private boolean waitingForInput = false;
     private int blinkTimer = 0;
     private String action;
@@ -40,6 +42,7 @@ public class KeyButton extends StandardButton
         }
     }
 
+    //es darf immer nur ein knopf gleichzeitig warten, das merkt sich die SettingsWorld
     private void checkClick()
     {
         if (Greenfoot.mouseClicked(this))
@@ -58,6 +61,7 @@ public class KeyButton extends StandardButton
         }
     }
 
+    //nimmt tastatur und maustasten an, maus laeuft nicht ueber Greenfoot.getKey()
     private void checkInput()
     {
         if (!waitingForInput) return;
@@ -85,6 +89,7 @@ public class KeyButton extends StandardButton
         }
     }
 
+    //schreibt die neue taste in Settings, action sagt welche belegung gemeint ist
     private void saveKey(String key)
     {
         currentKey = key;
@@ -119,6 +124,7 @@ public class KeyButton extends StandardButton
     }
 
 
+    //zeichnet den text mittig auf das knopfbild
     @Override
     public void updateImage(GreenfootImage image)
     {

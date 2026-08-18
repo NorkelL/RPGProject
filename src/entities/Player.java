@@ -28,6 +28,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+//die spielfigur, haelt inventar, ruestung, xp/level und den kampf
+// wird beim levelwechsel nicht neu erzeugt sondern vom GameStarter mitgeschleppt
 public class Player extends DamageableActor {
     private final Item[] items;       // Das ist die Hotbar / visualizer (z.B. 8 Slots)
     private final Item[] backpack;    // Das große Hauptinventar (z.B. 24 Slots)
@@ -44,6 +46,7 @@ public class Player extends DamageableActor {
 
 
     private int maxLife;
+    //abklingzeit zwischen zwei schritten, laeuft in act() runter
     private int moveCounter;
     private InventoryVisualizer inventory;
     private int activeSlot;
@@ -76,6 +79,7 @@ public class Player extends DamageableActor {
         setLife(life);
     }
 
+    //greenfoot hauptschleife, hier laufen alle eingaben und timer durch
     @Override
     public void act() {
         if (pausiert()) return;
@@ -129,6 +133,7 @@ public class Player extends DamageableActor {
         updateActiveWeapon();
     }
 
+    //damit der schritt-sound nicht bei jedem frame neu startet
     private int stepSoundCooldown = 0;
 
     public void move() {
@@ -141,6 +146,7 @@ public class Player extends DamageableActor {
         }
     }
 
+    //item vom boden aufheben, reihenfolge: ruestungsslot, dann hotbar, dann rucksack
     public void takeItem() {
         List<Item> onTile = getWorld().getObjectsAt(getX(), getY(), Item.class);
         if (onTile.isEmpty()) {
@@ -188,6 +194,7 @@ public class Player extends DamageableActor {
         }
     }
 
+    //legt das hinterste item der hotbar wieder auf den boden
     public void putItem() {
         for (int i = maxItems - 1; i >= 0; i--) {
             if (items[i] != null) {
@@ -224,6 +231,7 @@ public class Player extends DamageableActor {
         Greenfoot.setWorld(new Backpack(this, this.items, this.backpack, previousWorld, true));
     }
 
+    //angriff mit der waffe im aktiven slot
     public void angreifen() {
         if (System.currentTimeMillis() < naechsterAngriff) return;   // noch in der Abklingzeit
 
@@ -259,6 +267,7 @@ public class Player extends DamageableActor {
         SoundManager.play("damage.mp3");
     }
 
+    //baut die ui (inventar, xp-bar, leben) auf sobald der spieler in einem level landet
     @Override
     protected void addedToWorld(World world) {
         // movePlayer() nimmt den spieler raus und setzt ihn neu rein -> sonst haengt die ui doppelt drin
@@ -278,6 +287,7 @@ public class Player extends DamageableActor {
         world.addObject(healthbar, lebenCells / 2, world.getHeight() - 1);
     }
 
+    //setzt das spielersprite neu je nachdem welche ruestung angezogen ist
     public void updateAppearance() {
         // Basis-Ordner ist immer "Player"
         String folder = "Player";
@@ -308,6 +318,8 @@ public class Player extends DamageableActor {
         super.setInvisible(invisible);
     }
 
+    //packt das komplette inventar in listen zum speichern
+    // reihenfolge ist 0 rucksack, 1 hotbar, 2 ruestung, setInventorys() verlaesst sich drauf
     public List<List<ItemData>> getInventorys(){
         List<List<ItemData>> inventorys = new ArrayList<>();
         List<ItemData> backpackData = new ArrayList<>();
@@ -357,6 +369,7 @@ public class Player extends DamageableActor {
         return inventorys;
     }
 
+    //gegenstueck zu getInventorys(), baut das inventar aus dem save wieder auf
     public void setInventorys(List<List<ItemData>> inventorys) {
         // kaputter save -> lieber gar nichts laden als mittendrin abbrechen
         if (inventorys == null || inventorys.size() < 3) {
@@ -384,6 +397,7 @@ public class Player extends DamageableActor {
         updateAppearance();
     }
 
+    //erzeugt ein item allein aus dem klassennamen im save (reflection)
     private Item createItem(ItemData data) {
         if (data == null || data.classname == null) {
             return null;
@@ -397,7 +411,6 @@ public class Player extends DamageableActor {
                 }
                 return item;
             } catch (ClassNotFoundException e) {
-                // Klasse liegt in einem anderen Package, nächstes probieren
             } catch (ReflectiveOperationException e) {
                 return null;
             }
@@ -405,6 +418,7 @@ public class Player extends DamageableActor {
         return null;
     }
 
+    //sammelt einmalig alle item packages damit createItem() nicht raten muss
     private static List<String> getItemPackages() {
         if (itemPackages != null) { return itemPackages; }
 
@@ -414,11 +428,11 @@ public class Player extends DamageableActor {
             File codeRoot = new File(Item.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             collectSubPackages(new File(codeRoot, "items"), "items.", itemPackages);
         } catch (Exception e) {
-            // Scan fehlgeschlagen (z.B. exportiertes Jar) -> nur Basis-Package "items."
         }
         return itemPackages;
     }
 
+    //laeuft alle unterordner von items/ rekursiv ab
     private static void collectSubPackages(File dir, String prefix, List<String> result) {
         File[] children = dir.listFiles();
         if (children == null) { return; }
@@ -431,6 +445,7 @@ public class Player extends DamageableActor {
             }
         }
     }
+    //der bogen-sprite existiert nur solange auch ein bogen im aktiven slot liegt
     private void updateActiveWeapon() {
 
         Item currentItem = (activeSlot >= 0 && activeSlot < items.length) ? items[activeSlot] : null;
@@ -456,6 +471,7 @@ public class Player extends DamageableActor {
         }
     }
 
+    //xp gutschreiben, die while-schleife weil ein grosser xp drop mehrere level auf einmal geben kann
     public void gainXP(int xp) {
         currentXP += xp;
         while (currentXP >= xpToNextLevel) {
@@ -484,6 +500,7 @@ public class Player extends DamageableActor {
         welt.addObject(new LevelUpMessage(bonusLeben, bonusSchaden), getX(), y);
     }
 
+    //level und xp aus dem save zurueckschreiben
     public void ladeFortschritt(int level, int xp, int maxLife, int bonusDamage) {
         if (level < 1) {
             return;

@@ -5,6 +5,7 @@ import greenfoot.GreenfootImage;
 import util.ImprovedGreenfootImage;
 import world.DungeonLevel;
 
+//greenfoot Actor mit zwei ergaenzungen: pause abfragen und text aufs eigene bild schreiben
 public class ImprovedActor extends Actor {
     private GreenfootImage currentImage;
 

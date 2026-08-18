@@ -1,5 +1,6 @@
 package entities.util;
 
+//die vier blickrichtungen, der wert 0-3 ist gleichzeitig der index im bilder-array vom MovingActor
 public enum Direction {
     EAST(0),
     SOUTH(1),

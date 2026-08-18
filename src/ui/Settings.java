@@ -3,6 +3,8 @@ package ui;
 import greenfoot.Greenfoot;
 import greenfoot.MouseInfo;
 
+//alle tastenbelegungen static, damit jede klasse ohne referenz drankommt
+// wird nicht gespeichert, nach dem neustart stehen wieder die standardtasten drin
 public class Settings  {
 
     public static String upKey = "w";

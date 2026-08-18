@@ -17,6 +17,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+//baut den info-kasten beim druebergehen automatisch aus den feldern
+// jedes feld mit @ShowOnHover landet drin, so muss keine klasse ihren tooltip selbst schreiben
 public interface OnHover {
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -66,6 +68,7 @@ public interface OnHover {
         return bg;
     }
 
+    //geht die vererbung hoch, sonst fehlt die rarity aus der Item oberklasse
     public default Field[] getOnHoverFields() {
         List<Field> foundFields = new ArrayList<>();
         Class<?> clazz = this.getClass();

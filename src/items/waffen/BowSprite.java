@@ -8,6 +8,8 @@ import greenfoot.GreenfootImage;
 import java.util.List;
 
 
+//der sichtbare bogen der am spieler klebt und automatisch auf das naechste monster zielt
+// leertaste halten spannt, loslassen schiesst
 public class BowSprite extends Actor {
 
     private final Bow bow;

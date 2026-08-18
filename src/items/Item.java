@@ -11,6 +11,7 @@ import items.util.Rarity;
 import items.util.Useable;
 import ui.ItemText;
 
+//oberklasse fuer alles was aufgehoben und ins inventar gelegt werden kann
 public abstract class Item extends ImprovedActor implements Useable, OnHover {
 
     @OnHover.ShowOnHover

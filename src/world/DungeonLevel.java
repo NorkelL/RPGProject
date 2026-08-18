@@ -36,9 +36,13 @@ import java.util.stream.Collectors;
 
 
 
+//ein einzelnes level, wird komplett aus dem seed generiert
+// gleicher seed heisst gleicher gang, gleiche raeume, gleiche monster
 public class DungeonLevel extends World {
 
+    //alle zufallsentscheidungen beim generieren laufen ueber dieses rng, nie ueber Math.random
     private final Random rng;
+    //der ausgang von diesem level wird der eingang vom naechsten, sonst passen die level nicht aneinander
     public int centerExit;
     private int centerEntrance;
     private int[] centerCorridor;
@@ -51,11 +55,13 @@ public class DungeonLevel extends World {
     private final GameStarter gameStarter;
     public final Player player;
 
+    //nur ein rechteck zum merken wo ein raum liegt, wird nicht gezeichnet
     private static class Room {
         int width, height, x, y;
         Room(int width, int height, int x, int y) { this.width = width; this.height = height; this.x = x; this.y = y; }
     }
 
+    //reihenfolge ist wichtig: erst gang, dann raeume dran, erst danach monster und bloecke
     public DungeonLevel(long seed,GameStarter gameStarter,Player p) {
         super(30, 30, 40);
         this.gameStarter = gameStarter;
@@ -119,6 +125,7 @@ public class DungeonLevel extends World {
         return new Random(rn).nextInt(16)+15;
     }
 
+    //der gang wird so lange neu gewuerfelt bis er oben auch wirklich am ausgang rauskommt
     private void spawnCorridor(){
         do {
             centerCorridor = calcCorridor();
@@ -139,6 +146,7 @@ public class DungeonLevel extends World {
         }
     }
 
+    //1-3 monster pro raum, der versuche-zaehler verhindert eine endlosschleife wenn kein platz frei ist
     private void spawnMonsters(){
         if (placedRooms.isEmpty()) return;
 
@@ -189,6 +197,7 @@ public class DungeonLevel extends World {
         }
     }
 
+    //prueft ob auf dem feld gespawnt werden darf
     private boolean istFreiFuerMonster(int x, int y){
         if (x < 1 || y < 1|| x >= getWidth() - 1 || y >= getHeight() - 1) return false;
 
@@ -201,6 +210,7 @@ public class DungeonLevel extends World {
         return getObjectsAt(x, y, entities.base.BaseMonster.class).isEmpty();
     }
 
+    //zufaelliger weg von unten nach oben, laeuft mal gerade mal schraeg damit es nicht wie ein lineal aussieht
     private int[] calcCorridor(){
         int[] centerCorridor = new int[getHeight()-3];
         int pos = centerEntrance - 1;
@@ -230,6 +240,7 @@ public class DungeonLevel extends World {
         return centerCorridor;
     }
 
+    //versucht 3 raeume zu setzen und gibt nach 10 fehlversuchen auf
     private void spawnRooms(){
         int placedCount = 0;
         int tries = 0;
@@ -243,6 +254,8 @@ public class DungeonLevel extends World {
         }
     }
 
+    //ein raum zaehlt nur wenn er keinen anderen ueberlappt und den gang beruehrt
+    // sonst waere er nicht erreichbar und wird verworfen
     private boolean tryPlaceRoom(Room room){
         for (Room placed : placedRooms) {
             if (room.x <= placed.x + placed.width && room.x + room.width >= placed.x &&
@@ -281,6 +294,8 @@ public class DungeonLevel extends World {
         return touchesCorridor;
     }
 
+    //setzt eine wand und baut alle waende darunter neu
+    // sonst zeichnet greenfoot die alten waende ueber die neue drueber
     private void savePlaceWall(int x, int y) {
         removeWallAt(x, y);
         addObject(new Wall(), x, y);
@@ -305,6 +320,7 @@ public class DungeonLevel extends World {
         int y = rng.nextInt(Math.max(1, getHeight()-h-4))+1;
         return new Room(w, h, x, y);
     }
+    //wuerfelt den boden aus 4 tiles zusammen und backt alles in ein hintergrundbild
     private void generateRandomFloor() {
         int cellSize = 40;
         int w = getWidth();
@@ -373,6 +389,7 @@ public class DungeonLevel extends World {
     }
 
 
+    //liste der offenen truhen fuer den save
     public List<int[]> getOpenedChests() {
         List<int[]> opened = new ArrayList<>();
         for (Chest chest : getObjects(Chest.class)) {
@@ -381,6 +398,7 @@ public class DungeonLevel extends World {
         return opened;
     }
 
+    //rausnehmen und neu reinsetzen, anders kann man in greenfoot nicht umsetzen
     public void movePlayer(int x, int y) {
         removeObject(player);
         addObject(player, x, y);

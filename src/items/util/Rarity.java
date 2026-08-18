@@ -23,6 +23,7 @@ public enum Rarity {
         this.Color = Color;
     }
 
+    //wuerfelt von der seltensten stufe abwaerts, die schwellen werden dabei aufaddiert
     public static Rarity setRarity() {
         int randomNum = rng.nextInt(100) + 1;
         double vergleich = LEGENDARY.Chance * 100;

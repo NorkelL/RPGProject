@@ -3,6 +3,7 @@ package util;
 import greenfoot.GreenfootSound;
 import ui.Settings;
 
+//alle sounds laufen hier durch, damit die lautstaerke und der on/off schalter an einer stelle sitzen
 public class SoundManager {
 
     private static GreenfootSound bgMusic;

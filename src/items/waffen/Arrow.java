@@ -7,6 +7,8 @@ import greenfoot.GreenfootImage;
 import items.Item;
 import ui.Explosion;
 
+//der abgeschossene pfeil, fliegt von selbst weiter bis er wand, rand oder monster trifft
+// moveDelay waechst dabei, der pfeil wird also mit der flugstrecke langsamer
 public class Arrow extends Item {
     private int speed = 1;
     private int damage;

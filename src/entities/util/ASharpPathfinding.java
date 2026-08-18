@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//wegfindung fuer die monster, als interface damit jede klasse es dazunehmen kann
+// ohne die vererbung zu aendern (BaseMonster erbt schon von DamageableActor)
+// trotz dem namen ist es kein echtes a*, sondern eine breitensuche vom ziel aus
 public interface ASharpPathfinding {
 
     // falls keine Actor subclass
@@ -82,6 +85,7 @@ public interface ASharpPathfinding {
         return true;
     }
 
+    //sucht ein zufaelliges freies feld zum hinlaufen, gibt nach 50 versuchen auf
     default int[] pickRandomTarget() {
         World world = getWorld();
         int x = 0;
@@ -94,7 +98,7 @@ public interface ASharpPathfinding {
         return new int[]{x, y};
     }
 
-    // hier neue blöcke, durch die man nicht durchgehen kann hinzufügen:
+    //felder auf die nicht gelaufen werden darf
     default boolean isBlocked(int x, int y) {
         World world = getWorld();
         if (!world.getObjectsAt(x, y, Rock.class).isEmpty()) return true;

@@ -35,6 +35,7 @@ public class UpgradeButton extends Actor {
         }
     }
 
+    //hier stehen alle rezepte, neue kombination = neuer else-if zweig
     private void versucheUpgrade() {
         Item armor = armorSlot.getItem();
         Item material = materialSlot.getItem();

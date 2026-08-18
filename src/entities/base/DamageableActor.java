@@ -4,6 +4,7 @@ import util.SoundManager;
 import greenfoot.World;
 import ui.DamageNumber;
 
+//alles was leben hat und schaden nehmen kann, also spieler und monster
 public abstract class DamageableActor extends MovingActor {
     private int life;
 

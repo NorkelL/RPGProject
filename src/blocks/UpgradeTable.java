@@ -6,6 +6,7 @@ import greenfoot.GreenfootImage;
 import greenfoot.Color;
 import world.DungeonLevel;
 
+//werkbank, oeffnet mit R das inventar mit freigeschalteten upgrade slots
 public class UpgradeTable extends Block {
     private static final int SIZE = 42;
 

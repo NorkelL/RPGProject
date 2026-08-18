@@ -42,6 +42,7 @@ public enum ItemTyp {
         return null;
     }
 
+    //gewichtete ziehung: alle gewichte aufaddieren und in den bereich reinwuerfeln
     public static ItemTyp zufällig() {
         int gesamt = 0;
         for (ItemTyp typ : values()) gesamt += typ.gewicht;

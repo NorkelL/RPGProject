@@ -8,6 +8,7 @@ import items.util.SlotType;
 
 import java.util.List;
 
+//die hotbar unten am bildschirm, zeigt einfach das item-array vom spieler an
 public class InventoryVisualizer extends Actor {
     private final InventorySlot[] slots;
     private final Item[] inventory;
@@ -30,6 +31,7 @@ public class InventoryVisualizer extends Actor {
         checkSlot();
     }
 
+    //die slots entstehen erst hier, vorher kennt man die weltgroesse nicht
     protected void addedToWorld(World world) {
         int numSlots = slots.length;
 
@@ -55,6 +57,7 @@ public class InventoryVisualizer extends Actor {
         }
     }
 
+    //array -> anzeige, laeuft jeden takt damit aufgehobene items sofort auftauchen
     private void update() {
         if (slots == null || inventory == null) return;
 
@@ -101,6 +104,7 @@ public class InventoryVisualizer extends Actor {
         getWorld().removeObject(this);
     }
 
+    //hebt den slot hervor der gerade mit 1-8 ausgewaehlt ist
     private void checkSlot() {
         List<Player> players = getWorld().getObjects(Player.class);
         if (players.isEmpty()) {

@@ -17,10 +17,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
+//Zentrale Steuerung das games (vergleichbar mit main())
+// die Klasse regelt die Level und den primären save/load workflow
+//sie kümmert sich um den levelwechsel usw.
 public class GameStarter extends World {
 
+    //seedseed ist die einzige variable die gespeichert werden muss um
+    // die Levelgeneration "deterministic" zu reproduzieren
     private long seedsseed;
     private Random seed;
+    //pastlevel werden gespeichert um beim zurücklaufen den state der map beibehalten zu können
+    // wird auch zum speichern der einzelnen state blöcke genutzt (chest die offen sind usw.)
     public List<DungeonLevel> pastLevels = new ArrayList<>();
     public DungeonLevel currentLevel;
     public static final Path SAVE_DIR = Path.of("saves");
@@ -63,6 +70,7 @@ public class GameStarter extends World {
 
     }
 
+    //regeneration aus dem save.json zum spielstand
     public void resumeSave(Path p) throws IOException {
         String json = Files.readString(p);
         SaveData save = new Gson().fromJson(json, SaveData.class);
@@ -75,6 +83,7 @@ public class GameStarter extends World {
 
         pastLevels = new ArrayList<>();
 
+        //alte level werden gebaut damit seed.nextLong() gleich oft laeuft und man zurücklaufen kann
         for (int i = 0; i < save.currentLevel -1; i++) {
             world.DungeonLevel pl = new DungeonLevel(seed.nextLong(),this,player);
             pastLevels.add(pl);
@@ -97,6 +106,7 @@ public class GameStarter extends World {
                 }
             }
         }
+        //spielerwerte auf den frisch gebauten level uebertragen
         currentLevel.movePlayer(save.playerX,save.playerY);
         currentLevel.player.setLife(save.health);
         currentLevel.player.ladeFortschritt(save.level, save.xp, save.maxLife, save.bonusDamage);
@@ -105,6 +115,7 @@ public class GameStarter extends World {
         Greenfoot.setWorld(currentLevel);
     }
 
+    //speichern das gesamten spielstandes durch SaveGame klasse und helper in anderen klassen
     public void saveGame() throws IOException {
         SaveData save =  new SaveData();
         save.playerX = currentLevel.player.getX();
@@ -123,13 +134,15 @@ public class GameStarter extends World {
         save.currentLevelLootedChests = currentLevel.getOpenedChests();
         save.inventorys = currentLevel.player.getInventorys();
 
-        Files.createDirectories(SAVE_DIR);   // ordner gibt es beim ersten start noch nicht
+        Files.createDirectories(SAVE_DIR);
 
         String filename = "save_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm")) + ".json";
         Files.writeString(SAVE_DIR.resolve(filename), new GsonBuilder().setPrettyPrinting().create().toJson(save));
     }
 }
 
+
+//klasse zum umwandeln des Spielstandes zum .json
 class SaveData{
     int playerX,playerY;
     int health;

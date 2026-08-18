@@ -11,6 +11,7 @@ import items.util.OnHover;
 import items.util.SlotType;
 import ui.worlds.Backpack;
 
+//ein einzelnes feld im inventar, haelt genau ein item und regelt drag and drop
 public class InventorySlot extends Actor {
     private SlotType slotType;
     private Item item;
@@ -19,8 +20,10 @@ public class InventorySlot extends Actor {
     private boolean isSelected = false;
     private final int slotPixelWidth;
     private final int slotPixelHeight;
+    //static weil immer nur ein slot gleichzeitig gezogen werden kann, das gilt fuer alle slots zusammen
     private static InventorySlot draggedSlot= null;
     private static ui.GhostItem ghost = null;
+    //das item wird im slot ausgeblendet solange der ghost am mauszeiger haengt
     private boolean isItemHidden = false;
     private boolean locked = false;
 
@@ -78,6 +81,7 @@ public class InventorySlot extends Actor {
     }
 
 
+    //baut das slotbild komplett neu: hintergrund, item drauf, evtl noch das schloss
     protected void updateImage() {
         GreenfootImage currentBackground = isSelected ? new GreenfootImage(glowingImage) : new GreenfootImage(baseImage);
 
@@ -103,6 +107,7 @@ public class InventorySlot extends Actor {
         setImage(currentBackground);
     }
 
+    //das schloss wird gezeichnet statt als bild geladen, spart eine datei
     private void drawLockIcon(GreenfootImage img) {
         int w = img.getWidth();
         int h = img.getHeight();
@@ -145,6 +150,7 @@ public class InventorySlot extends Actor {
 
     public boolean isLocked() { return locked; }
 
+    //kompletter drag ablauf, laeuft jeden takt aus act()
     private void handleDragAndDrop() {
         if (locked) return;
         // 1. MAUS GEDRÜCKT: Drag startet
@@ -226,6 +232,8 @@ public class InventorySlot extends Actor {
         return true;
     }
 
+    //tauscht zwei slots und zieht danach die arrays vom player nach
+    // ohne das sync waere nur die anzeige getauscht, nicht das echte inventar
     private void swapItems(InventorySlot slotA, InventorySlot slotB) {
         if (slotA == slotB) return;
 
@@ -274,6 +282,7 @@ public class InventorySlot extends Actor {
             }
         }
     }
+    //welcher slottyp welches item ueberhaupt annimmt
     public boolean canAcceptItem(Item itemToPlace) {
         if (itemToPlace == null) return true; // Slot leeren ist immer erlaubt
 
@@ -290,6 +299,7 @@ public class InventorySlot extends Actor {
 
 
 
+    //hover-text ein- und ausblenden wenn die maus ueber dem slot steht
     @Override
     public void act() {
         handleDragAndDrop();

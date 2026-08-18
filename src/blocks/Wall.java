@@ -3,6 +3,8 @@ package blocks;
 import entities.base.ImprovedActor;
 import greenfoot.GreenfootImage;
 
+//das bild ist 40x80 statt 40x40, die wand ragt also in die zelle darueber
+// deswegen wird woanders immer ueber getX/getY geprueft und nicht ueber getObjectsAt
 public class Wall extends ImprovedActor {
 
     public Wall() {

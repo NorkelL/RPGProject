@@ -9,7 +9,10 @@ import util.SoundManager;
 
 import java.util.List;
 
+//gemeinsame ki fuer alle monster: rumlaufen, spieler verfolgen und angreifen
+// die einzelnen monster (Zombie, Skeleton usw.) setzen nur noch ihre werte
 public abstract class BaseMonster extends DamageableActor implements ASharpPathfinding {
+    //agro = ab wann verfolgt wird, leash = ab wann wieder aufgegeben wird
     private int agroRadius;
     private int leashRadius;
     private boolean isFollowingPlayer = false;
@@ -37,6 +40,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         setLife(life);
     }
 
+    //ein takt des monsters, angreifen hat immer vorrang vor laufen
     @Override
     public void act(){
         if (pausiert()) return;
@@ -72,6 +76,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
 
     }
 
+    //entscheidet ob verfolgt oder nur ziellos rumgelaufen wird
     protected void move(){
         if (isFollowingPlayer) {
             if (checkFollowRadius()) {
@@ -113,6 +118,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         return spielerImUmkreis(leashRadius);
     }
 
+    //unsichtbare spieler werden hier bewusst uebersprungen, das ist der trank-effekt
     private boolean spielerImUmkreis(int radius){
         for (Player player : getWorld().getObjects(Player.class)) {
             if (player.isInvisible()) continue;
@@ -134,6 +140,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         }
     }
 
+    //schlaegt zu falls der spieler daneben steht und die abklingzeit rum ist
     private boolean greifeSpielerAn(){
         if (System.currentTimeMillis() < naechsterAngriff) return false;
 
@@ -192,6 +199,7 @@ public abstract class BaseMonster extends DamageableActor implements ASharpPathf
         getWorld().removeObject(this);
     }
 
+    //angriffsbild anzeigen, animationBis schaltet in act() wieder auf laufen zurueck
     public void hit (){
         SoundManager.play("attack.mp3");
         loadImages(this.getClass().getSimpleName(), "Attacking");

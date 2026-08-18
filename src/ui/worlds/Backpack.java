@@ -12,10 +12,13 @@ import ui.UpgradeButton;
 import ui.UpgradeSlot;
 import ui.Settings;
 
+//das grosse inventarfenster, wird als eigene welt anstelle vom level gesetzt
+// dadurch steht das level solange automatisch still
 public class Backpack extends World {
     private final Item[] backpackItems;
     private final InventorySlot[] slots;
     private final World previousWorld;
+    //stehen absichtlich auf true, sonst schliesst die taste mit der man geoeffnet hat sofort wieder
     private boolean eWasDown = true;
     private boolean escWasDown = true;
     private boolean rWasDown = true;
@@ -25,8 +28,10 @@ public class Backpack extends World {
     private final UpgradeSlot upgradeSlot2;
     private final UpgradeSlot upgradeSlot3;
     private final Player player;
+    //true wenn das inventar von der werkbank aus geoeffnet wurde, nur dann gehen die upgrade slots
     private final boolean tableMode;
 
+    //baut das komplette fenster auf: rucksackslots, ruestungsslots und die upgrade slots
     public Backpack(Player player, Item[] playerItems, Item[] backpack, World world, boolean tableMode) {
 
         super(16, 9, 80);
@@ -92,6 +97,7 @@ public class Backpack extends World {
         }
     }
 
+    //haelt ui und arrays synchron und prueft ob zugemacht werden soll
     @Override
     public void act() {
 
@@ -112,6 +118,7 @@ public class Backpack extends World {
         rWasDown  = rIsDown;
     }
 
+    //schreibt zurueck was der spieler im ui verschoben hat
     private void updateBackpackSlots() {
         int length = Math.min(backpackItems.length, slots.length);
         for (int i = 0; i < length; i++) {
@@ -148,6 +155,7 @@ public class Backpack extends World {
         slot.setItem(null);
     }
 
+    //ruestung kann auch ausserhalb vom inventar wechseln, deshalb jeden takt abgleichen
     private void updateArmorSlots() {
         if (headSlot.getItem() != player.getHeadArmor()) {
             headSlot.setItem(player.getHeadArmor());
