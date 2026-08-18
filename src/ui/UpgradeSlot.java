@@ -32,7 +32,7 @@ public class UpgradeSlot extends InventorySlot {
         this.baseImage = new GreenfootImage(imagePath);
         this.baseImage.scale(80, 80);
 
-        // 2. WICHTIG: Das Bild sofort neu zeichnen lassen!
+
         updateImage();
     }
 

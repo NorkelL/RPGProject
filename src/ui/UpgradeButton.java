@@ -74,7 +74,7 @@ public class UpgradeButton extends Actor {
         outputSlot.setItem(neuesItem);
 
         // 2. Die alten Items löschen.
-        // Da euer InventorySlot setItem(null) unterstützt und das Bild updatet, klappt das perfekt!
+        // Da  InventorySlot setItem(null) unterstützt und das Bild updatet, klappt das
         armorSlot.setItem(null);
         materialSlot.setItem(null);
 
