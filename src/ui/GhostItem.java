@@ -7,6 +7,8 @@ import items.Item;
 
 //das item das beim ziehen am mauszeiger klebt, der echte slot ist solange leer gezeichnet
 public class GhostItem extends Item {
+
+
     public GhostItem(GreenfootImage itemImage) {
         setImage(new GreenfootImage(itemImage));
     }

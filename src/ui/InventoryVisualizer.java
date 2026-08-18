@@ -86,25 +86,7 @@ public class InventoryVisualizer extends Actor {
         }
     }
 
-    // Hilfsmethode, um zu prüfen, ob dieser Visualizer einen bestimmten Slot besitzt
-    public boolean containsSlot(InventorySlot slot) {
-        for (InventorySlot s : slots) {
-            if (s == slot) return true;
-        }
-        return false;
-    }
-    public void removeSelf() {
-        // Entfernt alle Slots, die dieser Visualizer erstellt hat
-        for (InventorySlot slot : slots) {
-            if (slot != null && slot.getWorld() != null) {
-                getWorld().removeObject(slot);
-            }
-        }
 
-        getWorld().removeObject(this);
-    }
-
-    //hebt den slot hervor der gerade mit 1-8 ausgewaehlt ist
     private void checkSlot() {
         List<Player> players = getWorld().getObjects(Player.class);
         if (players.isEmpty()) {
