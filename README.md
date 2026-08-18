@@ -24,8 +24,9 @@ mit rund 5.350 Zeilen Code.
 
 *The Dungeon: Sign of the Moon* ist ein **Top-Down Action-RPG** im Stil eines Dungeon-Crawlers.
 Man läuft durch **prozedural generierte** Räume und Korridore, kämpft im Nah- und Fernkampf
-gegen Monster und sammelt Loot aus Truhen. Über die Treppen geht es dann jeweils eine Ebene
-tiefer.
+gegen Monster und sammelt Loot aus Truhen. Über die Ausgangstreppe geht es jeweils eine Ebene
+tiefer, über die Eingangstreppe auch wieder zurück nach oben. Bereits besuchte Stockwerke
+behalten dabei ihren Zustand.
 
 Jedes Stockwerk wird aus einem Seed neu erzeugt. Es gibt also kein festes Level-Design und auch
 kein Ende, man spielt so lange, bis man stirbt, und versucht dabei **so tief wie möglich zu
@@ -51,6 +52,8 @@ kommen**. Für jedes besiegte Monster gibt es Erfahrung, pro Level-Up mehr Leben
 
 - Prozedurale Dungeon-Generierung aus einem Seed: Räume, Korridore, Wände, Eingangs- und
   Ausgangstreppe pro Stockwerk
+- Stockwerke lassen sich in **beide Richtungen** begehen, geöffnete Truhen und besiegte Monster
+  bleiben beim Zurücklaufen so, wie man sie verlassen hat
 - Vier Monsterarten: **Gnome, Ork, Zombie, Skelett**, mit eigenen Sprites und Lauf-/Angriffs-Animationen.
 - Gegner verfolgen den Spieler per **A\*-Pathfinding** durch Räume und Korridore, inklusive
   Agro- und Leash-Radius
@@ -176,15 +179,14 @@ RPGProject/
 │   │   ├── enemies/   Gnome, Orc, Zombie, Skeleton
 │   │   └── util/      ASharpPathfinding, Direction, Hitting
 │   ├── blocks/        Wall, Rock, Chest, UpgradeTable, Entrance, Exit
-│   ├── items/         Item, Waffen, items.material
+│   ├── items/         Item, Waffen, Material
 │   │   ├── waffen/    Sword, Messer, Stock, Bow, Arrow, BowSprite
 │   │   ├── armor/     Armor + 6 Rüstungsteile
+│   │   ├── material/  Gold, Iron
 │   │   ├── misc/      HealthPotion, Apple, Cookie, HoneyBottle, UnstablePotion
 │   │   └── util/      ItemTyp, Rarity, SlotType, OnHover, ItemData, Pickable, Useable
-│   ├── items.material/      Gold, Iron
 │   ├── ui/            Inventar, Healthbar, XPBar, DamageNumber, LevelUpMessage, Tooltips
-│   │   ├── buttons/   Menü-Buttons
-│   │   ├── Buttons/   Pause- und Save-Buttons
+│   │   ├── buttons/   Menü-, Pause- und Save-Buttons
 │   │   └── worlds/    MainMenu, SettingsWorld, Backpack, GameOverScreen
 │   └── util/          SoundManager, WindowSizeManager, FontManager, ImprovedGreenfootImage
 ├── images/            Sprites, Tiles, UI-Grafiken

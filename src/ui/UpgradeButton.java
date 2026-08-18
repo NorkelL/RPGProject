@@ -15,6 +15,7 @@ public class UpgradeButton extends Actor {
     private  GreenfootImage UpgradeButton = new GreenfootImage("UI/Inventory/UpgradeButton.png");
     private GreenfootImage UpgradeButtonGlowing = new GreenfootImage("UI/Inventory/UpgradeButtonGlowing.png");
     private boolean isScaled = false;
+    private int textTimer = 0;
 
     // Der Konstruktor bekommt die 3 Slots aus der Welt übergeben
     public UpgradeButton(UpgradeSlot armor, UpgradeSlot material, UpgradeSlot output) {
@@ -28,6 +29,11 @@ public class UpgradeButton extends Actor {
     }
 
     public void act() {
+        if (textTimer > 0){
+            textTimer--;
+            if(textTimer==0){getWorld().showText(null, getX(), getY() - 2);}
+        }
+
         mouseHover();
         // Prüfen, ob der Spieler genau auf diesen Button klickt
         if (Greenfoot.mouseClicked(this)) {
@@ -42,6 +48,11 @@ public class UpgradeButton extends Actor {
 
         // Wenn einer der beiden vorderen Slots leer ist, passiert nichts
         if (armor == null || material == null) {
+            return;
+        }
+
+        if (outputSlot.getItem() != null) {
+            meldung("Erst das Ergebnis rausnehmen");
             return;
         }
 
@@ -64,7 +75,7 @@ public class UpgradeButton extends Actor {
         }
         else {
             // Wenn etwas Falsches drin liegt (z.B. Holz mit Gold)
-            System.out.println("Das kann nicht kombiniert werden!");
+            meldung("Das kann nicht kombiniert werden");
         }
     }
 
@@ -78,7 +89,12 @@ public class UpgradeButton extends Actor {
         armorSlot.setItem(null);
         materialSlot.setItem(null);
 
-        System.out.println("Upgrade erfolgreich!");
+        meldung("Upgrade erfolgreich");
+    }
+
+    private void meldung(String text){
+        getWorld().showText(text, getX(), getY() - 2);
+        textTimer = 90;
     }
     private void mouseHover(){
         MouseInfo mouse = Greenfoot.getMouseInfo();

@@ -29,6 +29,7 @@ public class GameStarter extends World {
     //pastlevel werden gespeichert um beim zurücklaufen den state der map beibehalten zu können
     // wird auch zum speichern der einzelnen state blöcke genutzt (chest die offen sind usw.)
     public List<DungeonLevel> pastLevels = new ArrayList<>();
+    public List<DungeonLevel> futureLevels = new ArrayList<>();
     public DungeonLevel currentLevel;
     public static final Path SAVE_DIR = Path.of("saves");
     private Player player;
@@ -59,15 +60,32 @@ public class GameStarter extends World {
         seedsseed = System.currentTimeMillis();
         seed = new Random(seedsseed);
         pastLevels = new ArrayList<>();
+        futureLevels = new ArrayList<>();
         player = new Player();
         start();
     }
 
     public void RenderNextWorld(){
         pastLevels.add(currentLevel);
-        currentLevel = new DungeonLevel(seed.nextLong(),this,player);
+        if(!futureLevels.isEmpty()){
+            currentLevel = futureLevels.remove(futureLevels.size()-1);
+            currentLevel.movePlayer(currentLevel.centerEntrance - 1,currentLevel.getHeight()-2);
+        }else{
+            currentLevel = new DungeonLevel(seed.nextLong(),this,player);
+        }
+        currentLevel.sperreTreppen();
         Greenfoot.setWorld(currentLevel);
 
+    }
+
+    public void RenderPastWorld(){
+        if (pastLevels.isEmpty()) return;
+
+        futureLevels.add(currentLevel);
+        currentLevel = pastLevels.remove(pastLevels.size()-1);
+        currentLevel.movePlayer(currentLevel.centerExit - 1,0);
+        currentLevel.sperreTreppen();
+        Greenfoot.setWorld(currentLevel);
     }
 
     //regeneration aus dem save.json zum spielstand
@@ -82,6 +100,7 @@ public class GameStarter extends World {
         seed = new Random(seedsseed);
 
         pastLevels = new ArrayList<>();
+        futureLevels = new ArrayList<>();
 
         //alte level werden gebaut damit seed.nextLong() gleich oft laeuft und man zurücklaufen kann
         for (int i = 0; i < save.currentLevel -1; i++) {

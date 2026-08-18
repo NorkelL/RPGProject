@@ -7,6 +7,7 @@ public class Exit extends Block {
 
 
     private GameStarter gameStarter;
+    private boolean schonBenutzt = true;
 
     public Exit(GameStarter gameStarter){
         this.gameStarter = gameStarter;
@@ -17,8 +18,12 @@ public class Exit extends Block {
     public void act(){
         if (pausiert()) return;
 
-        if(isTouching(Player.class)){
-            gameStarter.RenderNextWorld();
-        }
+        if(!isTouching(Player.class)){schonBenutzt=false; return;}
+        if (schonBenutzt) return;
+
+        schonBenutzt = true;
+        gameStarter.RenderNextWorld();
     }
+
+    public void sperren(){schonBenutzt = true;}
 }

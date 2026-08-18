@@ -4,7 +4,6 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
-import items.TestItem;
 import ui.ItemText;
 import util.FontManager;
 

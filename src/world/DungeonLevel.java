@@ -44,7 +44,7 @@ public class DungeonLevel extends World {
     private final Random rng;
     //der ausgang von diesem level wird der eingang vom naechsten, sonst passen die level nicht aneinander
     public int centerExit;
-    private int centerEntrance;
+    public int centerEntrance;
     private int[] centerCorridor;
     private List<Room> placedRooms = new ArrayList<>();
     private boolean paused = false;
@@ -146,12 +146,12 @@ public class DungeonLevel extends World {
         }
     }
 
-    //1-3 monster pro raum, der versuche-zaehler verhindert eine endlosschleife wenn kein platz frei ist
+    //0-2 monster pro raum, der versuche-zaehler verhindert eine endlosschleife wenn kein platz frei ist
     private void spawnMonsters(){
         if (placedRooms.isEmpty()) return;
 
         for (Room room : placedRooms) {
-            int gewollt = rng.nextInt(3) + 1;
+            int gewollt = rng.nextInt(3);
             int gesetzt = 0;
             int versuche = 0;
 
@@ -402,6 +402,15 @@ public class DungeonLevel extends World {
     public void movePlayer(int x, int y) {
         removeObject(player);
         addObject(player, x, y);
+    }
+
+    public void sperreTreppen(){
+        for (Entrance entrance : getObjects(Entrance.class)) {
+            entrance.sperren();
+        }
+        for (Exit exit : getObjects(Exit.class)) {
+            exit.sperren();
+        }
     }
 
     public GameStarter getGameStarter() { return gameStarter; }
