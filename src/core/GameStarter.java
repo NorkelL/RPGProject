@@ -24,6 +24,7 @@ public class GameStarter extends World {
 
     //seedseed ist die einzige variable die gespeichert werden muss um
     // die Levelgeneration "deterministic" zu reproduzieren
+
     private long seedsseed;
     private Random seed;
     //pastlevel werden gespeichert um beim zurücklaufen den state der map beibehalten zu können
